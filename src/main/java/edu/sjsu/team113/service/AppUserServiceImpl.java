@@ -3,9 +3,11 @@ package edu.sjsu.team113.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import edu.sjsu.team113.model.AppUser;
+import edu.sjsu.team113.model.AppUserRole;
 import edu.sjsu.team113.repository.UserRepository;
 
 @Service
@@ -16,6 +18,8 @@ public class AppUserServiceImpl implements AppUserService {
 
 	public AppUser saveUser(AppUser user) {
 		AppUser savedUser = null;
+		user.setRole(AppUserRole.ENDUSER);
+		user.setPasswordHash(new BCryptPasswordEncoder().encode(user.getPasswordHash()));
 		savedUser = userRepository.save(user);
 		return savedUser;
 	}

@@ -16,13 +16,14 @@ public class AppMvcSecurityConfig extends WebMvcConfigurerAdapter {
 	public void addViewControllers(ViewControllerRegistry registry) {
 	    registry.addViewController("/login").setViewName("login");
 	    registry.addViewController("/welcome").setViewName("welcome");
+	    registry.addViewController("/home").setViewName("home");
 	}
 	
-	@Bean
-	public InternalResourceViewResolver viewResolver() {
-		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-		resolver.setPrefix("/WEB-INF/jsp/");
-		resolver.setSuffix(".jsp");
-		return resolver;
-	}
+//	@Bean
+//	public InternalResourceViewResolver viewResolver() {
+//		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+//		resolver.setPrefix("/WEB-INF/jsp/");
+//		resolver.setSuffix(".jsp");
+//		return resolver;
+//	}
 }

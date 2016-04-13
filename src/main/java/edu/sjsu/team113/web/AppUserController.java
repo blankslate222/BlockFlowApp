@@ -22,6 +22,7 @@ public class AppUserController {
 
 	@Autowired
 	private AppUserService userService;
+	
 
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String getSignupPage(Model model) {
@@ -31,7 +32,7 @@ public class AppUserController {
 		return "signup";
 	}
 	
-	@RequestMapping(value = "/user/signup", method = RequestMethod.POST, consumes = "application/json")
+	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = "application/json")
 	public @ResponseBody String userSignup(@RequestBody AppUser newuser,
 			HttpServletResponse res) {
 		AppUser saved = userService.saveUser(newuser);
