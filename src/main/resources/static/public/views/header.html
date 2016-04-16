@@ -1,0 +1,110 @@
+  
+  <!-- **********************************************************************************************************************************************************
+      TOP BAR CONTENT & NOTIFICATIONS
+      *********************************************************************************************************************************************************** -->
+      <!--header start-->
+      <header class="header black-bg">
+              <div class="sidebar-toggle-box">
+                  <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+              </div>
+            <!--logo start-->
+            <a href="index.html" class="logo"><b>Secure Documentation using BlockChain</b></a>
+            <!--logo end-->
+            <div class="nav notify-row" id="top_menu">
+                <!--  notification start -->
+                <ul class="nav top-menu">
+                    <!-- settings start -->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle">
+                            <i class="fa fa-tasks"></i>
+                            <span class="badge bg-theme">{{tasks.length}}</span>
+                        </a>
+                        <ul class="dropdown-menu extended tasks-bar">
+                            <div class="notify-arrow notify-arrow-green"></div>
+                            <li>
+                                <p class="green">You have {{tasks.length}} Pending Requests</p>
+                            </li>
+                            <li ng-repeat="x in tasks">
+                                <a>
+                                    <div class="task-info">
+                                        <div class="desc">{{x.task}}</div>
+                                        <div class="percent">{{x.percent}}%</div>
+                                    </div>
+                                    <div class="progress progress-striped">
+                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                                            <span class="sr-only">{{x.percent}}% Complete (success)</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="external">
+                                <a href="#">See All Tasks</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- settings end -->
+                </ul>
+                <!--  notification end -->
+            </div>
+            <div class="top-menu">
+            	<ul class="nav pull-right top-menu">
+                    <li><a class="logout" href="login.html">Logout</a></li>
+            	</ul>
+            </div>
+        </header>
+      <!--header end-->
+      
+      <!-- **********************************************************************************************************************************************************
+      MAIN SIDEBAR MENU
+      *********************************************************************************************************************************************************** -->
+      <!--sidebar start-->
+      <aside>
+          <div id="sidebar"  class="nav-collapse ">
+              <!-- sidebar menu start-->
+              <ul class="sidebar-menu" id="nav-accordion">
+              
+              	  <p class="centered"><a href="profile.html"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
+              	  <h5 class="centered">Christopher Pereira</h5>
+              	  	
+              	  <li class="mt">
+                      <a data-ui-sref="root.dash" id="lk_db" ng-class="getClass('/dashboard')">
+                          <i class="fa fa-dashboard"></i>
+                          <span>Dashboard</span>
+                      </a>
+                  </li>
+                  <li class="mt">
+                      <a data-ui-sref="root.workflow"  id="lk_wk" ng-class="getClass('/workflow')">
+                          <i class="fa fa-cogs"></i>
+                          <span>Workflows</span>
+                      </a>
+                  </li>
+                  <li class="mt">
+                      <a data-ui-sref="root.dept"  id="lk_dp" ng-class="getClass('/dept')">
+                          <i class="fa fa-group"></i>
+                          <span>Departments</span>
+                      </a>
+                  </li>
+                  <li class="mt">
+                      <a data-ui-sref="root.clientDash"  id="lk_cd" ng-class="getClass('/clientDash')">
+                          <i class="fa fa-dashboard"></i>
+                          <span>Client Dashboard</span>
+                      </a>
+                  </li>
+                  <li class="mt">
+                      <a data-ui-sref="root.deptReq" id="lk_dr" ng-class="getClass('/deptReq')">
+                          <i class="fa fa-dashboard"></i>
+                          <span>Department Requests</span>
+                      </a>
+                  </li>
+                  <li class="mt">
+                      <a data-ui-sref="root.register">
+                          <i class="fa fa-dashboard"></i>
+                          <span>Register</span>
+                      </a>
+                  </li>
+                  
+              </ul>
+              <!-- sidebar menu end-->
+          </div>
+      </aside>
+      <!--sidebar end-->

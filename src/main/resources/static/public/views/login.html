@@ -1,0 +1,74 @@
+
+<!-- **********************************************************************************************************************************************************
+      MAIN CONTENT
+      *********************************************************************************************************************************************************** -->
+
+<div id="login-page">
+	<div class="container">
+
+		<form class="form-login"  name="loginForm">
+			<h2 class="form-login-heading">sign in now</h2>
+			<div class="login-wrap">
+				<input type="text" class="form-control" placeholder="User ID" data-ng-model="user.id" required="required" 
+					autofocus> <br> <input type="password" data-ng-model="user.password"
+					class="form-control" placeholder="Password" required="required" > <label
+					class="checkbox"> <span class="pull-right"> <a
+						data-toggle="modal" href="login.html#myModal"> Forgot
+							Password?</a>
+
+				</span>
+				</label>
+				<button class="btn btn-theme btn-block" data-ng-click="doLogin()"
+					 type="submit" 	data-ng-disabled="!loginForm.$valid">
+					<i class="fa fa-lock"></i> SIGN IN 
+					<span data-ng-if="logging"><i
+				class="fa fa-spinner fa-spin"></i> Logging in...</span>
+				</button>
+				<div class="text-danger text-center">{{status}}</div>
+				<hr>
+				<div class="registration">
+					Don't have an account yet?<br /> <a class="" data-ui-sref="root.register"> Create
+						an account </a>
+				</div>
+
+			</div>
+
+			<!-- Modal -->
+			<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog"
+				tabindex="-1" id="myModal" class="modal fade">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Forgot Password ?</h4>
+						</div>
+						<div class="modal-body">
+							<p>Enter your e-mail address below to reset your password.</p>
+							<input type="text" name="email" placeholder="Email"
+								autocomplete="off" class="form-control placeholder-no-fix">
+	
+						</div>
+						<div class="modal-footer">
+							<button data-dismiss="modal" class="btn btn-default"
+								type="button">Cancel</button>
+							<button class="btn btn-theme" data-ui-sref="root.dash"
+								type="button">Submit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- modal -->
+
+		</form>
+
+	</div>
+</div>
+
+ <script type="text/javascript" src="../assets/js/jquery.backstretch.min.js"></script>
+    <script>
+        $.backstretch("../assets/img/blocks.jpg", {speed: 500});
+    </script>
+
+
+

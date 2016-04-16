@@ -1,0 +1,180 @@
+<script src="assets/js/jquery.sparkline.js"></script>
+    <script src="assets/js/sparkline-chart.js"></script>  
+<section id="main-content">
+	<section class="wrapper">
+		<h3>
+			<i class="fa fa-angle-right"></i>Client Request Status
+		</h3>
+
+		<div class="row">
+			<div class="col-md-4 col-sm-4 mb">
+				<div class="grey-panel pn donut-chart">
+					<div class="grey-header">
+						<h5>Doc1</h5>
+					</div>
+					<canvas id="serverstatus01" height="120" width="120"
+						style="width: 120px; height: 120px;"></canvas>
+					<script>
+						var doughnutData = [ {
+							value : 40,
+							color : "#FF6B6B"
+						}, {
+							value : 60,
+							color : "#fdfdfd"
+						} ];
+						var myDoughnut = new Chart(document.getElementById(
+								"serverstatus01").getContext("2d"))
+								.Doughnut(doughnutData);
+					</script>
+					<div class="row">
+						<div class="col-sm-6 col-xs-6 goleft">
+							<p>
+								Current<br>Status:
+							</p>
+						</div>
+						<div class="col-sm-6 col-xs-6">
+							<h2>60%</h2>
+						</div>
+					</div>
+				</div>
+				<!-- --/grey-panel ---->
+			</div>
+			<!-- /col-md-4-->
+
+
+			<div class="col-md-4 col-sm-4 mb">
+				<!-- REVENUE PANEL -->
+				<div class="green-panel pn">
+					<div class="green-header">
+						<h5>Report</h5>
+					</div>
+					<div class="chart mt">
+						<div class="sparkline" data-type="line" data-resize="true"
+							data-height="75" data-width="90%" data-line-width="1"
+							data-line-color="#fff" data-spot-color="#fff" data-fill-color=""
+							data-highlight-line-color="#fff" data-spot-radius="4"
+							data-data="[200,135,667,333,526,996,564,123,890,464,655]">
+							<canvas width="486" height="75"
+								style="display: inline-block; width: 486px; height: 75px; vertical-align: top;"></canvas>
+						</div>
+					</div>
+					<p class="mt">
+						<b>User1</b><br>Dept1
+					</p>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-4 col-sm-4 mb">
+				<!-- WHITE PANEL - TOP USER -->
+				<div class="white-panel pn">
+					<div class="white-header">
+						<h5>User1</h5>
+					</div>
+					<p>
+						<img src="assets/img/ui-zac.jpg" class="img-circle" width="50">
+					</p>
+					<p>
+						<b>Zac Snider</b>
+					</p>
+					<div class="row">
+						<div class="col-md-6">
+							<p class="small mt">MEMBER SINCE</p>
+							<p>2012</p>
+						</div>
+						<div class="col-md-6">
+							<p class="small mt">DeptName</p>
+							<p>Eng</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- --/col-md-4 ---->
+		</div>
+		
+		<div class="row">
+			<div class="col-md-4 col-sm-4 mb">
+				<div class="grey-panel pn donut-chart">
+					<div class="grey-header">
+						<h5>SERVER LOAD</h5>
+					</div>
+					<canvas id="serverstatus02" height="120" width="120"
+						style="width: 120px; height: 120px;"></canvas>
+					<script>
+						var doughnutData = [ {
+							value : 50,
+							color : "#FF6B6B"
+						}, {
+							value : 50,
+							color : "#fdfdfd"
+						} ];
+						var myDoughnut = new Chart(document.getElementById(
+								"serverstatus02").getContext("2d"))
+								.Doughnut(doughnutData);
+					</script>
+					<div class="row">
+						<div class="col-sm-6 col-xs-6 goleft">
+							<p>
+								Current<br>Status:
+							</p>
+						</div>
+						<div class="col-sm-6 col-xs-6">
+							<h2>50%</h2>
+						</div>
+					</div>
+				</div>
+				<!-- --/grey-panel ---->
+			</div>
+			<!-- /col-md-4-->
+
+
+			<div class="col-md-4 col-sm-4 mb">
+				<!-- REVENUE PANEL -->
+				<div class="green-panel pn">
+					<div class="green-header">
+						<h5>Report</h5>
+					</div>
+					<div class="chart mt">
+						<div class="sparkline" data-type="line" data-resize="true"
+							data-height="75" data-width="90%" data-line-width="1"
+							data-line-color="#fff" data-spot-color="#fff" data-fill-color=""
+							data-highlight-line-color="#fff" data-spot-radius="4"
+							data-data="[200,135,667,333,526,996,564,123,890,464,655]">
+							<canvas width="486" height="75"
+								style="display: inline-block; width: 486px; height: 75px; vertical-align: top;"></canvas>
+						</div>
+					</div>
+					<p class="mt">
+						<b>User2</b><br>Dept2
+					</p>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-4 col-sm-4 mb">
+				<!-- WHITE PANEL - TOP USER -->
+				<div class="white-panel pn">
+					<div class="white-header">
+						<h5>User2</h5>
+					</div>
+					<p>
+						<img src="assets/img/ui-zac.jpg" class="img-circle" width="50">
+					</p>
+					<p>
+						<b>Chris Snider</b>
+					</p>
+					<div class="row">
+						<div class="col-md-6">
+							<p class="small mt">MEMBER SINCE</p>
+							<p>2012</p>
+						</div>
+						<div class="col-md-6">
+							<p class="small mt">DeptName</p>
+							<p>Bio</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- --/col-md-4 ---->
+		</div>
+		
+	</section>
+</section>

@@ -1,0 +1,166 @@
+
+
+<!-- **********************************************************************************************************************************************************
+      MAIN CONTENT
+      *********************************************************************************************************************************************************** -->
+<!--main content start-->
+<section id="main-content">
+	<section class="wrapper">
+		<h3>
+			<i class="fa fa-angle-right"></i>Workflows
+		</h3>
+		<!--
+<div style="width: 100%; overflow: hidden;">
+		    <div style="width: 600px; float: left;"> 
+				<textarea 
+					style="width: 1000px; height: 1000px;"
+					chart-json-edit
+					view-model="chartViewModel"
+					>
+				</textarea>
+</div>-->
+		<div class="row mt">
+			<div class="col-md-12">
+				<button class="btn btn-theme" ng-click="addNewNode()"
+					title="Add a new node to the chart">Add Node</button>
+				<button class="btn btn-theme02" ng-click="addNewInputConnector()"
+					ng-disabled="chartViewModel.getSelectedNodes().length == 0"
+					title="Add a new input connector to the selected node">
+					Add Input Connector</button>
+				<button class="btn btn-theme04" ng-click="addNewOutputConnector()"
+					ng-disabled="chartViewModel.getSelectedNodes().length == 0"
+					title="Add a new output connector to the selected node">
+					Add Output Connector</button>
+				<button class="btn btn-theme03" ng-click="deleteSelected()"
+					ng-disabled="chartViewModel.getSelectedNodes().length == 0 && chartViewModel.getSelectedConnections().length == 0"
+					title="Delete selected nodes and connections">
+					Delete Selected</button>
+
+				<!--
+				This custom element defines the flowchart.
+				-->
+				<flow-chart class="col-md-12" style="margin-top: 10px;height: 380px;"
+					chart="chartViewModel"> </flow-chart>
+			</div>
+		</div>
+		</div>
+
+
+
+		<div class="row mt">
+			<div class="col-md-12">
+				<div class="content-panel">
+					<table class="table table-striped table-advance table-hover">
+						<h4>
+							<i class="fa fa-angle-right"></i> Advanced Table
+						</h4>
+						<hr>
+						<thead>
+							<tr>
+								<th><i class="fa fa-bullhorn"></i> Company</th>
+								<th class="hidden-phone"><i class="fa fa-question-circle"></i>
+									Descrition</th>
+								<th><i class="fa fa-bookmark"></i> Profit</th>
+								<th><i class=" fa fa-edit"></i> Status</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a href="basic_table.html#">Company Ltd</a></td>
+								<td class="hidden-phone">Lorem Ipsum dolor</td>
+								<td>12000.00$</td>
+								<td><span class="label label-info label-mini">Due</span></td>
+								<td>
+									<button class="btn btn-success btn-xs">
+										<i class="fa fa-check"></i>
+									</button>
+									<button class="btn btn-primary btn-xs">
+										<i class="fa fa-pencil"></i>
+									</button>
+									<button class="btn btn-danger btn-xs">
+										<i class="fa fa-trash-o "></i>
+									</button>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="basic_table.html#"> Dashgum co </a></td>
+								<td class="hidden-phone">Lorem Ipsum dolor</td>
+								<td>17900.00$</td>
+								<td><span class="label label-warning label-mini">Due</span></td>
+								<td>
+									<button class="btn btn-success btn-xs">
+										<i class="fa fa-check"></i>
+									</button>
+									<button class="btn btn-primary btn-xs">
+										<i class="fa fa-pencil"></i>
+									</button>
+									<button class="btn btn-danger btn-xs">
+										<i class="fa fa-trash-o "></i>
+									</button>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="basic_table.html#"> Another Co </a></td>
+								<td class="hidden-phone">Lorem Ipsum dolor</td>
+								<td>14400.00$</td>
+								<td><span class="label label-success label-mini">Paid</span></td>
+								<td>
+									<button class="btn btn-success btn-xs">
+										<i class="fa fa-check"></i>
+									</button>
+									<button class="btn btn-primary btn-xs">
+										<i class="fa fa-pencil"></i>
+									</button>
+									<button class="btn btn-danger btn-xs">
+										<i class="fa fa-trash-o "></i>
+									</button>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="basic_table.html#"> Dashgum ext </a></td>
+								<td class="hidden-phone">Lorem Ipsum dolor</td>
+								<td>22000.50$</td>
+								<td><span class="label label-success label-mini">Paid</span></td>
+								<td>
+									<button class="btn btn-success btn-xs">
+										<i class="fa fa-check"></i>
+									</button>
+									<button class="btn btn-primary btn-xs">
+										<i class="fa fa-pencil"></i>
+									</button>
+									<button class="btn btn-danger btn-xs">
+										<i class="fa fa-trash-o "></i>
+									</button>
+								</td>
+							</tr>
+							<tr>
+								<td><a href="basic_table.html#">Total Ltd</a></td>
+								<td class="hidden-phone">Lorem Ipsum dolor</td>
+								<td>12120.00$</td>
+								<td><span class="label label-warning label-mini">Due</span></td>
+								<td>
+									<button class="btn btn-success btn-xs">
+										<i class="fa fa-check"></i>
+									</button>
+									<button class="btn btn-primary btn-xs">
+										<i class="fa fa-pencil"></i>
+									</button>
+									<button class="btn btn-danger btn-xs">
+										<i class="fa fa-trash-o "></i>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- /content-panel -->
+			</div>
+			<!-- /col-md-12 -->
+		</div>
+		<!-- /row -->
+
+	</section>
+	<! --/wrapper -->
+</section>
+<!-- /MAIN CONTENT -->
