@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import edu.sjsu.team113.model.AppUserRole;
+
 @EnableWebSecurity
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -26,11 +28,16 @@ public class AppWebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/welcome", "/signup")
 				.permitAll()
 				// give appropriate url - decide
-				// .antMatchers("/admin/**").hasRole("ADMIN")
+				.antMatchers("/user/**").hasAuthority(AppUserRole.ENDUSER.toString())
+				.antMatchers("/admin/**").hasAuthority(AppUserRole.ADMIN.toString())
+				.antMatchers("/workflow/**").hasAuthority(AppUserRole.ADMIN.toString())
+				.antMatchers("/department/**").hasAuthority(AppUserRole.ADMIN.toString())
+				.antMatchers("/manage/**").hasAuthority(AppUserRole.MANAGER.toString())
+				.antMatchers("/process/**").hasAuthority(AppUserRole.STAFF.toString())
 				.anyRequest().fullyAuthenticated()
 
 				.and().formLogin().usernameParameter("username")
-				.passwordParameter("password").loginPage("/login").permitAll().defaultSuccessUrl("/home")
+				.passwordParameter("password").loginProcessingUrl("/login").permitAll().defaultSuccessUrl("/home")
 				.failureUrl("/login?error").and().logout()
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 				.logoutSuccessUrl("/welcome")

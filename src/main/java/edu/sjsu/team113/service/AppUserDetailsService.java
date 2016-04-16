@@ -13,7 +13,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import edu.sjsu.team113.model.AppUser;
-
+// for authentication of users
+// enum numeric value will be stored in db
+// query will retrieve enum value - map it to the string value
+// for spring authentication to work
 public class AppUserDetailsService implements UserDetailsService {
 
 	private static final Logger LOGGER = LoggerFactory

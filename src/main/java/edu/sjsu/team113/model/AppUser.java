@@ -6,10 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
+@Table(name = "app_user")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AppUser implements Serializable {
 
