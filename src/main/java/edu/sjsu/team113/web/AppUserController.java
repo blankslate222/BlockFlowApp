@@ -24,6 +24,12 @@ public class AppUserController {
 	private AppUserService userService;
 	
 
+	@RequestMapping(value = {"/", "/login"})
+	public String getIndexPage() {
+		System.out.println("IN CONTROLLER");
+		return "index";
+	}
+	
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String getSignupPage(Model model) {
 		//model.addAttribute("id", 0);
