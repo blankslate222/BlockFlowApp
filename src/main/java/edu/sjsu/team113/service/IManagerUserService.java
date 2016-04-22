@@ -22,9 +22,14 @@ public interface IManagerUserService {
 	
 	ManagedUser assignUserToClient(AppUser user, ClientOrg client);
 	
+	boolean removeUserFromClient(ManagedUser managedUser, ClientOrg client);
+	
 	ManagedUser assignUserToDepartment(ManagedUser managedUser, ClientDepartment dept);
+	
+	boolean removeUserFromDepartment(ManagedUser managedUser, ClientDepartment dept);
 	
 	ManagedUser assignUserToGroup(ManagedUser managedUser, WorkGroup group);
 	
+	boolean removeUserFromGroup(ManagedUser managedUser, WorkGroup group);
 	
 }

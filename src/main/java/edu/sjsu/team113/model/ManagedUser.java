@@ -3,7 +3,6 @@ package edu.sjsu.team113.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -14,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -38,11 +38,11 @@ public class ManagedUser implements Serializable {
 	@JoinColumn(name = "user_id")
 	private AppUser appUser;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "client_id")
 	private ClientOrg employer;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "department_id")
 	private ClientDepartment department;
 

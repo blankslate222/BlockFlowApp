@@ -36,6 +36,10 @@ public class WorkGroup implements Serializable {
     @ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "client_id")
 	private ClientOrg client;
+    
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="department_id")
+    private ClientDepartment department;
 
     @ManyToMany(mappedBy="groups")
     private Set<ManagedUser> groupUsers;
@@ -68,6 +72,14 @@ public class WorkGroup implements Serializable {
 
 	public void setClient(ClientOrg client) {
 		this.client = client;
+	}
+
+	public ClientDepartment getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(ClientDepartment department) {
+		this.department = department;
 	}
 
 	public Set<ManagedUser> getGroupUsers() {

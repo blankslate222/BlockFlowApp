@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -40,20 +39,23 @@ public class ClientDepartment implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "client_id", nullable = false)
 	private ClientOrg client;
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "manager_manageduser_id")
 	private ManagedUser manager;
-	
+
+	@OneToMany(mappedBy = "department")
+	private Set<WorkGroup> groups;
+
 	@Column(name = "dept_isactive")
 	private boolean isActive = true;
-	
+
 	@Column(name = "created_time")
 	private Timestamp created = new Timestamp(new Date().getTime());
 
 	@Column(name = "modified_time")
 	private Timestamp modified = new Timestamp(new Date().getTime());
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -80,6 +82,14 @@ public class ClientDepartment implements Serializable {
 
 	public void setManager(ManagedUser manager) {
 		this.manager = manager;
+	}
+
+	public Set<WorkGroup> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(Set<WorkGroup> groups) {
+		this.groups = groups;
 	}
 
 	public boolean isActive() {

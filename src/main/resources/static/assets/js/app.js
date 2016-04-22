@@ -8,13 +8,9 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 		.state('root',{
 			url: '',
 			views: {
-				'header@': {
-					templateUrl: 'views/header.html',
-					controller: 'headCtrl'
-				},
-				'container@' : {
-					templateUrl : 'views/workflow.html',
-					controller : 'workCtrl'
+				'container@': {
+					templateUrl: 'views/login.html',
+					controller: 'loginCtrl'
 				}
 			}
 		})
