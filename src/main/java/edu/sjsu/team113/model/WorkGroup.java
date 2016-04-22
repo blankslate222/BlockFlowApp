@@ -6,56 +6,52 @@ import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "client_department")
+@Table(name = "work_group")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ClientDepartment implements Serializable {
+public class WorkGroup implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7453593517653031994L;
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
-	@Column(name = "department_id")
-	private Long id;
+	@Column(name = "group_id")
+	private String id;
 
-	@Column(name = "department_name", nullable = false, unique = true)
+	@Column(name = "group_name", nullable = false)
 	private String name;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "client_id", nullable = false)
+    @ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "client_id")
 	private ClientOrg client;
-	
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "manager_manageduser_id")
-	private ManagedUser manager;
-	
-	@Column(name = "dept_isactive")
-	private boolean isActive = true;
-	
+
+    @ManyToMany(mappedBy="groups")
+    private Set<ManagedUser> groupUsers;
+    
 	@Column(name = "created_time")
 	private Timestamp created = new Timestamp(new Date().getTime());
 
 	@Column(name = "modified_time")
 	private Timestamp modified = new Timestamp(new Date().getTime());
-	
-	public Long getId() {
+
+	public String getId() {
 		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -74,20 +70,12 @@ public class ClientDepartment implements Serializable {
 		this.client = client;
 	}
 
-	public ManagedUser getManager() {
-		return manager;
+	public Set<ManagedUser> getGroupUsers() {
+		return groupUsers;
 	}
 
-	public void setManager(ManagedUser manager) {
-		this.manager = manager;
-	}
-
-	public boolean isActive() {
-		return isActive;
-	}
-
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
+	public void setGroupUsers(Set<ManagedUser> groupUsers) {
+		this.groupUsers = groupUsers;
 	}
 
 	public Timestamp getCreated() {

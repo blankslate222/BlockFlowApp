@@ -1,10 +1,16 @@
 package edu.sjsu.team113.model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -18,16 +24,36 @@ public class ClientOrg implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 5010248316247689840L;
-	
+
 	@Id
 	@GeneratedValue
+	@Column(name = "client_id")
 	private Long id;
-	
+
+	@Column(name = "client_name", nullable = false, unique = true)
 	private String name;
 
-//	public Long getId() {
-//	return id;
-//}
+	@Column(name = "is_active", nullable = false)
+	private boolean isActive = true;
+
+	@Column(name = "client_address", nullable = false)
+	private String address;
+
+	@Column(name = "created_time")
+	private Timestamp created = new Timestamp(new Date().getTime());
+
+	@Column(name = "modified_time")
+	private Timestamp modified = new Timestamp(new Date().getTime());
+
+	@OneToMany(mappedBy = "client")
+	private Set<ClientDepartment> clientDepartments;
+	
+	@OneToMany(mappedBy = "client")
+	private Set<WorkGroup> groups;
+	
+	public Long getId() {
+		return id;
+	}
 
 	public String getName() {
 		return name;
@@ -35,5 +61,41 @@ public class ClientOrg implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public Set<ClientDepartment> getClientDepartments() {
+		return clientDepartments;
+	}
+
+	public void setClientDepartments(Set<ClientDepartment> clientDepartments) {
+		this.clientDepartments = clientDepartments;
+	}
+
+	public Timestamp getModified() {
+		return modified;
+	}
+
+	public void setModified(Timestamp modified) {
+		this.modified = modified;
+	}
+
+	public void setCreated(Timestamp created) {
+		this.created = created;
 	}
 }

@@ -12,8 +12,8 @@ import edu.sjsu.team113.repository.UserRepository;
 import edu.sjsu.team113.repository.WorkGroupRepository;
 
 @Service
-public class ManagerUserService {
-
+public class UtilityService {
+	
 	@Autowired
 	private UserRepository userRepo;
 
@@ -29,7 +29,7 @@ public class ManagerUserService {
 	@Autowired
 	private WorkGroupRepository groupRepo;
 
-	private ManagedUser createManagedUser(AppUser appUser) {
+	public ManagedUser createManagedUser(AppUser appUser) {
 		// create managed user and then assign the user whatever permissions are
 		// required
 		ManagedUser createdUser = null;
@@ -38,5 +38,4 @@ public class ManagerUserService {
 		createdUser = managedUserRepo.save(userToBeCreated);
 		return createdUser;
 	}
-
 }

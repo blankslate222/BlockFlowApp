@@ -15,20 +15,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import edu.sjsu.team113.model.AppUser;
-import edu.sjsu.team113.service.AppUserService;
+import edu.sjsu.team113.service.IAppUserService;
 
 @Controller
 public class AppUserController {
 
 	@Autowired
-	private AppUserService userService;
+	private IAppUserService userService;
 	
 
-	@RequestMapping(value = {"/", "/login"})
+	@RequestMapping(value = {"/"})
 	public String getIndexPage() {
 		System.out.println("IN CONTROLLER");
 		return "index";
 	}
+	
+//	@RequestMapping(value = {"/login"})
+//	public String getLoginPage() {
+//		System.out.println("IN CONTROLLER");
+//		return "login";
+//	}
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String getSignupPage(Model model) {
@@ -42,6 +48,11 @@ public class AppUserController {
 	public @ResponseBody String userSignup(@RequestBody AppUser newuser,
 			HttpServletResponse res) {
 		AppUser saved = userService.saveUser(newuser);
+		if (saved == null) {
+			res.setStatus(409);
+			// TODO: throw custom exception
+			return "The user already exists";
+		}
 		System.out.println(saved.toString());
 		res.setStatus(200);
 		return saved.toString();

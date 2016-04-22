@@ -11,7 +11,7 @@ public class AppMvcSecurityConfig extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-	    registry.addViewController("/login").setViewName("index");
+	    registry.addViewController("/login").setViewName("login");
 	}
 	
 	@Bean

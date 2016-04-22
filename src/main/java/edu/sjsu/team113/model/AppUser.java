@@ -1,11 +1,20 @@
 package edu.sjsu.team113.model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -20,36 +29,50 @@ public class AppUser implements Serializable {
 	 */
 	private static final long serialVersionUID = -1627484121000888626L;
 
+	@Column(name = "user_id")
 	@Id
 	@GeneratedValue
 	private Long id;
 
-	@Column(nullable = false)
+	@Column(name = "user_email", nullable = false, unique = true)
 	private String email;
 
-	@Column(nullable = false)
+	@Column(name = "password_hash", nullable = false)
 	private String passwordHash;
 
-	@Column(nullable = false)
+	@Column(name = "user_fullname", nullable = false)
 	private String name;
 
-	@Column(nullable = false)
-	private AppUserRole role;
+	@ElementCollection(targetClass = AppUserRole.class, fetch = FetchType.EAGER)
+	@JoinTable(name = "app_user_role",  joinColumns = @JoinColumn(name = "user_id"))
+	@Enumerated(EnumType.STRING)
+	@Column(name = "user_role")
+	private Set<AppUserRole> roles;
 
+	@Column(name = "created_time")
+	private Timestamp created = new Timestamp(new Date().getTime());
+
+	@Column(name = "modified_time")
+	private Timestamp modified = new Timestamp(new Date().getTime());
+
+	@Column(name = "isActive")
+	private boolean isActive = true;
+	
 	public AppUser() {
 
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public AppUser(String email, String passHash, String name, AppUserRole role) {
+	public AppUser(String email, String passHash, String name,
+			Set<AppUserRole> role) {
 		super();
 		this.email = email;
 		this.passwordHash = passHash;
 		this.name = name;
-		this.role = role;
+		this.roles = role;
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public void setId(Long id) {
@@ -80,12 +103,12 @@ public class AppUser implements Serializable {
 		this.name = name;
 	}
 
-	public AppUserRole getRole() {
-		return role;
+	public Set<AppUserRole> getRole() {
+		return roles;
 	}
 
-	public void setRole(AppUserRole role) {
-		this.role = role;
+	public void setRole(Set<AppUserRole> role) {
+		this.roles = role;
 	}
 
 	public String toString() {
@@ -98,7 +121,7 @@ public class AppUser implements Serializable {
 		sb.append(", name : ");
 		sb.append(this.name);
 		sb.append(", role : ");
-		sb.append(this.role);
+		sb.append(this.roles);
 		userString = sb.toString();
 		return userString;
 	}
