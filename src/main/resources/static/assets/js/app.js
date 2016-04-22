@@ -7,8 +7,16 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 	$stateProvider
 		.state('root',{
 			url: '',
-			controller : 'baseCtrl'
-			//abstract: true,
+			views: {
+				'header@': {
+					templateUrl: 'views/header.html',
+					controller: 'headCtrl'
+				},
+				'container@' : {
+					templateUrl : 'views/workflow.html',
+					controller : 'workCtrl'
+				}
+			}
 		})
 		.state('root.login',{
 			url: '/login',

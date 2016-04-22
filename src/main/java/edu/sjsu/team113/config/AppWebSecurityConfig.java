@@ -27,8 +27,7 @@ public class AppWebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 				.antMatchers(HttpMethod.POST, "/signup")
 				.permitAll()
-				.antMatchers("/", "/login", "/signup", "/index.html",
-						"/assets/**", "/Theme/**", "/flowchart/**", "/views/**")
+				.antMatchers("/","/assets/**", "/Theme/**", "/flowchart/**", "/views/**")
 				.permitAll()
 				// give appropriate url - decide
 				.antMatchers("/user/**")
@@ -45,14 +44,14 @@ public class AppWebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.hasAuthority(AppUserRole.STAFF.toString()).anyRequest()
 				.fullyAuthenticated()
 
-				.and().formLogin().loginPage("/login")
+				.and().formLogin().loginPage("/#/login")
 				.usernameParameter("username").passwordParameter("password")
-				.permitAll().defaultSuccessUrl("/")
-				.failureUrl("/login?error").and().logout()
+				.permitAll().defaultSuccessUrl("/#/")
+				.failureUrl("/#/login?error").and().logout()
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.logoutSuccessUrl("/welcome")
+				.logoutSuccessUrl("/#/")
 				// for access denied - put appropriate url
-				.and().exceptionHandling().accessDeniedPage("/forbidden");
+				.and().exceptionHandling().accessDeniedPage("/#/forbidden");
 		// .addFilterAfter(new CsrfHeaderFilter(),
 		// CsrfFilter.class).csrfTokenRepository(csrfTokenRepository());
 	}
