@@ -11,10 +11,6 @@ public interface IAdminUserService {
 	
 	boolean deleteClient(ClientOrg client);
 
-	ClientDepartment createDepartment(ClientDepartment department);
-
-	ClientDepartment assignDepartmentManager(String email);
-
 	boolean deleteDepartment(ClientDepartment department);
 	
 	WorkGroup createGroup(WorkGroup newGroup);
@@ -28,5 +24,9 @@ public interface IAdminUserService {
 	ManagedUser updateClientAdmin(ClientOrg client, String userEmail);
 	
 	boolean removeClientAdmin(ClientOrg client, String email);
+
+	ClientDepartment createDepartment(ClientDepartment department);
+
+	ClientDepartment assignDepartmentManager(ClientDepartment dept, String email);
 	
 }

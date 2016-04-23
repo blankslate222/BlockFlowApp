@@ -1,5 +1,7 @@
 package edu.sjsu.team113.service;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,12 +55,16 @@ public class AdminUserService implements IAdminUserService {
 	@Override
 	public ClientDepartment createDepartment(ClientDepartment department) {
 		ClientDepartment createdDept = deptRepo.save(department);
+		WorkGroup adminGrp = groupRepo.findByClient(createdDept.getClient());
+		adminGrp.setDepartment(createdDept);
+		adminGrp.setModified(new Timestamp(new Date().getTime()));
 		return createdDept;
 	}
 	
 	@Override
-	public ClientDepartment assignDepartmentManager(String email) {
+	public ClientDepartment assignDepartmentManager(ClientDepartment dept, String email) {
 		//update department table as well as work groups
+		
 		return null;
 	}
 

@@ -9,15 +9,15 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration
 public class AppMvcSecurityConfig extends WebMvcConfigurerAdapter {
 
-//	@Override
-//	public void addViewControllers(ViewControllerRegistry registry) {
-//	    registry.addViewController("/login").setViewName("login");
-//	}
-	
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
+		registry.addViewController("/login").setViewName("login");
+	}
+
 	@Bean
 	public InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-		//resolver.setPrefix("static/");
+		// resolver.setPrefix("static/");
 		resolver.setSuffix(".html");
 		return resolver;
 	}
