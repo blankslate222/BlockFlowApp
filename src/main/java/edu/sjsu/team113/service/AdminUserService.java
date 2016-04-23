@@ -42,6 +42,10 @@ public class AdminUserService implements IAdminUserService {
 
 	@Override
 	public ClientOrg createClient(ClientOrg client) {
+		ClientOrg toBeCreated = clientRepo.findByName(client.getName());
+		if (toBeCreated != null) {
+			return null;
+		}
 		ClientOrg createdClient = clientRepo.save(client);
 		// create a group for this org's managers
 		WorkGroup clientAdminGrp = new WorkGroup();
@@ -55,17 +59,22 @@ public class AdminUserService implements IAdminUserService {
 	@Override
 	public ClientDepartment createDepartment(ClientDepartment department) {
 		ClientDepartment createdDept = deptRepo.save(department);
-		WorkGroup adminGrp = groupRepo.findByClient(createdDept.getClient());
+		WorkGroup adminGrp = new WorkGroup();
 		adminGrp.setDepartment(createdDept);
-		adminGrp.setModified(new Timestamp(new Date().getTime()));
+		adminGrp.setClient(createdDept.getClient());
+		adminGrp.setId(createdDept.getName()+"_Manager");
+		adminGrp.setName("Manager Group");
 		return createdDept;
 	}
 	
 	@Override
-	public ClientDepartment assignDepartmentManager(ClientDepartment dept, String email) {
+	public ClientDepartment assignDepartmentManager(String dept, String email) {
 		//update department table as well as work groups
-		
-		return null;
+		ClientDepartment existingDept = deptRepo.findByName(dept);
+		if (existingDept == null) return null;
+		AppUser user = userRepo.findByEmail(email);
+		//ManagedUser managedUser = managedUserRepo.f
+		return existingDept;
 	}
 
 	@Override

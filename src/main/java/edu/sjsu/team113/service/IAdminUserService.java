@@ -27,6 +27,7 @@ public interface IAdminUserService {
 
 	ClientDepartment createDepartment(ClientDepartment department);
 
-	ClientDepartment assignDepartmentManager(ClientDepartment dept, String email);
+	// pass null email if manager is to be removed
+	ClientDepartment assignDepartmentManager(String dept, String email);
 	
 }

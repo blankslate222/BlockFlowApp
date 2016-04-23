@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,10 +28,15 @@ public class AdminUserController {
 	}
 
 	@RequestMapping(value = "/client/create", method = RequestMethod.POST)
-	public @ResponseBody ClientOrg createClientOrg(
-			@RequestBody ClientOrg client, HttpServletResponse res) {
+	public @ResponseBody Model createClientOrg(
+			@RequestBody ClientOrg client, HttpServletResponse res, Model model) {
 		ClientOrg createdClient = adminService.createClient(client);
-		return createdClient;
+		if (createdClient == null) {
+			res.setStatus(409);
+		}
+		model.addAttribute("responseObj", createdClient);
+		model.addAttribute("error", new Exception("Something is wrong"));
+		return model;
 	}
 
 	@RequestMapping(value = "/department/create", method = RequestMethod.POST)

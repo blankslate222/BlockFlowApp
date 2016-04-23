@@ -8,4 +8,5 @@ import edu.sjsu.team113.model.ClientOrg;
 @Repository
 public interface ClientOrgRepository extends CrudRepository<ClientOrg, Long> {
 
+	ClientOrg findByName(String name);
 }
