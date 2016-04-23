@@ -7,47 +7,34 @@
 <section id="main-content">
 	<section class="wrapper">
 		<h3>
-			<i class="fa fa-angle-right"></i>Workflows
+			<i class="fa fa-angle-right"></i>Clients
 		</h3>
-		<!--
-<div style="width: 100%; overflow: hidden;">
-		    <div style="width: 600px; float: left;"> 
-				<textarea 
-					style="width: 1000px; height: 1000px;"
-					chart-json-edit
-					view-model="chartViewModel"
-					>
-				</textarea>
-</div>-->
+		
+		
 		<div class="row mt">
-			<div class="col-md-12">
-			<button class="btn btn-theme" data-toggle="modal" href="workflow.html#myModal"	
-			title="Add a new node to the chart">Add Node</button>
-<!-- 				<button class="btn btn-theme" ng-click="addNewNode()" -->
-<!-- 					title="Add a new node to the chart">Add Node</button> -->
-				<button class="btn btn-theme02" ng-click="addNewInputConnector()"
-					ng-disabled="chartViewModel.getSelectedNodes().length == 0"
-					title="Add a new input connector to the selected node">
-					Add Input Connector</button>
-				<button class="btn btn-theme04" ng-click="addNewOutputConnector()"
-					ng-disabled="chartViewModel.getSelectedNodes().length == 0"
-					title="Add a new output connector to the selected node">
-					Add Output Connector</button>
-				<button class="btn btn-theme03" ng-click="deleteSelected()"
-					ng-disabled="chartViewModel.getSelectedNodes().length == 0 && chartViewModel.getSelectedConnections().length == 0"
-					title="Delete selected nodes and connections">
-					Delete Selected</button>
-
-				<!--
-				This custom element defines the flowchart.
-				-->
-				<flow-chart class="col-md-12" style="margin-top: 10px;height: 380px;"
-					chart="chartViewModel"> </flow-chart>
-			</div>
-		</div>
-		</div>
-
-
+          		<div class="col-lg-12">
+                  <div class="form-panel">
+                  	  <h4 class="mb"><i class="fa fa-angle-right"></i> Add Client</h4>
+                      <form class="form-horizontal style-form" method="get">
+                         
+                          <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Client Name</label>
+                              <div class="col-sm-10">
+                                  <input   data-ng-model="client.name" type="text" class="form-control" placeholder="Name">
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Address</label>
+                              <div class="col-sm-10">
+                              	  <textarea  data-ng-model="client.address" class="form-control" rows="5"></textarea>
+                              </div>
+                          </div>
+                          <button class="btn btn-theme02" data-ng-click="doClientCreate()">Add</button>
+                      </form>
+                  </div>
+          		</div><!-- col-lg-12-->      	
+          	</div>
+		
 
 		<div class="row mt">
 			<div class="col-md-12">
@@ -163,34 +150,5 @@
 		<!-- /row -->
 
 	</section>
-	<! --/wrapper -->
 </section>
 <!-- /MAIN CONTENT -->
-
-<!-- Modal -->
-			<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog"
-				tabindex="-1" id="myModal" class="modal fade">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal"
-								aria-hidden="true">&times;</button>
-							<h4 class="modal-title">Forgot Password ?</h4>
-						</div>
-						<div class="modal-body">
-							<p>Enter your e-mail address below to reset your password.</p>
-							<input type="text" id="email" placeholder="Email"
-								autocomplete="off" class="form-control placeholder-no-fix">
-	
-						</div>
-						<div class="modal-footer">
-							<button data-dismiss="modal" class="btn btn-default"
-								type="button">Cancel</button>
-							<button class="btn btn-theme"  data-dismiss="modal" ng-click="addNewNode()" 
-								type="button">Submit</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- modal -->
-
