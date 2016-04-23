@@ -31,7 +31,7 @@ public class AppUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String email)
 			throws UsernameNotFoundException {
-		System.out.println("authenticating user - config class");
+		System.out.println("authenticating user - config class " + email);
 
 		AppUser user = userService.findByEmail(email);
 		System.out.println("role size = " + user.getRole().size());

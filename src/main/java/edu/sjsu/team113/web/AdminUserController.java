@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.service.IAdminUserService;
 
@@ -33,7 +34,8 @@ public class AdminUserController {
 	}
 
 	@RequestMapping(value = "/department/create", method = RequestMethod.POST)
-	public String createDepartment(HttpServletResponse res) {
+	public String createDepartment(@RequestBody ClientDepartment dept,
+			HttpServletResponse res) {
 		return null;
 	}
 
