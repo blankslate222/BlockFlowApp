@@ -27,7 +27,7 @@ public class AppWebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 				.antMatchers(HttpMethod.POST, "/signup")
 				.permitAll()
-				.antMatchers("/","/assets/**", "/Theme/**", "/flowchart/**", "/views/**")
+				.antMatchers("/**","/assets/**", "/Theme/**", "/flowchart/**", "/views/**")
 				.permitAll()
 				// give appropriate url - decide
 				.antMatchers("/user/**")
@@ -44,7 +44,7 @@ public class AppWebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.hasAuthority(AppUserRole.STAFF.toString()).anyRequest()
 				.fullyAuthenticated()
 
-				.and().formLogin().loginPage("/#/login")
+				.and().formLogin().loginPage("/#/login").loginProcessingUrl("/login")
 				.usernameParameter("username").passwordParameter("password")
 				.permitAll().defaultSuccessUrl("/#/")
 				.failureUrl("/#/login?error").and().logout()

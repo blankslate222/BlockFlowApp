@@ -197,8 +197,8 @@ cmpe.controller('workCtrl', ['$scope', 'prompt', function AppCtrl ($scope, promp
 	// Add a new node to the chart.
 	//
 	$scope.addNewNode = function () {
-
-		var nodeName = prompt("Enter a node name:", "New node");
+		debugger;
+		var nodeName = document.getElementById("email").value;//prompt("Enter a node name:", "New node");
 		if (!nodeName) {
 			return;
 		}
@@ -243,10 +243,6 @@ cmpe.controller('workCtrl', ['$scope', 'prompt', function AppCtrl ($scope, promp
 			});
 		}
 	};
-
-	//
-	// Add an output connector to selected nodes.
-	//
 	$scope.addNewOutputConnector = function () {
 		var connectorName = prompt("Enter a connector name:", "New connector");
 		if (!connectorName) {
@@ -261,18 +257,9 @@ cmpe.controller('workCtrl', ['$scope', 'prompt', function AppCtrl ($scope, promp
 			});
 		}
 	};
-
-	//
-	// Delete selected nodes and connections.
-	//
 	$scope.deleteSelected = function () {
-
 		$scope.chartViewModel.deleteSelected();
 	};
-
-	//
-	// Create the view-model for the chart and attach to the scope.
-	//
 	$scope.chartViewModel = new flowchart.ChartViewModel(chartDataModel);
 }])
 ;

@@ -5,21 +5,21 @@ cmpe.controller('loginCtrl', function($scope, $stateParams, $state, $log, $timeo
 
 	$scope.doLogin = function() {
 		var user={
-				email: $scope.user.email,
+				username: $scope.user.email,
 				password: $scope.user.password
 		}
-		$state.go('root.dash');
+		//$state.go('root.dash');
 		//$scope.status = "Invalid Password";
-		/*$http.post("/users/login",user).success(function(data){
+		$http.post("/login",user).success(function(data){
 			console.log(data);
-			console.log()
 			if(data.email){
-				$state.go('root.dash');
+				//$state.go('root.dash');
 			}				
 			else
 				$scope.status = data.error;
 		}).error(function(err){
+			$scope.status = data.error;
 			console.log(err);
-		})*/
+		})
 	};
 });
