@@ -3,6 +3,8 @@ package edu.sjsu.team113.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -50,13 +53,12 @@ public class Request implements Serializable {
 	@JoinColumn(name = "initiator_dept_mgr_group_id")
 	private WorkGroup initiator_dept_mgr_group_id;
 
+	@OneToMany(mappedBy = "request")
+	private Set<RequestComment> requestComments = new HashSet<>();
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "request_status")
 	private RequestStatus status ;
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 
 	@Column(name = "request_createdtime")
 	private Timestamp created = new Timestamp(new Date().getTime());
@@ -67,6 +69,10 @@ public class Request implements Serializable {
 
 	@Column(name = "request_modifiedtime")
 	private Timestamp modified = new Timestamp(new Date().getTime());
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	public Long getId() {
 		return id;
