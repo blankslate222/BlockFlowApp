@@ -40,7 +40,7 @@ public class AdminUserController {
 			HttpServletResponse res, Model model, Principal principal) {
 
 		System.out.println("principal stored = ");
-		String authUser = principal.getName();
+		String authUser = ""; // principal.getName();
 		// TODO: temporary
 		authUser = "admin@admin.com";
 		ClientOrg createdClient = adminService.createClient(client, authUser);
@@ -63,15 +63,18 @@ public class AdminUserController {
 		return null;
 	}
 
-	public ManagedUser addUserToClientAdminGroup(
-			@RequestParam String userToBeAdded, @RequestParam Long clientId,
+	@RequestMapping(value = "/client/addadmin")
+	public Model addUserToClientAdminGroup(
+			@RequestParam String user, @RequestParam Long clientId,
 			Model model, HttpServletResponse res, Principal principal) {
-		String authUser = principal.getName();
+		String authUser = ""; //principal.getName();
 		System.out.println("principal stored = " + authUser);
 		// TODO: temporary
 		authUser = "admin@admin.com";
 		ClientOrg client = dataService.findClientOrgById(clientId);
-		adminService.addUserToClientAdminGroup(client, userToBeAdded, authUser);
-		return null;
+		ManagedUser returnObject = adminService.addUserToClientAdminGroup(client, user, authUser);
+		model.addAttribute("responseObject", returnObject);
+		model.addAttribute("error", null);
+		return model;
 	}
 }

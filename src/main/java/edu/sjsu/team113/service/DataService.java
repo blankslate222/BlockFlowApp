@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import edu.sjsu.team113.model.AppUser;
 import edu.sjsu.team113.model.ClientDepartment;
@@ -13,6 +14,7 @@ import edu.sjsu.team113.model.WorkGroup;
 import edu.sjsu.team113.repository.ClientDepartmentRepository;
 import edu.sjsu.team113.repository.ClientOrgRepository;
 
+@Service
 public class DataService implements IDataService {
 
 	@Autowired

@@ -3,6 +3,7 @@ package edu.sjsu.team113.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -45,7 +46,7 @@ public class ClientDepartment implements Serializable {
 	private WorkGroup managerGroup;
 
 	@OneToMany(mappedBy = "department")
-	private Set<WorkGroup> groups;
+	private Set<WorkGroup> groups = new HashSet<>();
 
 	@Column(name = "dept_isactive")
 	private boolean isActive = true;

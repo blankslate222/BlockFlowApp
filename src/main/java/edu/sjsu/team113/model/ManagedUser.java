@@ -3,6 +3,7 @@ package edu.sjsu.team113.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -48,7 +49,7 @@ public class ManagedUser implements Serializable {
 
 	@ManyToMany
 	@JoinTable(name = "MANAGEDUSER_GROUP", joinColumns = @JoinColumn(name = "mgd_user_id", referencedColumnName = "manageduser_id"), inverseJoinColumns = @JoinColumn(name = "grp_id", referencedColumnName = "group_id"))
-	private Set<WorkGroup> groups;
+	private Set<WorkGroup> groups = new HashSet<>();
 
 	@Column(name = "created_time")
 	private Timestamp created = new Timestamp(new Date().getTime());

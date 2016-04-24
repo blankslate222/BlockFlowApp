@@ -3,13 +3,16 @@ package edu.sjsu.team113.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -45,12 +48,13 @@ public class ClientOrg implements Serializable {
 	private Timestamp modified = new Timestamp(new Date().getTime());
 
 	@OneToMany(mappedBy = "client")
-	private Set<ClientDepartment> clientDepartments;
+	private Set<ClientDepartment> clientDepartments = new HashSet<>();
 	
 	@OneToMany(mappedBy = "client")
-	private Set<WorkGroup> groups;
+	private Set<WorkGroup> groups = new HashSet<>();
 	
-	@Column(name = "admin_grp_id")
+	@OneToOne
+	@JoinColumn(name = "admin_grp_id")
 	private WorkGroup clientAdminGroup;
 	
 	public Long getId() {

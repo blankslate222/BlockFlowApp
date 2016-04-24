@@ -1,12 +1,9 @@
 package edu.sjsu.team113.service;
 
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.sjsu.team113.model.AppUser;
-import edu.sjsu.team113.model.AppUserRole;
 import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ManagedUser;
@@ -46,11 +43,15 @@ public class AdminUserService implements IAdminUserService {
 		if (toBeCreated != null) {
 			return null;
 		}
-		ClientOrg createdClient = clientRepo.save(client);
-		// create a group for this org's managers
 		WorkGroup clientAdminGrp = new WorkGroup();
-		clientAdminGrp.setClient(createdClient);
-		clientAdminGrp.setName(createdClient.getName() + " _Admin_Group");
+		//clientAdminGrp.setClient(createdClient);
+		clientAdminGrp.setName(client.getName() + "_Admin_Group");
+		WorkGroup created = groupRepo.save(clientAdminGrp);
+		client.setClientAdminGroup(created);
+		ClientOrg createdClient = clientRepo.save(client);
+		created.setClient(createdClient);
+		groupRepo.save(created);
+		// TODO: bug in the code
 		return createdClient;
 	}
 
@@ -60,7 +61,7 @@ public class AdminUserService implements IAdminUserService {
 		WorkGroup mgrGrp = new WorkGroup();
 		mgrGrp.setDepartment(department);
 		mgrGrp.setClient(department.getClient());
-		mgrGrp.setName(department.getName() + " Manager Group");
+		mgrGrp.setName(department.getName() + "_Manager_Group");
 		department.setManagerGroup(mgrGrp);
 
 		ClientDepartment createdDept = deptRepo.save(department);
@@ -106,10 +107,13 @@ public class AdminUserService implements IAdminUserService {
 		if (mgdUser == null) {
 			mgdUser = createManagedUser(user);
 		}
-
+		mgdUser.setEmployer(client);
+		mgdUser.getGroups().add(adminGrp);
+		mgdUser = managedUserRepo.save(mgdUser);
+		
 		client.getClientAdminGroup().addUserToGroup(mgdUser);
 		clientRepo.save(client);
-
+		
 		mgdUser = managedUserRepo.findByAppUser(user);
 		return mgdUser;
 	}
