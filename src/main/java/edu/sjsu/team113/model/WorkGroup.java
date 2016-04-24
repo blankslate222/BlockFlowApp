@@ -3,11 +3,13 @@ package edu.sjsu.team113.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -27,8 +29,9 @@ public class WorkGroup implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue
 	@Column(name = "group_id")
-	private String id;
+	private Long id;
 
 	@Column(name = "group_name", nullable = false)
 	private String name;
@@ -42,7 +45,7 @@ public class WorkGroup implements Serializable {
     private ClientDepartment department;
 
     @ManyToMany(mappedBy="groups")
-    private Set<ManagedUser> groupUsers;
+    private Set<ManagedUser> groupUsers = new HashSet<>();
     
 	@Column(name = "created_time")
 	private Timestamp created = new Timestamp(new Date().getTime());
@@ -50,12 +53,8 @@ public class WorkGroup implements Serializable {
 	@Column(name = "modified_time")
 	private Timestamp modified = new Timestamp(new Date().getTime());
 
-	public String getId() {
+	public Long getId() {
 		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -104,5 +103,13 @@ public class WorkGroup implements Serializable {
 
 	public void setModified(Timestamp modified) {
 		this.modified = modified;
+	}
+	
+	public boolean addUserToGroup(ManagedUser user) {
+		return groupUsers.add(user);
+	}
+	
+	public boolean removeUserFromGroup(ManagedUser user) {
+		return groupUsers.remove(user);
 	}
 }

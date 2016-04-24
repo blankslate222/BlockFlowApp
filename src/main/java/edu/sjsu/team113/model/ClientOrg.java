@@ -50,6 +50,9 @@ public class ClientOrg implements Serializable {
 	@OneToMany(mappedBy = "client")
 	private Set<WorkGroup> groups;
 	
+	@Column(name = "admin_grp_id")
+	private WorkGroup clientAdminGroup;
+	
 	public Long getId() {
 		return id;
 	}
@@ -96,5 +99,25 @@ public class ClientOrg implements Serializable {
 
 	public void setCreated(Timestamp created) {
 		this.created = created;
+	}
+
+	public Set<WorkGroup> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(Set<WorkGroup> groups) {
+		this.groups = groups;
+	}
+
+	public WorkGroup getClientAdminGroup() {
+		return clientAdminGroup;
+	}
+
+	public void setClientAdminGroup(WorkGroup clientAdminGroup) {
+		this.clientAdminGroup = clientAdminGroup;
+	}
+
+	public Timestamp getCreated() {
+		return created;
 	}
 }

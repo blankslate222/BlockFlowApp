@@ -41,8 +41,8 @@ public class ClientDepartment implements Serializable {
 	private ClientOrg client;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "manager_manageduser_id")
-	private ManagedUser manager;
+	@JoinColumn(name = "manager_grp")
+	private WorkGroup managerGroup;
 
 	@OneToMany(mappedBy = "department")
 	private Set<WorkGroup> groups;
@@ -76,12 +76,12 @@ public class ClientDepartment implements Serializable {
 		this.client = client;
 	}
 
-	public ManagedUser getManager() {
-		return manager;
+	public WorkGroup getManagerGroup() {
+		return managerGroup;
 	}
 
-	public void setManager(ManagedUser manager) {
-		this.manager = manager;
+	public void setManagerGroup(WorkGroup managerGroup) {
+		this.managerGroup = managerGroup;
 	}
 
 	public Set<WorkGroup> getGroups() {

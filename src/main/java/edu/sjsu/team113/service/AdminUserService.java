@@ -11,6 +11,7 @@ import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ManagedUser;
 import edu.sjsu.team113.model.WorkGroup;
+import edu.sjsu.team113.model.Workflow;
 import edu.sjsu.team113.repository.ClientDepartmentRepository;
 import edu.sjsu.team113.repository.ClientOrgRepository;
 import edu.sjsu.team113.repository.ManagedUserRepository;
@@ -39,75 +40,106 @@ public class AdminUserService implements IAdminUserService {
 	private UtilityService utilService;
 
 	@Override
-	public ClientOrg createClient(ClientOrg client) {
+	public ClientOrg createClient(ClientOrg client, String authenticatedUser) {
+		// TODO: Check if authenticated user belongs to admin grp
+		ClientOrg toBeCreated = clientRepo.findByName(client.getName());
+		if (toBeCreated != null) {
+			return null;
+		}
 		ClientOrg createdClient = clientRepo.save(client);
 		// create a group for this org's managers
 		WorkGroup clientAdminGrp = new WorkGroup();
-		String clientName = createdClient.getName();
-		clientAdminGrp.setId(clientName + "_Admin");
 		clientAdminGrp.setClient(createdClient);
-		clientAdminGrp.setName("Admin Group");
+		clientAdminGrp.setName(createdClient.getName() + " _Admin_Group");
 		return createdClient;
 	}
 
 	@Override
-	public ClientDepartment createDepartment(ClientDepartment department) {
+	public ClientDepartment createDepartment(ClientDepartment department,
+			String authenticatedUser) {
+		WorkGroup mgrGrp = new WorkGroup();
+		mgrGrp.setDepartment(department);
+		mgrGrp.setClient(department.getClient());
+		mgrGrp.setName(department.getName() + " Manager Group");
+		department.setManagerGroup(mgrGrp);
+
 		ClientDepartment createdDept = deptRepo.save(department);
 		return createdDept;
 	}
-	
-	@Override
-	public ClientDepartment assignDepartmentManager(String email) {
-		//update department table as well as work groups
-		return null;
-	}
 
 	@Override
-	public boolean deleteDepartment(ClientDepartment department) {
-		return true;
-	}
-	@Override
-	public WorkGroup createGroup(WorkGroup newGroup) {
-		WorkGroup createdGroup = groupRepo.save(newGroup);
-		return createdGroup;
-	}
-
-	@Override
-	public WorkGroup updateGroup(WorkGroup group) {
-		return null;
-	}
-
-	@Override
-	public boolean deleteGroup(WorkGroup group) {
-
+	public boolean deleteDepartment(ClientDepartment department,
+			String authenticatedUser) {
+		department.setActive(false);
+		if (deptRepo.save(department) == null)
+			return false;
 		return true;
 	}
 
 	@Override
-	public ManagedUser createClientAdmin(ClientOrg client, String userEmail) {
+	public boolean deleteClient(ClientOrg client, String authenticatedUser) {
+		client.setActive(false);
+		if (clientRepo.save(client) == null)
+			return false;
+		return true;
+	}
+
+	@Override
+	public ManagedUser addUserToClientAdminGroup(ClientOrg client,
+			String userEmail, String authenticatedUser) {
+		AppUser authUser = userRepo.findByEmail(authenticatedUser);
+		ManagedUser mgdAuthUser = managedUserRepo.findByAppUser(authUser);
+		WorkGroup adminGrp = client.getClientAdminGroup();
+		// TODO: Override equals and hashcode
+		if (!mgdAuthUser.getGroups().contains(adminGrp)) {
+			// TODO: throw exception
+			return null;
+		}
+
 		AppUser user = userRepo.findByEmail(userEmail);
-		ManagedUser managedUser = utilService.createManagedUser(user);
-		Set<AppUserRole> userRoles = user.getRole();
-		userRoles.add(AppUserRole.ADMIN);
-		user = userRepo.save(user);
-		return managedUser;
+		if (user == null) {
+			// TODO: throw exception
+			return null;
+		}
+
+		ManagedUser mgdUser = managedUserRepo.findByAppUser(user);
+		if (mgdUser == null) {
+			mgdUser = createManagedUser(user);
+		}
+
+		client.getClientAdminGroup().addUserToGroup(mgdUser);
+		clientRepo.save(client);
+
+		mgdUser = managedUserRepo.findByAppUser(user);
+		return mgdUser;
 	}
 
 	@Override
-	public boolean removeClientAdmin(ClientOrg client, String email) {
-
-		return true;
-	}
-
-	@Override
-	public ManagedUser updateClientAdmin(ClientOrg client, String userEmail) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean deleteClient(ClientOrg client) {
+	public boolean removeUserFromClientAdminGroup(ClientOrg client,
+			String email, String authenticatedUser) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public Workflow createWorkflow(Workflow flow, String authenticatedUser) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean deactivateWorkflow(Workflow flow, String authenticatedUser) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private ManagedUser createManagedUser(AppUser appUser) {
+		// create managed user and then assign the user whatever permissions are
+		// required
+		ManagedUser createdUser = null;
+		ManagedUser userToBeCreated = new ManagedUser();
+		userToBeCreated.setAppUser(appUser);
+		createdUser = managedUserRepo.save(userToBeCreated);
+		return createdUser;
 	}
 }
