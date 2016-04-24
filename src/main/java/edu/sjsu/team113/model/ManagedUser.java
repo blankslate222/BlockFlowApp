@@ -18,11 +18,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "managed_user")
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class ManagedUser implements Serializable {
 
 	/**
@@ -35,19 +38,19 @@ public class ManagedUser implements Serializable {
 	@Column(name = "manageduser_id")
 	private Long id;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private AppUser appUser;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "client_id")
 	private ClientOrg employer;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "department_id")
 	private ClientDepartment department;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "MANAGEDUSER_GROUP", joinColumns = @JoinColumn(name = "mgd_user_id", referencedColumnName = "manageduser_id"), inverseJoinColumns = @JoinColumn(name = "grp_id", referencedColumnName = "group_id"))
 	private Set<WorkGroup> groups = new HashSet<>();
 

@@ -5,16 +5,14 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import edu.sjsu.team113.model.AppUser;
+import edu.sjsu.team113.model.ControllerResponse;
 import edu.sjsu.team113.service.IAppUserService;
 
 @Controller
@@ -22,47 +20,50 @@ public class AppUserController {
 
 	@Autowired
 	private IAppUserService userService;
-	
 
-	@RequestMapping(value = {"/"})
+	@RequestMapping(value = { "/" })
 	public String getIndexPage() {
 		System.out.println("IN CONTROLLER");
 		return "index";
 	}
-	
-//	@RequestMapping(value = {"/login"})
-//	public String getLoginPage() {
-//		System.out.println("IN CONTROLLER");
-//		return "login";
-//	}
-	
-	@RequestMapping(value = "/signup", method = RequestMethod.GET)
-	public String getSignupPage(Model model) {
-		//model.addAttribute("id", 0);
-		model.addAttribute("user", new AppUser());
-		model.addAttribute("confirmPassword", "");
-		return "signup";
-	}
-	
+
+	// @RequestMapping(value = {"/login"})
+	// public String getLoginPage() {
+	// System.out.println("IN CONTROLLER");
+	// return "login";
+	// }
+
+	// @RequestMapping(value = "/signup", method = RequestMethod.GET)
+	// public String getSignupPage(Model model) {
+	// //model.addAttribute("id", 0);
+	// model.addAttribute("user", new AppUser());
+	// model.addAttribute("confirmPassword", "");
+	// return "signup";
+	// }
+
 	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = "application/json")
-	public @ResponseBody String userSignup(@RequestBody AppUser newuser,
-			HttpServletResponse res) {
+	public @ResponseBody ControllerResponse userSignup(
+			@RequestBody AppUser newuser, HttpServletResponse res) {
+		ControllerResponse resp = new ControllerResponse();
 		AppUser saved = userService.saveUser(newuser);
 		if (saved == null) {
 			res.setStatus(409);
 			// TODO: throw custom exception
-			return "The user already exists";
+			resp.addToResponseMap("error", "The user already exists");
+			return resp;
 		}
 		System.out.println(saved.toString());
 		res.setStatus(200);
-		return saved.toString();
+		resp.addToResponseMap("responseObject", saved);
+		return resp;
 	}
 
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
-	public ResponseEntity<List<AppUser>> getUsers(HttpServletResponse res) {
+	public @ResponseBody ControllerResponse getUsers(HttpServletResponse res) {
+		ControllerResponse resp = new ControllerResponse();
 		List<AppUser> userList = userService.getUserList();
-		ResponseEntity<List<AppUser>> response = new ResponseEntity<List<AppUser>>(
-				userList, HttpStatus.OK);
-		return response;
+		res.setStatus(200);
+		resp.addToResponseMap("responseObject", userList);
+		return resp;
 	}
 }
