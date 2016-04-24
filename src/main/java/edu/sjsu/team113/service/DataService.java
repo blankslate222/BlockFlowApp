@@ -51,10 +51,10 @@ public class DataService implements IDataService {
 		List<ClientOrg> foundClientOrgs = null;
 		System.out.println("now finding all client orgs ");
 		foundClientOrgs = (List<ClientOrg>) clientOrgRepository.findAll();
-		System.out.println("client org list : ");
-		for (ClientOrg clientOrg : foundClientOrgs) {
-			System.out.println(clientOrg.toString());
-		}
+		System.out.println("client org list size = " + foundClientOrgs.size());
+//		for (ClientOrg clientOrg : foundClientOrgs) {
+//			System.out.println(clientOrg.toString());
+//		}
 		return foundClientOrgs;
 		
 	}

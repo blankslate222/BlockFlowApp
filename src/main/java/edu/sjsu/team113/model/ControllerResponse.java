@@ -29,4 +29,12 @@ public class ControllerResponse {
 	public Map<String, Object> getControllerResponse() {
 		return this.controllerResponse;
 	}
+	
+	public void addResponseObject(Object val) {
+		controllerResponse.put("responseObject", val);
+	}
+	
+	public void addError(Object err) {
+		controllerResponse.put("error",err);
+	}
 }
