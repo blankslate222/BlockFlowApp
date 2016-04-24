@@ -1,6 +1,8 @@
 package edu.sjsu.team113.web;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import edu.sjsu.team113.exception.ResourceException;
 import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
+import edu.sjsu.team113.model.ControllerResponse;
 import edu.sjsu.team113.model.ManagedUser;
 import edu.sjsu.team113.service.IAdminUserService;
 import edu.sjsu.team113.service.IDataService;
@@ -25,20 +29,23 @@ public class AdminUserController {
 
 	@Autowired
 	private IAdminUserService adminService;
-	
+
 	@Autowired
 	private IDataService dataService;
 
 	@RequestMapping(value = "/audit")
-	public @ResponseBody String auditChain(HttpServletResponse res) {
-		res.setStatus(200);
-		return "auditing chain...";
+	public @ResponseBody ControllerResponse auditChain(HttpServletResponse res,
+			Principal principal) {
+
+		return null;
 	}
 
 	@RequestMapping(value = "/client/create", method = RequestMethod.POST)
-	public @ResponseBody Model createClientOrg(@RequestBody ClientOrg client,
-			HttpServletResponse res, Model model, Principal principal) {
+	public @ResponseBody ControllerResponse createClientOrg(
+			@RequestBody ClientOrg client, HttpServletResponse res,
+			Principal principal) {
 
+		ControllerResponse resp = new ControllerResponse();
 		System.out.println("principal stored = ");
 		String authUser = ""; // principal.getName();
 		// TODO: temporary
@@ -47,34 +54,42 @@ public class AdminUserController {
 		if (createdClient == null) {
 			res.setStatus(409);
 		}
-		model.addAttribute("responseObj", createdClient);
-		model.addAttribute("error", new Exception("Something is wrong"));
-		return model;
+
+		ResourceException exc = new ResourceException(
+				"something is wrong - testing");
+		resp.addToResponseMap("responseObject", createdClient);
+		resp.addToResponseMap("error", exc);
+
+		return resp;
 	}
 
 	@RequestMapping(value = "/department/create", method = RequestMethod.POST)
-	public String createDepartment(@RequestBody ClientDepartment dept,
-			HttpServletResponse res) {
+	public @ResponseBody ControllerResponse createDepartment(
+			@RequestBody ClientDepartment dept, HttpServletResponse res,
+			Principal principal) {
 		return null;
 	}
 
 	@RequestMapping(value = "/group/create", method = RequestMethod.POST)
-	public String createWorkGroup(HttpServletResponse res) {
+	public @ResponseBody ControllerResponse createWorkGroup(
+			HttpServletResponse res, Principal principal) {
 		return null;
 	}
 
 	@RequestMapping(value = "/client/addadmin")
-	public Model addUserToClientAdminGroup(
+	public @ResponseBody ControllerResponse addUserToClientAdminGroup(
 			@RequestParam String user, @RequestParam Long clientId,
 			Model model, HttpServletResponse res, Principal principal) {
-		String authUser = ""; //principal.getName();
+		ControllerResponse resp = new ControllerResponse();
+		String authUser = ""; // principal.getName();
 		System.out.println("principal stored = " + authUser);
 		// TODO: temporary
 		authUser = "admin@admin.com";
 		ClientOrg client = dataService.findClientOrgById(clientId);
-		ManagedUser returnObject = adminService.addUserToClientAdminGroup(client, user, authUser);
-		model.addAttribute("responseObject", returnObject);
-		model.addAttribute("error", null);
-		return model;
+		ManagedUser returnObject = adminService.addUserToClientAdminGroup(
+				client, user, authUser);
+		resp.addToResponseMap("responseObject", returnObject);
+		resp.addToResponseMap("error", null);
+		return resp;
 	}
 }

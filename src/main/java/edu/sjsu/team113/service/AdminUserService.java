@@ -92,7 +92,7 @@ public class AdminUserService implements IAdminUserService {
 		ManagedUser mgdAuthUser = managedUserRepo.findByAppUser(authUser);
 		WorkGroup adminGrp = client.getClientAdminGroup();
 		// TODO: Override equals and hashcode
-		if (!mgdAuthUser.getGroups().contains(adminGrp)) {
+		if (!mgdAuthUser.getGroups().contains(adminGrp) || mgdAuthUser.getId() != 1) {
 			// TODO: throw exception
 			return null;
 		}

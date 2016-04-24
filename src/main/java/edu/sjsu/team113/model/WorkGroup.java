@@ -16,11 +16,14 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "work_group")
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class WorkGroup implements Serializable {
 
 	/**
@@ -36,17 +39,17 @@ public class WorkGroup implements Serializable {
 	@Column(name = "group_name", nullable = false)
 	private String name;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "client_id")
 	private ClientOrg client;
-    
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="department_id")
-    private ClientDepartment department;
 
-    @ManyToMany(mappedBy="groups")
-    private Set<ManagedUser> groupUsers = new HashSet<>();
-    
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "department_id")
+	private ClientDepartment department;
+
+	@ManyToMany(mappedBy = "groups")
+	private Set<ManagedUser> groupUsers = new HashSet<>();
+
 	@Column(name = "created_time")
 	private Timestamp created = new Timestamp(new Date().getTime());
 
@@ -104,11 +107,11 @@ public class WorkGroup implements Serializable {
 	public void setModified(Timestamp modified) {
 		this.modified = modified;
 	}
-	
+
 	public boolean addUserToGroup(ManagedUser user) {
 		return groupUsers.add(user);
 	}
-	
+
 	public boolean removeUserFromGroup(ManagedUser user) {
 		return groupUsers.remove(user);
 	}
