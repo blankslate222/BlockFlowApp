@@ -1,5 +1,7 @@
 package edu.sjsu.team113.web;
 
+import java.security.Principal;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +10,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
+import edu.sjsu.team113.model.ManagedUser;
 import edu.sjsu.team113.service.IAdminUserService;
+import edu.sjsu.team113.service.IDataService;
 
 @Controller
 @RequestMapping(value = "/admin")
@@ -20,6 +25,9 @@ public class AdminUserController {
 
 	@Autowired
 	private IAdminUserService adminService;
+	
+	@Autowired
+	private IDataService dataService;
 
 	@RequestMapping(value = "/audit")
 	public @ResponseBody String auditChain(HttpServletResponse res) {
@@ -28,9 +36,14 @@ public class AdminUserController {
 	}
 
 	@RequestMapping(value = "/client/create", method = RequestMethod.POST)
-	public @ResponseBody Model createClientOrg(
-			@RequestBody ClientOrg client, HttpServletResponse res, Model model) {
-		ClientOrg createdClient = adminService.createClient(client);
+	public @ResponseBody Model createClientOrg(@RequestBody ClientOrg client,
+			HttpServletResponse res, Model model, Principal principal) {
+
+		System.out.println("principal stored = ");
+		String authUser = principal.getName();
+		// TODO: temporary
+		authUser = "admin@admin.com";
+		ClientOrg createdClient = adminService.createClient(client, authUser);
 		if (createdClient == null) {
 			res.setStatus(409);
 		}
@@ -47,6 +60,18 @@ public class AdminUserController {
 
 	@RequestMapping(value = "/group/create", method = RequestMethod.POST)
 	public String createWorkGroup(HttpServletResponse res) {
+		return null;
+	}
+
+	public ManagedUser addUserToClientAdminGroup(
+			@RequestParam String userToBeAdded, @RequestParam Long clientId,
+			Model model, HttpServletResponse res, Principal principal) {
+		String authUser = principal.getName();
+		System.out.println("principal stored = " + authUser);
+		// TODO: temporary
+		authUser = "admin@admin.com";
+		ClientOrg client = dataService.findClientOrgById(clientId);
+		adminService.addUserToClientAdminGroup(client, userToBeAdded, authUser);
 		return null;
 	}
 }

@@ -3,31 +3,24 @@ package edu.sjsu.team113.service;
 import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ManagedUser;
-import edu.sjsu.team113.model.WorkGroup;
+import edu.sjsu.team113.model.Workflow;
 
 public interface IAdminUserService {
 
-	ClientOrg createClient(ClientOrg client);
+	ClientOrg createClient(ClientOrg client, String authenticatedUser);
 	
-	boolean deleteClient(ClientOrg client);
+	boolean deleteClient(ClientOrg client, String authenticatedUser);
 
-	boolean deleteDepartment(ClientDepartment department);
+	ClientDepartment createDepartment(ClientDepartment department, String authenticatedUser);
 	
-	WorkGroup createGroup(WorkGroup newGroup);
-
-	WorkGroup updateGroup(WorkGroup group);
+	boolean deleteDepartment(ClientDepartment department, String authenticatedUser);
 	
-	boolean deleteGroup(WorkGroup group);
+	ManagedUser addUserToClientAdminGroup(ClientOrg client, String userEmail, String authenticatedUser);
 	
-	ManagedUser createClientAdmin(ClientOrg client, String userEmail);
-
-	ManagedUser updateClientAdmin(ClientOrg client, String userEmail);
+	boolean removeUserFromClientAdminGroup(ClientOrg client, String email, String authenticatedUser);
 	
-	boolean removeClientAdmin(ClientOrg client, String email);
-
-	ClientDepartment createDepartment(ClientDepartment department);
-
-	// pass null email if manager is to be removed
-	ClientDepartment assignDepartmentManager(String dept, String email);
+	Workflow createWorkflow(Workflow flow, String authenticatedUser);
+	
+	boolean deactivateWorkflow(Workflow flow, String authenticatedUser);
 	
 }

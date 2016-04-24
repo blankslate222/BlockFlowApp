@@ -47,9 +47,7 @@ public class ManagedUser implements Serializable {
 	private ClientDepartment department;
 
 	@ManyToMany
-	@JoinTable(name = "MANAGEDUSER_GROUP", 
-	joinColumns = @JoinColumn(name = "mgd_user_id", referencedColumnName = "manageduser_id"), 
-	inverseJoinColumns = @JoinColumn(name = "grp_id", referencedColumnName = "group_id"))
+	@JoinTable(name = "MANAGEDUSER_GROUP", joinColumns = @JoinColumn(name = "mgd_user_id", referencedColumnName = "manageduser_id"), inverseJoinColumns = @JoinColumn(name = "grp_id", referencedColumnName = "group_id"))
 	private Set<WorkGroup> groups;
 
 	@Column(name = "created_time")
@@ -108,5 +106,30 @@ public class ManagedUser implements Serializable {
 
 	public void setModified(Timestamp modified) {
 		this.modified = modified;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ManagedUser other = (ManagedUser) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 }
