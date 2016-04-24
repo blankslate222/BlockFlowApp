@@ -7,7 +7,6 @@ cmpe.controller('headCtrl', function($scope, $rootScope, $http, $location){
 			 ];
 	
 	$scope.getClass = function (path) {
-			console.log(path);
 		  return ($location.path().substr(0) === path) ? 'active' : '';
 	}
 });

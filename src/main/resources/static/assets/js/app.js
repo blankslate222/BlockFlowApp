@@ -58,6 +58,15 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				}
 			}
 		})
+		.state('root.client.id', {
+			url: '/client/:clientID',
+			views: {
+				'container@' : {
+					templateUrl : 'views/clientDetails.html',
+					controller : 'clientDetailsCtrl'
+				}
+			}
+		})
 		.state('root.workflow', {
 			url : '/workflow',
 			views : {
