@@ -92,15 +92,4 @@ public class AdminUserController {
 		resp.addToResponseMap("error", null);
 		return resp;
 	}
-
-	@RequestMapping(value = "/clients")
-	public @ResponseBody ControllerResponse getClients(HttpServletResponse res,
-			Principal principal) {
-		List<ClientOrg> clientList = null;
-		ControllerResponse resp = new ControllerResponse();
-		clientList = dataService.findClientOrgs();
-		resp.addResponseObject(clientList);
-		resp.addError(null);
-		return resp;
-	}
 }
