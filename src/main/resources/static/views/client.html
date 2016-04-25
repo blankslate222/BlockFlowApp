@@ -46,7 +46,7 @@
 						<hr>
 						<thead>
 							<tr>
-								<th><i class="fa fa-bullhorn"></i> Company</th>
+								<th><i class="fa fa-bullhorn"></i> Client Name</th>
 								<th class="hidden-phone"><i class="fa fa-question-circle"></i>
 									Address</th>
 								<th><i class=" fa fa-edit"></i> Status</th>
@@ -55,7 +55,7 @@
 						</thead>
 						<tbody>
 							<tr data-ng-repeat="client in clients">
-								<td><a href="/client/{{client.id}}">{{client.name}}</a></td>
+								<td><a href="/#/client/{{client.id}}" >{{client.name}}</a></td>
 								<td>{{client.address}}</td>
 								<td>
 									<button class="btn btn-success btn-xs">
