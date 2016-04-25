@@ -1,12 +1,24 @@
-<div class="row mt">
+<!--main content start-->
+<section id="main-content">
+	<section class="wrapper">
+		<h3>
+			<i class="fa fa-angle-right"></i>Client Details
+		</h3>
+		<div class="row mt">
 	<div class="col-lg-12">
 		<div class="form-panel">
 			<h4 class="mb">
-				<i class="fa fa-angle-right"></i> Client Details
+				<i class="fa fa-angle-right"></i> Client
 			</h4>
 			<form class="form-horizontal style-form">
 				<div class="form-group">
-					<label class="col-lg-2 col-sm-2 control-label">{{client.name}}</label>
+					<label class="col-lg-2 col-sm-2 control-label">Client Name</label>
+					<div class="col-lg-10">
+						<p class="form-control-static">{{client.name}}</p>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-2 col-sm-2 control-label">Client Address</label>
 					<div class="col-lg-10">
 						<p class="form-control-static">{{client.address}}</p>
 					</div>
@@ -16,3 +28,5 @@
 	</div>
 	<!-- col-lg-12-->
 </div>
+</section>
+</section>

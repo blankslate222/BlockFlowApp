@@ -21,7 +21,7 @@ cmpe.controller('clientCtrl', function($scope, $stateParams, $state, $log, $time
 	};
 	
 	$scope.getClients = function() {
-		$http.get("/admin/clients").success(function(data){
+		$http.get("/data/clients").success(function(data){
 			var objs=data.controllerResponse.responseObject;
 			for(var i=0;i<objs.length;i++){
 				$scope.clients.push(objs[i]);
@@ -38,9 +38,11 @@ cmpe.controller('clientDetailsCtrl', function($scope, $stateParams, $state, $log
 	$scope.getClient = function() {
 		$http.get("/data/client/" + $stateParams.clientID).success(function(data){
 			if(data.controllerResponse.responseObject){
-				$scope.client=data.controllerResponse.responseObject;
-				console.log($scope.clients);
+				var objs=data.controllerResponse.responseObject;
+				$scope.client=objs;
+				console.log($scope.client);
 			}
+			//console.log(data.controllerResponse.responseObject);
 		});
 	};
 	$scope.getClient();
