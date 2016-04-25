@@ -33,13 +33,16 @@ public class AppUserDetailsService implements UserDetailsService {
 			throws UsernameNotFoundException {
 		System.out.println("authenticating user - config class " + email);
 
-		AppUser user = userService.findByEmail(email);
-		System.out.println("role size = " + user.getRole().size());
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		for (AppUserRole role : user.getRole()) {
-			authorities.add(new SimpleGrantedAuthority(role.toString()));
-		}
+		
+		AppUser user = userService.findByEmail(email);
+		if (user != null) {
+			System.out.println("role size = " + user.getRole().size());
 
+			for (AppUserRole role : user.getRole()) {
+				authorities.add(new SimpleGrantedAuthority(role.toString()));
+			}
+		}
 		UserDetails userDetails = new User(user.getEmail(),
 				user.getPasswordHash(), authorities);
 
