@@ -1,49 +1,20 @@
 cmpe.factory('prompt', function () {
-
-	/* Uncomment the following to test that the prompt service is working as expected.
-	return function () {
-		return "Test!";
-	}
-	*/
-
-	// Return the browsers prompt function.
 	return prompt;
 })
 cmpe.controller('workCtrl', ['$scope', 'prompt', function AppCtrl ($scope, prompt) {
 
-	//
-	// Code for the delete key.
-	//
 	var deleteKeyCode = 46;
 
-	//
-	// Code for control key.
-	//
 	var ctrlKeyCode = 17;
 
-	//
-	// Set to true when the ctrl key is down.
-	//
 	var ctrlDown = false;
 
-	//
-	// Code for A key.
-	//
 	var aKeyCode = 65;
 
-	//
-	// Code for esc key.
-	//
 	var escKeyCode = 27;
 
-	//
-	// Selects the next node id.
-	//
 	var nextNodeID = 10;
 
-	//
-	// Setup the data-model for the chart.
-	//
 	var chartDataModel = {
 
 			
@@ -197,8 +168,7 @@ cmpe.controller('workCtrl', ['$scope', 'prompt', function AppCtrl ($scope, promp
 	// Add a new node to the chart.
 	//
 	$scope.addNewNode = function () {
-		debugger;
-		var nodeName = document.getElementById("email").value;//prompt("Enter a node name:", "New node");
+		var nodeName = $scope.name;//prompt("Enter a node name:", "New node");
 		if (!nodeName) {
 			return;
 		}
@@ -213,6 +183,8 @@ cmpe.controller('workCtrl', ['$scope', 'prompt', function AppCtrl ($scope, promp
 			y: 0,
 			inputConnectors: [
 				{
+					name: "X"
+				},{
 					name: "X"
 				}
 			],
