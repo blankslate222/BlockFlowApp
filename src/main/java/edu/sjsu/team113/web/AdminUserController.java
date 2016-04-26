@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -63,11 +64,26 @@ public class AdminUserController {
 		return resp;
 	}
 
-	@RequestMapping(value = "/department/create", method = RequestMethod.POST)
+	@RequestMapping(value = "/department/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public @ResponseBody ControllerResponse createDepartment(
-			@RequestBody ClientDepartment dept, HttpServletResponse res,
+			@RequestBody ClientDepartment department, HttpServletResponse res,
 			Principal principal) {
-		return null;
+		ControllerResponse resp = new ControllerResponse();
+		System.out.println("principal stored = ");
+		String authUser = ""; // principal.getName();
+		// TODO: temporary
+		authUser = "admin@admin.com";
+		ClientDepartment createdDepartment = adminService.createDepartment(department, authUser);
+		if (createdDepartment == null) {
+			res.setStatus(409);
+		}
+
+		//ResourceException exc = new ResourceException(
+			//	"something is wrong - testing");
+		resp.addToResponseMap("responseObject", createdDepartment);
+		//resp.addToResponseMap("error", exc);
+
+		return resp;
 	}
 
 	@RequestMapping(value = "/group/create", method = RequestMethod.POST)

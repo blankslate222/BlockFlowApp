@@ -58,6 +58,7 @@ public class AdminUserService implements IAdminUserService {
 	@Override
 	public ClientDepartment createDepartment(ClientDepartment department,
 			String authenticatedUser) {
+		department.setClient(clientRepo.findOne((long) 1));
 		WorkGroup mgrGrp = new WorkGroup();
 		mgrGrp.setDepartment(department);
 		mgrGrp.setClient(department.getClient());

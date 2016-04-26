@@ -68,7 +68,7 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 			}
 		})
 		.state('root.client.id.dept', {
-			url: '/dept/:depId',
+			url: '/dept/:deptId',
 			views: {
 				'container@' : {
 					templateUrl : 'views/clientDeptDetails.html',

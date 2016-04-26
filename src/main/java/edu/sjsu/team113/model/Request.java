@@ -60,6 +60,9 @@ public class Request implements Serializable {
 	@Column(name = "request_status")
 	private RequestStatus status ;
 
+	@OneToMany(mappedBy = "request", fetch = FetchType.LAZY)
+	private Set<RequestNode> nodes = new HashSet<>();
+
 	@Column(name = "request_createdtime")
 	private Timestamp created = new Timestamp(new Date().getTime());
 

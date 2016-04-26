@@ -59,7 +59,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-show="depts.length!=0"data-ng-repeat="dept in depts">
+							<tr ng-show="client.clientDepartments.length!=0" data-ng-repeat="dept in client.clientDepartments">
 								<td><a href="/#/client/{{client.id}}/dept/{{dept.id}}">{{dept.name}}</a></td>
 								<td>{{dept.name}}</td>
 								<td>
@@ -69,7 +69,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td ng-show="depts.length==0">No records found..</td>
+								<td ng-show="client.clientDepartments.length==0">No records found..</td>
 							</tr>
 						</tbody>
 					</table>
@@ -79,7 +79,9 @@
 			<!-- /col-md-12 -->
 		</div>
 		<!-- /row -->
-
+						<input type="text" ng-model="dept.name" placeholder="Name"
+					autocomplete="off" class="form-control placeholder-no-fix">
+		
 	</section>
 </section>
 
@@ -95,7 +97,7 @@
 			</div>
 			<div class="modal-body">
 				<p>Department Name</p>
-				<input type="text" ng-model="name" placeholder="Name"
+				<input type="text" ng-model="dept.name" placeholder="Name"
 					autocomplete="off" class="form-control placeholder-no-fix">
 			</div>
 			<div class="modal-footer">

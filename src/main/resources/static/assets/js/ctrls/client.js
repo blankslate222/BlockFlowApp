@@ -11,6 +11,7 @@ cmpe.controller('clientCtrl', function($scope, $stateParams, $state, $log, $time
 		$http.post("/admin/client/create",client).success(function(data){
 			if(data.controllerResponse.responseObject){
 				$scope.clients.push(data.controllerResponse.responseObject);
+				console.log(data.controllerResponse.responseObject);
 			}				
 			else{
 			}
@@ -46,7 +47,6 @@ cmpe.controller('clientDetailsCtrl', function($scope, $stateParams, $state, $log
 		});
 	};
 	$scope.getClient();
-	$scope.depts=[];
 	$scope.getDepts = function() {
 		/*$http.get("/data/dept/" + $stateParams.clientID).success(function(data){
 			if(data.controllerResponse.responseObject){
@@ -63,47 +63,44 @@ cmpe.controller('clientDetailsCtrl', function($scope, $stateParams, $state, $log
 	
 	$scope.doDeptCreate = function() {
 		var dept={
-				id:1,
-				name: $scope.name
+				name: $scope.dept.name/*, 
+				client: $scope.client*/
 		}
-		$scope.depts.push(dept);
-		/*$http.post("/admin/dept/create",dept).success(function(data){
+//		$scope.depts.push(dept);*/
+		console.log("department details:"+JSON.stringify(dept));
+		console.log("client details:"+JSON.stringify($scope.client));
+		$http.post("/admin/department/create",dept).success(function(data){
 			if(data.controllerResponse.responseObject){
 				$scope.depts.push(data.controllerResponse.responseObject);
+				console.log(data.controllerResponse.responseObject);
 			}				
 			else{
 			}
 		}).error(function(err){
 			//$scope.status = data.error;
-			console.log("Error");
-		});*/
+			console.log("Error:"+JSON.stringify(err));
+		});
 	};
 });
 
 
 cmpe.controller('clientDeptDetailsCtrl', function($scope, $stateParams, $state, $log, $timeout,
 		$rootScope, $http) {
-	$scope.clientId=$stateParams.clientID;
+	$scope.clientId=$stateParams.clientId;
+	$scope.deptId=$stateParams.deptId;
+	console.log("Department id is:"+$stateParams.deptId);
 	$scope.dept={};
-	$scope.getDept = function() {
-		/*
-		$http.get("/data/dept/" + $stateParams.deptID).success(function(data){
+	$scope.getDept = function() {		
+		$http.get("/data/department/" + $stateParams.deptId).success(function(data){
 			if(data.controllerResponse.responseObject){
 				var objs=data.controllerResponse.responseObject;
-				$scope.client=objs;
-				console.log($scope.client);
+				$scope.dept=objs;
+				console.log($scope.dept);
 			}
 			//console.log(data.controllerResponse.responseObject);
-		});*/
-		var d={
-				id:1,
-				name: "Dept1",
-				address:"India"
-		}
-		$scope.dept=d;
+		});
 	};
 	$scope.getDept();
-	$scope.groups=[];
 	$scope.getGroups = function() {
 		/*$http.get("/data/dept/" + $stateParams.deptID).success(function(data){
 			if(data.controllerResponse.responseObject){

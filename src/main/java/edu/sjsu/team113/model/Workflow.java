@@ -3,6 +3,8 @@ package edu.sjsu.team113.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -46,6 +49,9 @@ public class Workflow implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "last_mod_userid")
 	private AppUser lastModUserId;
+
+	@OneToMany(mappedBy = "workflow", fetch = FetchType.LAZY)
+	private Set<WorkflowNode> nodes = new HashSet<>();
 
 	@Column(name = "workflow_modifiedtime")
 	private Timestamp modified = new Timestamp(new Date().getTime());

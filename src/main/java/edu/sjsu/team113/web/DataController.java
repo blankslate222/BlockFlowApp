@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ControllerResponse;
 import edu.sjsu.team113.service.IDataService;
@@ -46,7 +47,19 @@ public class DataController {
 			@PathVariable Long clientId, HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
 		ClientOrg client = dataService.findClientOrgById(clientId);
+		System.out.println("client details"+client.toString());
 		resp.addResponseObject(client);
+		resp.addError(null);
+		return resp;
+	}
+
+	@RequestMapping(value = "/department/{departmentId}")
+	public @ResponseBody ControllerResponse getDepartment(
+			@PathVariable Long departmentId, HttpServletResponse res) {
+		ControllerResponse resp = new ControllerResponse();
+		ClientDepartment department = dataService.findDepartmentById(departmentId);
+		System.out.println("department details"+department.getGroups());
+		resp.addResponseObject(department);
 		resp.addError(null);
 		return resp;
 	}
