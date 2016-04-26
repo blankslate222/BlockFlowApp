@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -50,7 +51,7 @@ public class Workflow implements Serializable {
 	@JoinColumn(name = "last_mod_userid")
 	private AppUser lastModUserId;
 
-	@OneToMany(mappedBy = "workflow", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "workflow", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<WorkflowNode> nodes = new HashSet<>();
 
 	@Column(name = "workflow_modifiedtime")

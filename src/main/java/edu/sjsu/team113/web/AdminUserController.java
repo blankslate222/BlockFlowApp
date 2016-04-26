@@ -1,13 +1,10 @@
 package edu.sjsu.team113.web;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,8 +18,10 @@ import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ControllerResponse;
 import edu.sjsu.team113.model.ManagedUser;
+import edu.sjsu.team113.model.WorkGroup;
 import edu.sjsu.team113.service.IAdminUserService;
 import edu.sjsu.team113.service.IDataService;
+import edu.sjsu.team113.service.IManagerUserService;
 
 @Controller
 @RequestMapping(value = "/admin")
@@ -33,6 +32,9 @@ public class AdminUserController {
 
 	@Autowired
 	private IDataService dataService;
+	
+	@Autowired
+	private IManagerUserService mgrService;
 
 	@RequestMapping(value = "/audit")
 	public @ResponseBody ControllerResponse auditChain(HttpServletResponse res,
@@ -87,9 +89,13 @@ public class AdminUserController {
 	}
 
 	@RequestMapping(value = "/group/create", method = RequestMethod.POST)
-	public @ResponseBody ControllerResponse createWorkGroup(
+	public @ResponseBody ControllerResponse createWorkGroup(@RequestBody WorkGroup grp,
 			HttpServletResponse res, Principal principal) {
-		return null;
+		ControllerResponse resp = new ControllerResponse();
+		WorkGroup created = mgrService.createGroup(grp);
+		resp.addResponseObject(created);
+		resp.addError(null);
+		return resp;
 	}
 
 	@RequestMapping(value = "/client/addadmin")
