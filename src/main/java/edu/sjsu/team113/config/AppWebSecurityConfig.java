@@ -39,7 +39,7 @@ public class AppWebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 				.antMatchers(HttpMethod.POST, "/signup")
 				.permitAll()
-				.antMatchers("/", "/assets/**", "/Theme/**", "/flowchart/**",
+				.antMatchers("/**", "/assets/**", "/Theme/**", "/flowchart/**",
 						"/views/**")
 				.permitAll()
 				// give appropriate url - decide

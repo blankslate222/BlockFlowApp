@@ -4,7 +4,6 @@ cmpe
 				function($scope, $stateParams, $state, $log, $timeout,
 						$rootScope, $http) {
 
-					$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
 					$scope.user = {};
 
 					$scope.doLogin = function() {
@@ -20,6 +19,7 @@ cmpe
 								"/login",
 								'username=' + user.username + '&password='
 										+ user.password, {
+									headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
 						})
 						.success(function(data) {
 							console.log(data);

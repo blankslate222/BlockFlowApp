@@ -64,7 +64,7 @@ public class AdminUserController {
 		return resp;
 	}
 
-	@RequestMapping(value = "/department/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	@RequestMapping(value = "/department/create", method = RequestMethod.POST)
 	public @ResponseBody ControllerResponse createDepartment(
 			@RequestBody ClientDepartment department, HttpServletResponse res,
 			Principal principal) {

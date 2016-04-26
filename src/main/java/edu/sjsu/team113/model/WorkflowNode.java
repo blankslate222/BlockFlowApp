@@ -47,12 +47,12 @@ public class WorkflowNode implements Serializable {
 	@JoinColumn(name = "group_id")
 	private WorkGroup workgroup;
 
-    @ManyToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name="prev_node_id")
-    private WorkflowNode prevnode;
- 
-    @OneToMany(mappedBy="prevnode")
-    private Set<WorkflowNode> nextNodes = new HashSet<WorkflowNode>();
+//    @ManyToOne(cascade={CascadeType.ALL})
+//    @JoinColumn(name="prev_node_id")
+//    private WorkflowNode prevnode;
+// 
+//    @OneToMany(mappedBy="prevnode")
+//    private Set<WorkflowNode> nextNodes = new HashSet<WorkflowNode>();
 
 	@Column(name = "is_curent_node", nullable = false)
 	private boolean isCurrentNode = true;
@@ -62,7 +62,7 @@ public class WorkflowNode implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "node_status")
-	private NodeStatus status ;
+	private NodeStatus status = NodeStatus.PENDING;
 
 	public Long getId() {
 		return id;
@@ -92,21 +92,21 @@ public class WorkflowNode implements Serializable {
 		this.workgroup = workgroup;
 	}
 
-	public WorkflowNode getPrevnode() {
-		return prevnode;
-	}
-
-	public void setPrevnode(WorkflowNode prevnode) {
-		this.prevnode = prevnode;
-	}
-
-	public Set<WorkflowNode> getNextNodes() {
-		return nextNodes;
-	}
-
-	public void setNextNodes(Set<WorkflowNode> nextNodes) {
-		this.nextNodes = nextNodes;
-	}
+//	public WorkflowNode getPrevnode() {
+//		return prevnode;
+//	}
+//
+//	public void setPrevnode(WorkflowNode prevnode) {
+//		this.prevnode = prevnode;
+//	}
+//
+//	public Set<WorkflowNode> getNextNodes() {
+//		return nextNodes;
+//	}
+//
+//	public void setNextNodes(Set<WorkflowNode> nextNodes) {
+//		this.nextNodes = nextNodes;
+//	}
 
 	public boolean isCurrentNode() {
 		return isCurrentNode;
