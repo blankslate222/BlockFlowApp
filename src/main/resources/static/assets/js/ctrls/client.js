@@ -65,16 +65,11 @@ cmpe.controller('clientDetailsCtrl', function($scope, $stateParams, $state,
 			name : $scope.dept.name,
 			client : $scope.client
 		}
-		// $scope.depts.push(dept);*/
-		console.log("department details:" + JSON.stringify(dept));
-		console.log("client details:" + JSON.stringify($scope.client));
-
 		$http.post("/admin/department/create", dept, {
 			headers : {'Content-Type' : 'application/json'}
 		}).success(function(data) {
-			console.log(data);
 			if (data.controllerResponse.responseObject) {
-				$scope.depts.push(data.controllerResponse.responseObject);
+				$scope.client.clientDepartments.push(data.controllerResponse.responseObject);
 				console.log(data.controllerResponse.responseObject);
 			} else {
 			}
@@ -89,46 +84,43 @@ cmpe.controller('clientDeptDetailsCtrl', function($scope, $stateParams, $state,
 		$log, $timeout, $rootScope, $http) {
 	$scope.clientId = $stateParams.clientId;
 	$scope.deptId = $stateParams.deptId;
-	console.log("Department id is:" + $stateParams.deptId);
 	$scope.dept = {};
 	$scope.getDept = function() {
 		$http.get("/data/department/" + $stateParams.deptId).success(
-				function(data) {
-					if (data.controllerResponse.responseObject) {
-						var objs = data.controllerResponse.responseObject;
-						$scope.dept = objs;
-						console.log($scope.dept);
-					}
-					// console.log(data.controllerResponse.responseObject);
-				});
+			function(data) {
+				if (data.controllerResponse.responseObject) {
+					var objs = data.controllerResponse.responseObject;
+					$scope.dept = objs;
+				}
+				if(!$scope.dept.groups){
+					$scope.groups=$scope.dept.groups;
+				}
+			});
 	};
 	$scope.getDept();
-	$scope.getGroups = function() {
-		/*
-		 * $http.get("/data/dept/" +
-		 * $stateParams.deptID).success(function(data){
-		 * if(data.controllerResponse.responseObject){ var
-		 * objs=data.controllerResponse.responseObject; for(var i=0;i<objs.length;i++){
-		 * $scope.groups.push(objs[i]); } console.log($scope.groups); }
-		 * //console.log(data.controllerResponse.responseObject); });
-		 */
-	};
-	$scope.getGroups();
-
+	$scope.groups=[];
+	
 	$scope.doGrpCreate = function() {
+		console.log( $scope.dept.client);
 		var grp = {
-			id : $scope.clientId,
-			name : $scope.name
+			name : $scope.name,
+			client: $scope.dept.client
 		}
-		$scope.groups.push(grp);
-		/*
-		 * $http.post("/admin/dept/create",dept).success(function(data){
-		 * if(data.controllerResponse.responseObject){
-		 * $scope.depts.push(data.controllerResponse.responseObject); } else{ }
-		 * }).error(function(err){ //$scope.status = data.error;
-		 * console.log("Error"); });
-		 */
-	};
+		
+		$http.post("/admin/group/create", grp, {
+			headers : {'Content-Type' : 'application/json'}
+		}).success(function(data) {
+			console.log(data);
+			if (data.controllerResponse.responseObject) {
+				$scope.client.clientDepartments.push(data.controllerResponse.responseObject);
+				//console.log(data.controllerResponse.responseObject);
+			} else {
+			}
+		}).error(function(err) {
+			// $scope.status = data.error;
+			console.log("Error:" + JSON.stringify(err));
+		});
+	}
 });
 
 cmpe.controller('clientDeptGrpDetailsCtrl', function($scope, $stateParams,

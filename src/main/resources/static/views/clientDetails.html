@@ -31,6 +31,12 @@
 								<p class="form-control-static">{{client.active}}</p>
 							</div>
 						</div>
+						<div class="form-group">
+							<label class="col-lg-2 col-sm-2 control-label">Client Admin Group</label>
+							<div class="col-lg-10">
+								<p class="form-control-static">{{client.clientAdminGroup.name}}</p>
+							</div>
+						</div>
 					</form>
 				</div>
 			</div>
@@ -79,9 +85,6 @@
 			<!-- /col-md-12 -->
 		</div>
 		<!-- /row -->
-						<input type="text" ng-model="dept.name" placeholder="Name"
-					autocomplete="off" class="form-control placeholder-no-fix">
-		
 	</section>
 </section>
 

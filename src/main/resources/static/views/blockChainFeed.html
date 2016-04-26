@@ -1,0 +1,38 @@
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script>
+	$(document).ready(
+			function() {
+
+				$.post("http://130.65.254.17:3000/getMutationHashList", {
+					"host" : "http://54.153.102.235:8080"
+				}, function(data, status) {
+					var output = "";
+					for (var i = 0; i < data.length; i++) {
+						output = output + "<p>" + " <div>" + "<B>"
+								+ "transaction_id:  " + "</B>"
+								+ data[i].mutation_hash + "</br>" + "<B>"
+								+ "key: " + "</B>"
+								+ data[i].transaction_data.key + "</br>"
+								+ "<B>" + "value:  " + "</B>"
+								+ data[i].transaction_data.value + "</div>"
+								+ "</p>";
+					}
+					$("#transaction").html(output);
+				});
+
+			});
+</script>
+
+
+<!--main content start-->
+<section id="main-content">
+	<section class="wrapper">
+		<h1>Blockchain</h1>
+		<p>Transaction Feed</p>
+
+		<marquee direction="up">
+			<div id="transaction"></div>
+		</marquee>
+	</section>
+</section>

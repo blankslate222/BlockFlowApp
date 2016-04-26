@@ -36,6 +36,19 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				}
 			}
 		})
+		.state('root.blockchain', {
+			url: '/block',
+			views: {
+				'header@': {
+					templateUrl: 'views/header.html',
+					controller: 'headCtrl'
+				},
+				'container@' : {
+					templateUrl : 'views/blockChainFeed.html',
+					controller : ''
+				}
+			}
+		})
 		.state('root.register', {
 			url: '/register',
 			views: {
