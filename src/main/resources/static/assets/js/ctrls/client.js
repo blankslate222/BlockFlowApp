@@ -58,7 +58,8 @@ cmpe.controller('clientDetailsCtrl', function($scope, $stateParams, $state,
 		 */
 	};
 	$scope.getDepts();
-
+	$scope.depts = [];
+	
 	$scope.doDeptCreate = function() {
 		var dept = {
 			name : $scope.dept.name,
@@ -71,6 +72,7 @@ cmpe.controller('clientDetailsCtrl', function($scope, $stateParams, $state,
 		$http.post("/admin/department/create", dept, {
 			headers : {'Content-Type' : 'application/json'}
 		}).success(function(data) {
+			console.log(data);
 			if (data.controllerResponse.responseObject) {
 				$scope.depts.push(data.controllerResponse.responseObject);
 				console.log(data.controllerResponse.responseObject);

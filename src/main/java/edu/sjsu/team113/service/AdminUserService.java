@@ -63,8 +63,8 @@ public class AdminUserService implements IAdminUserService {
 		mgrGrp.setDepartment(department);
 		mgrGrp.setClient(department.getClient());
 		mgrGrp.setName(department.getName() + "_Manager_Group");
-		WorkGroup grp = groupRepo.save(mgrGrp);
-		department.setManagerGroup(grp);
+//		WorkGroup grp = groupRepo.save(mgrGrp);
+		department.setManagerGroup(mgrGrp);
 		ClientDepartment createdDept = deptRepo.save(department);
 		return createdDept;
 	}
