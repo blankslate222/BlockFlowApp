@@ -45,7 +45,8 @@ public class ManagerUserService implements IManagerUserService {
 	@Override
 	public WorkGroup createGroup(WorkGroup group) {
 		// TODO Auto-generated method stub
-		return null;
+		WorkGroup savedGrp = groupRepo.save(group);
+		return savedGrp;
 	}
 
 	@Override
