@@ -37,8 +37,8 @@ public class RequestNode implements Serializable {
 	private String name;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "workflow_id")
-	private Workflow workflow;
+	@JoinColumn(name = "request_id")
+	private Request request;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "group_id")
@@ -73,12 +73,12 @@ public class RequestNode implements Serializable {
 		this.name = name;
 	}
 
-	public Workflow getWorkflow() {
-		return workflow;
+	public Request getRequest() {
+		return request;
 	}
 
-	public void setWorkflow(Workflow workflow) {
-		this.workflow = workflow;
+	public void setRequest(Request request) {
+		this.request = request;
 	}
 
 	public WorkGroup getWorkgroup() {
