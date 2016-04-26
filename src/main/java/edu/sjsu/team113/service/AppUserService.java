@@ -45,7 +45,7 @@ public class AppUserService implements IAppUserService{
 		AppUser foundUser = null;
 		System.out.println("now finding user by email" + email);
 		foundUser = userRepository.findByEmail(email);
-		System.out.println("found user = " + foundUser.toString());
+		System.out.println("found user = " + foundUser == null);
 		return foundUser;
 	}
 

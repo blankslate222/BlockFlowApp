@@ -10,8 +10,7 @@ import java.util.List;
 @Repository
 public interface ClientOrgRepository extends CrudRepository<ClientOrg, Long> {
 	
-	ClientOrg findClientOrgByName(String name);
-	List<ClientOrg> findByIsActiveLike(boolean is_Active);
+	List<ClientOrg> findByIsActive(boolean isActive);
 	ClientOrg findByName(String name);
 	
 }

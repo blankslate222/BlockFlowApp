@@ -10,9 +10,12 @@ import edu.sjsu.team113.model.AppUser;
 import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ManagedUser;
+import edu.sjsu.team113.model.Request;
 import edu.sjsu.team113.model.WorkGroup;
 import edu.sjsu.team113.repository.ClientDepartmentRepository;
 import edu.sjsu.team113.repository.ClientOrgRepository;
+import edu.sjsu.team113.repository.ManagedUserRepository;
+import edu.sjsu.team113.repository.WorkGroupRepository;
 
 @Service
 public class DataService implements IDataService {
@@ -22,6 +25,12 @@ public class DataService implements IDataService {
 
 	@Autowired
 	private ClientDepartmentRepository clientDepartmentRepository;
+
+	@Autowired
+	private WorkGroupRepository workgroupRepository;
+
+	@Autowired
+	private ManagedUserRepository managedUserRepository;
 
 	@Override
 	public ClientOrg findClientOrgById(Long id) {
@@ -39,7 +48,7 @@ public class DataService implements IDataService {
 		
 		ClientOrg foundClientOrgByName = null;
 		System.out.println("now finding clientOrg by name " + name);
-		foundClientOrgByName = clientOrgRepository.findClientOrgByName(name);
+		foundClientOrgByName = clientOrgRepository.findByName(name);
 		System.out.println("found clientOrg = " + foundClientOrgByName.toString());
 		return foundClientOrgByName;
 		
@@ -64,7 +73,7 @@ public class DataService implements IDataService {
 		
 		List<ClientOrg> foundActiveClientOrgs = null;
 		System.out.println("now finding all active client orgs ");
-		foundActiveClientOrgs = clientOrgRepository.findByIsActiveLike(true);
+		foundActiveClientOrgs = clientOrgRepository.findByIsActive(true);
 		System.out.println("active client org list : ");
 		for (ClientOrg clientOrg : foundActiveClientOrgs) {
 			System.out.println(clientOrg.toString());
@@ -78,7 +87,7 @@ public class DataService implements IDataService {
 
 		Set<ClientDepartment> foundDepartmentsByClient = null;
 		System.out.println("now finding departments by client ");
-		foundDepartmentsByClient = clientDepartmentRepository.findDepartmentsByClient(client);
+		foundDepartmentsByClient = clientDepartmentRepository.findByClient(client);
 		System.out.println("Departments By Client : ");
 		for (ClientDepartment clientDep : foundDepartmentsByClient) {
 			System.out.println(clientDep.toString());
@@ -96,50 +105,46 @@ public class DataService implements IDataService {
 	@Override
 	public ClientDepartment findDepartmentById(Long id) {
 		
-		ClientDepartment foundDepartmentById = null;
+		ClientDepartment department = null;
 		System.out.println("now finding departments by id ");
-		foundDepartmentById = clientDepartmentRepository.findOne(id);
-		System.out.println("Departments By id : " + foundDepartmentById.toString());
-		return foundDepartmentById;
+		department = clientDepartmentRepository.findOne(id);
+		System.out.println("Departments By id : " + department.toString());
+		return department;
 		
 	}
 
 	@Override
 	public ClientDepartment findDepartmentByName(String name) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ClientDepartment findDepartmentByClient(ClientOrg client) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ClientDepartment findDepartmentByManager(ManagedUser manager) {
-		// TODO Auto-generated method stub
-		return null;
+		ClientDepartment department = null;
+		department = clientDepartmentRepository.findByName(name);
+		System.out.println("Departments By id : " + department.toString());
+		return department;
 	}
 
 	@Override
 	public Set<WorkGroup> findGroupsByDepartment(ClientDepartment department) {
 		// TODO Auto-generated method stub
-		return null;
+		Set<WorkGroup> workgroupList = null;
+		workgroupList = workgroupRepository.findByDepartment(department);		
+		return workgroupList;
 	}
 
 	@Override
 	public ManagedUser findManagedUserById(Long id) {
 		// TODO Auto-generated method stub
-		return null;
+		ManagedUser user = managedUserRepository.findOne(id);
+		return user;
 	}
 
+	//Not required
 	@Override
 	public ManagedUser findManagedUserByAppUser(AppUser user) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	//Not required
 	@Override
 	public List<ManagedUser> findManagedUsersByEmployer(ClientOrg employer) {
 		// TODO Auto-generated method stub
@@ -147,9 +152,11 @@ public class DataService implements IDataService {
 	}
 
 	@Override
-	public List<ManagedUser> findManagedUsersByDepartment(ClientDepartment department) {
+	public Set<ManagedUser> findManagedUsersByDepartment(ClientDepartment department) {
 		// TODO Auto-generated method stub
-		return null;
+		Set<ManagedUser> userList = null;
+		userList = managedUserRepository.findByDepartment(department);
+		return userList;
 	}
 
 	@Override
@@ -160,24 +167,37 @@ public class DataService implements IDataService {
 
 	@Override
 	public WorkGroup findGroupById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		WorkGroup workgroup = workgroupRepository.findOne(id);
+		return workgroup;
 	}
 
 	@Override
 	public WorkGroup findGroupByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		WorkGroup workgroup = workgroupRepository.findByName(name);
+		return workgroup;
 	}
 
+	//Not Required
 	@Override
-	public ClientDepartment findDepartmentByGroup(ClientDepartment department) {
+	public ClientDepartment findDepartmentByGroup(WorkGroup group) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Set<ManagedUser> findManagedUsersByGroup(WorkGroup group) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Request fetchMyRequestList(String userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Request fetchMyActionedRequests(String userId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

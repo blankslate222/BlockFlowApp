@@ -22,9 +22,9 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "node_details")
+@Table(name = "workflow_node_details")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Node implements Serializable {
+public class WorkflowNode implements Serializable {
 
 	/**
 	 * 
@@ -49,10 +49,10 @@ public class Node implements Serializable {
 
     @ManyToOne(cascade={CascadeType.ALL})
     @JoinColumn(name="prev_node_id")
-    private Node prevnode;
+    private WorkflowNode prevnode;
  
     @OneToMany(mappedBy="prevnode")
-    private Set<Node> nextNodes = new HashSet<Node>();
+    private Set<WorkflowNode> nextNodes = new HashSet<WorkflowNode>();
 
 	@Column(name = "is_curent_node", nullable = false)
 	private boolean isCurrentNode = true;
@@ -92,19 +92,19 @@ public class Node implements Serializable {
 		this.workgroup = workgroup;
 	}
 
-	public Node getPrevnode() {
+	public WorkflowNode getPrevnode() {
 		return prevnode;
 	}
 
-	public void setPrevnode(Node prevnode) {
+	public void setPrevnode(WorkflowNode prevnode) {
 		this.prevnode = prevnode;
 	}
 
-	public Set<Node> getNextNodes() {
+	public Set<WorkflowNode> getNextNodes() {
 		return nextNodes;
 	}
 
-	public void setNextNodes(Set<Node> nextNodes) {
+	public void setNextNodes(Set<WorkflowNode> nextNodes) {
 		this.nextNodes = nextNodes;
 	}
 

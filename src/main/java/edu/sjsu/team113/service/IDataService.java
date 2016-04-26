@@ -7,6 +7,7 @@ import edu.sjsu.team113.model.AppUser;
 import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ManagedUser;
+import edu.sjsu.team113.model.Request;
 import edu.sjsu.team113.model.WorkGroup;
 
 public interface IDataService {
@@ -23,20 +24,23 @@ public interface IDataService {
 	
 	ClientDepartment findDepartmentById(Long id);
 	ClientDepartment findDepartmentByName(String name);
-	ClientDepartment findDepartmentByClient(ClientOrg client);
-	ClientDepartment findDepartmentByManager(ManagedUser manager);
 	Set<WorkGroup> findGroupsByDepartment(ClientDepartment department);
 	
 	ManagedUser findManagedUserById(Long id);
 	ManagedUser findManagedUserByAppUser(AppUser user);
 	List<ManagedUser> findManagedUsersByEmployer(ClientOrg employer);
-	List<ManagedUser> findManagedUsersByDepartment(ClientDepartment department);
+	Set<ManagedUser> findManagedUsersByDepartment(ClientDepartment department);
 	Set<WorkGroup> findGroupsByManagedUser(ManagedUser user);
 	
 	WorkGroup findGroupById(String id);
 	WorkGroup findGroupByName(String name);
-	ClientDepartment findDepartmentByGroup(ClientDepartment department);
+	ClientDepartment findDepartmentByGroup(WorkGroup workgroup);
 	Set<ManagedUser> findManagedUsersByGroup(WorkGroup group);
+
+	//Fetches Requests both assigned to myself and any group assigned to me
+	Request fetchMyRequestList(String userId);
 	
+	//Fetches Requests approved/rejected by me
+	Request fetchMyActionedRequests(String userId);
 }
 

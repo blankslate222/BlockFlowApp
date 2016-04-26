@@ -1,5 +1,6 @@
 package edu.sjsu.team113.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -19,15 +20,27 @@ import edu.sjsu.team113.model.AppUserRole;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class AppWebSecurityConfig extends WebSecurityConfigurerAdapter {
+	@Autowired
+	private HttpAuthenticationEntryPoint authenticationEntryPoint;
+	@Autowired
+	private MyAuthenticationSuccessHandler authSuccessHandler;
+	@Autowired
+	private AuthFailureHandler authFailureHandler;
+	@Autowired
+	private HttpLogoutSuccessHandler logoutSuccessHandler;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf()
 				.disable()
+				.exceptionHandling()
+				.authenticationEntryPoint(authenticationEntryPoint)
+				.and()
 				.authorizeRequests()
 				.antMatchers(HttpMethod.POST, "/signup")
 				.permitAll()
-				.antMatchers("/**","/assets/**", "/Theme/**", "/flowchart/**", "/views/**")
+				.antMatchers("/", "/assets/**", "/Theme/**", "/flowchart/**",
+						"/views/**")
 				.permitAll()
 				// give appropriate url - decide
 				.antMatchers("/user/**")
@@ -44,14 +57,19 @@ public class AppWebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.hasAuthority(AppUserRole.STAFF.toString()).anyRequest()
 				.fullyAuthenticated()
 
-				.and().formLogin().loginPage("/#/login").loginProcessingUrl("/login")
-				.usernameParameter("username").passwordParameter("password")
-				.permitAll().defaultSuccessUrl("/#/")
-				.failureUrl("/#/login?error").and().logout()
+				.and().formLogin().loginPage("/#/login")
+				.loginProcessingUrl("/login").usernameParameter("username")
+				.passwordParameter("password").permitAll()
+				.successHandler(authSuccessHandler)
+				.failureHandler(authFailureHandler)
+				.and().logout()
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.logoutSuccessUrl("/#/")
+				.logoutSuccessHandler(logoutSuccessHandler)
+				.and()
+				.sessionManagement().maximumSessions(1);
 				// for access denied - put appropriate url
-				.and().exceptionHandling().accessDeniedPage("/#/forbidden");
+//				.and().exceptionHandling()
+//				.accessDeniedPage("redirect:/forbidden");
 		// .addFilterAfter(new CsrfHeaderFilter(),
 		// CsrfFilter.class).csrfTokenRepository(csrfTokenRepository());
 	}

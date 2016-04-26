@@ -67,6 +67,24 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				}
 			}
 		})
+		.state('root.client.id.dept', {
+			url: '/dept/:depId',
+			views: {
+				'container@' : {
+					templateUrl : 'views/clientDeptDetails.html',
+					controller : 'clientDeptDetailsCtrl'
+				}
+			}
+		})
+		.state('root.client.id.dept.group', {
+			url: '/group/:grpId',
+			views: {
+				'container@' : {
+					templateUrl : 'views/clientDeptGrpDetails.html',
+					controller : 'clientDeptGrpDetailsCtrl'
+				}
+			}
+		})
 		.state('root.workflow', {
 			url : '/workflow',
 			views : {
@@ -93,7 +111,7 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				}
 			}
 		})
-		.state('root.dept', {
+		.state('root.deptss', {
 			url : '/dept',
 			views : {
 				'header@': {

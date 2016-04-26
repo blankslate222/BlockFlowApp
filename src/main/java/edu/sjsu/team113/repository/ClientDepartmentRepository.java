@@ -12,6 +12,7 @@ import edu.sjsu.team113.model.ClientOrg;
 public interface ClientDepartmentRepository extends
 		CrudRepository<ClientDepartment, Long> {
 	
-	Set<ClientDepartment> findDepartmentsByClient(ClientOrg client);
+	ClientDepartment findByName(String name);
+	Set<ClientDepartment> findByClient(ClientOrg client);
 
 }

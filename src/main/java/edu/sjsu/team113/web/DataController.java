@@ -3,8 +3,13 @@ package edu.sjsu.team113.web;
 import java.security.Principal;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +26,9 @@ public class DataController {
 
 	@Autowired
 	private IDataService dataService;
+	
+	@Autowired
+	private SessionFactory sessionFactory;
 
 	@RequestMapping(value = "/clients")
 	public @ResponseBody ControllerResponse getClients(HttpServletResponse res,
@@ -41,5 +49,15 @@ public class DataController {
 		resp.addResponseObject(client);
 		resp.addError(null);
 		return resp;
+	}
+
+	@RequestMapping(value = "/testing")
+	public void hibernateTest() {
+
+		Session session = sessionFactory.openSession();
+		Query query = session
+				.createQuery("insert into AppUser(email, passwordHash, name)"
+						+ "select concat(email,' ',name) , passwordHash, name from AppUser where id = 2");
+		int result = query.executeUpdate();
 	}
 }
