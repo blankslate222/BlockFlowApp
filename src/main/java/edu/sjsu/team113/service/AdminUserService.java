@@ -4,16 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.sjsu.team113.model.AppUser;
+import edu.sjsu.team113.model.AppUserRole;
 import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ManagedUser;
 import edu.sjsu.team113.model.WorkGroup;
 import edu.sjsu.team113.model.Workflow;
+import edu.sjsu.team113.model.WorkflowNode;
 import edu.sjsu.team113.repository.ClientDepartmentRepository;
 import edu.sjsu.team113.repository.ClientOrgRepository;
 import edu.sjsu.team113.repository.ManagedUserRepository;
 import edu.sjsu.team113.repository.UserRepository;
 import edu.sjsu.team113.repository.WorkGroupRepository;
+import edu.sjsu.team113.repository.WorkflowRepository;
 
 @Service
 public class AdminUserService implements IAdminUserService {
@@ -32,6 +35,9 @@ public class AdminUserService implements IAdminUserService {
 
 	@Autowired
 	private WorkGroupRepository groupRepo;
+	
+	@Autowired
+	private WorkflowRepository flowRepo;
 
 	@Autowired
 	private UtilityService utilService;
@@ -129,7 +135,22 @@ public class AdminUserService implements IAdminUserService {
 	@Override
 	public Workflow createWorkflow(Workflow flow, String authenticatedUser) {
 		// TODO Auto-generated method stub
-		return null;
+		Workflow createdFlow = null;
+		AppUser user = userRepo.findByEmail(authenticatedUser);
+		if (!user.getRole().contains(AppUserRole.ADMIN) || user.getId() != 1) {
+			System.out.println("PERMISSION DENIED");
+			return null;
+		} else {
+			System.out.println("user may create workflow");
+		}
+
+		flow.setLastModUserId(user);
+		for (WorkflowNode node : flow.getNodes()) {
+			node.setWorkflow(flow);
+			node.setWorkgroup(flow.getClient().getClientAdminGroup());
+		}
+		createdFlow = flowRepo.save(flow);
+		return createdFlow;
 	}
 
 	@Override

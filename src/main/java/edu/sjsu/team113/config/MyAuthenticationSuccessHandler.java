@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.sjsu.team113.model.AppUser;
@@ -41,6 +42,7 @@ public class MyAuthenticationSuccessHandler extends
 	}
 
 	@Override
+	@JsonView(Views.Public.class)
 	public void onAuthenticationSuccess(HttpServletRequest request,
 			HttpServletResponse response, Authentication authentication)
 			throws IOException, ServletException {
@@ -62,7 +64,7 @@ public class MyAuthenticationSuccessHandler extends
 			respMap.put("client", null);
 		}
 		request.getSession().setAttribute("userdetails", respMap);
-		mapper.writeValue(writer, respMap);
+		mapper.writerWithView(Views.Public.class).writeValue(writer, respMap);
 		writer.flush();
 	}
 

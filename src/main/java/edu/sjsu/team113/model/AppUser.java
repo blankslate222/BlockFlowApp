@@ -18,6 +18,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
+
+import edu.sjsu.team113.config.Views;
 
 @Entity
 @Table(name = "app_user")
@@ -32,21 +35,25 @@ public class AppUser implements Serializable {
 	@Column(name = "user_id")
 	@Id
 	@GeneratedValue
+	@JsonView(Views.Public.class)
 	private Long id;
 
 	@Column(name = "user_email", nullable = false, unique = true)
+	@JsonView(Views.Public.class)
 	private String email;
 
 	@Column(name = "password_hash", nullable = false)
 	private String passwordHash;
 
 	@Column(name = "user_fullname", nullable = false)
+	@JsonView(Views.Public.class)
 	private String name;
 
 	@ElementCollection(targetClass = AppUserRole.class, fetch = FetchType.EAGER)
 	@JoinTable(name = "app_user_role",  joinColumns = @JoinColumn(name = "user_id"))
 	@Enumerated(EnumType.STRING)
 	@Column(name = "user_role")
+	@JsonView(Views.Public.class)
 	private Set<AppUserRole> roles;
 
 	@Column(name = "created_time")

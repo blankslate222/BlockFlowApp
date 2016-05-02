@@ -38,4 +38,9 @@ public class UtilityService {
 		createdUser = managedUserRepo.save(userToBeCreated);
 		return createdUser;
 	}
+	
+	public boolean checkUserPermissions(String authenticatedUser) {
+		
+		return false;
+	}
 }

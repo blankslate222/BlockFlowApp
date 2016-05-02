@@ -17,11 +17,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "workflow_master")
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id",scope=WorkflowNode.class)
 public class Workflow implements Serializable {
 
 	/**
@@ -37,7 +42,7 @@ public class Workflow implements Serializable {
 	@Column(name = "workflow_name", nullable = false, unique = true)
 	private String name;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "client_id")
 	private ClientOrg client;
 	
@@ -51,11 +56,16 @@ public class Workflow implements Serializable {
 	@JoinColumn(name = "last_mod_userid")
 	private AppUser lastModUserId;
 
-	@OneToMany(mappedBy = "workflow", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "workflow", fetch = FetchType.EAGER)
+	@Cascade({org.hibernate.annotations.CascadeType.ALL})
 	private Set<WorkflowNode> nodes = new HashSet<>();
 
 	@Column(name = "workflow_modifiedtime")
 	private Timestamp modified = new Timestamp(new Date().getTime());
+
+	public Long getId() {
+		return id;
+	}
 
 	public String getName() {
 		return name;
@@ -89,6 +99,18 @@ public class Workflow implements Serializable {
 		this.created = created;
 	}
 
+	public Set<WorkflowNode> getNodes() {
+		return nodes;
+	}
+
+	public void setNodes(Set<WorkflowNode> nodes) {
+		this.nodes = nodes;
+	}
+
+	public void addNode(WorkflowNode node) {
+		node.setWorkflow(this);
+		this.nodes.add(node);
+	}
 	public AppUser getLastModUserId() {
 		return lastModUserId;
 	}

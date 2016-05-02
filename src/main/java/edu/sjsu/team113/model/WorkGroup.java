@@ -18,7 +18,10 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import edu.sjsu.team113.config.Views;
 
 @Entity
 @Table(name = "work_group")
@@ -34,9 +37,11 @@ public class WorkGroup implements Serializable {
 	@Id
 	@GeneratedValue
 	@Column(name = "group_id")
+	@JsonView(Views.Public.class)
 	private Long id;
 
 	@Column(name = "group_name", nullable = false)
+	@JsonView(Views.Public.class)
 	private String name;
 
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -45,6 +50,7 @@ public class WorkGroup implements Serializable {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "department_id")
+	@JsonView(Views.Public.class)
 	private ClientDepartment department;
 
 	@ManyToMany(mappedBy = "groups")

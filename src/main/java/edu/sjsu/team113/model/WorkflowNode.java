@@ -3,10 +3,7 @@ package edu.sjsu.team113.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,14 +13,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "workflow_node_details")
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id",scope=WorkflowNode.class)
 public class WorkflowNode implements Serializable {
 
 	/**
@@ -36,10 +35,10 @@ public class WorkflowNode implements Serializable {
 	@Column(name = "node_id")
 	private Long id;
 
-	@Column(name = "node_name", nullable = false, unique = true)
+	@Column(name = "node_name", nullable = false)
 	private String name;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "workflow_id")
 	private Workflow workflow;
 

@@ -143,7 +143,11 @@ public class DataService implements IDataService {
 	@Override
 	public ManagedUser findManagedUserByAppUser(AppUser user) {
 		// TODO Auto-generated method stub
-		return null;
+		ManagedUser userInDb = null;
+		System.out.println("no fetching managed user record for app user = " + user.getEmail());
+		userInDb = managedUserRepository.findByAppUser(user);
+		System.out.println("Found managed user = " + userInDb.getId() + " -> employer = " + userInDb.getEmployer());
+		return userInDb;
 	}
 
 	//Not required
