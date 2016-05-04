@@ -49,4 +49,9 @@ public class AppUserService implements IAppUserService{
 		return foundUser;
 	}
 
+	@Override
+	public String raiseRequest(Long workflowId, Long clientId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

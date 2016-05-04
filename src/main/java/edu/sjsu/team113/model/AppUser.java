@@ -54,7 +54,7 @@ public class AppUser implements Serializable {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "user_role")
 	@JsonView(Views.Public.class)
-	private Set<AppUserRole> roles;
+	private Set<AppUserRole> role;
 
 	@Column(name = "created_time")
 	private Timestamp created = new Timestamp(new Date().getTime());
@@ -75,7 +75,7 @@ public class AppUser implements Serializable {
 		this.email = email;
 		this.passwordHash = passHash;
 		this.name = name;
-		this.roles = role;
+		this.role = role;
 	}
 
 	public Long getId() {
@@ -111,11 +111,35 @@ public class AppUser implements Serializable {
 	}
 
 	public Set<AppUserRole> getRole() {
-		return roles;
+		return role;
 	}
 
 	public void setRole(Set<AppUserRole> role) {
-		this.roles = role;
+		this.role = role;
+	}
+
+	public Timestamp getCreated() {
+		return created;
+	}
+
+	public void setCreated(Timestamp created) {
+		this.created = created;
+	}
+
+	public Timestamp getModified() {
+		return modified;
+	}
+
+	public void setModified(Timestamp modified) {
+		this.modified = modified;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 	public String toString() {
@@ -128,7 +152,7 @@ public class AppUser implements Serializable {
 		sb.append(", name : ");
 		sb.append(this.name);
 		sb.append(", role : ");
-		sb.append(this.roles);
+		sb.append(this.role);
 		userString = sb.toString();
 		return userString;
 	}

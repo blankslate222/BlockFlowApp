@@ -3,10 +3,7 @@ package edu.sjsu.team113.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -60,6 +56,9 @@ public class RequestNode implements Serializable {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "node_status")
 	private NodeStatus status ;
+	
+	@Column(name = "mutation_hash")
+	private String mutationHash;
 
 	public Long getId() {
 		return id;
@@ -127,6 +126,14 @@ public class RequestNode implements Serializable {
 
 	public void setStatus(NodeStatus status) {
 		this.status = status;
+	}
+
+	public String getMutationHash() {
+		return mutationHash;
+	}
+
+	public void setMutationHash(String mutationHash) {
+		this.mutationHash = mutationHash;
 	}
 
 	public Timestamp getCreated() {

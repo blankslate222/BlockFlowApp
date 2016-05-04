@@ -85,7 +85,7 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				}
 			}
 		})
-		.state('root.workflow', {
+		.state('root.workflowcrete', {
 			url : '/workflow',
 			views : {
 				'header@': {
@@ -95,6 +95,19 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				'container@' : {
 					templateUrl : 'views/workflow.html',
 					controller : 'workCtrl'
+				}
+			}
+		})
+		.state('root.workflow', {
+			url : '',
+			views : {
+				'header@': {
+					templateUrl: 'views/header.html',
+					controller: 'headCtrl'
+				},
+				'container@' : {
+					templateUrl : 'views/workflowdisplay.html',
+					controller : 'workViewCtrl'
 				}
 			}
 		})

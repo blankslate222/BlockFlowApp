@@ -342,3 +342,15 @@ cmpe
 							$scope.chartViewModel = new flowchart.ChartViewModel(
 									chartDataModel);
 						} ]);
+
+cmpe
+.controller(
+		'workViewCtrl',
+		[
+				'$scope',
+				'$http',
+				'prompt',
+				'$cookieStore',
+				function ($scope, $http, prompt, $cookieStore) {
+					
+				}]);

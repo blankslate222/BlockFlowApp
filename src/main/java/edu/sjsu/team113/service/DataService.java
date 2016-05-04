@@ -34,45 +34,48 @@ public class DataService implements IDataService {
 
 	@Override
 	public ClientOrg findClientOrgById(Long id) {
-		
+
 		ClientOrg foundClientOrg = null;
 		System.out.println("now finding clientOrg by id " + id);
 		foundClientOrg = clientOrgRepository.findOne(id);
-		//System.out.println("found departments = " + findDepartmentsByClient(foundClientOrg));
-		System.out.println("found departments = " + foundClientOrg.getClientDepartments());
-		
+		// System.out.println("found departments = " +
+		// findDepartmentsByClient(foundClientOrg));
+		System.out.println("found departments = "
+				+ foundClientOrg.getClientDepartments());
+
 		return foundClientOrg;
-		
+
 	}
 
 	@Override
 	public ClientOrg findClientOrgByName(String name) {
-		
+
 		ClientOrg foundClientOrgByName = null;
 		System.out.println("now finding clientOrg by name " + name);
 		foundClientOrgByName = clientOrgRepository.findByName(name);
-		System.out.println("found clientOrg = " + foundClientOrgByName.toString());
+		System.out.println("found clientOrg = "
+				+ foundClientOrgByName.toString());
 		return foundClientOrgByName;
-		
+
 	}
 
 	@Override
 	public List<ClientOrg> findClientOrgs() {
-		
+
 		List<ClientOrg> foundClientOrgs = null;
 		System.out.println("now finding all client orgs ");
 		foundClientOrgs = (List<ClientOrg>) clientOrgRepository.findAll();
 		System.out.println("client org list size = " + foundClientOrgs.size());
-//		for (ClientOrg clientOrg : foundClientOrgs) {
-//			System.out.println(clientOrg.toString());
-//		}
+		// for (ClientOrg clientOrg : foundClientOrgs) {
+		// System.out.println(clientOrg.toString());
+		// }
 		return foundClientOrgs;
-		
+
 	}
 
 	@Override
 	public List<ClientOrg> findActiveClientOrgs() {
-		
+
 		List<ClientOrg> foundActiveClientOrgs = null;
 		System.out.println("now finding all active client orgs ");
 		foundActiveClientOrgs = clientOrgRepository.findByIsActive(true);
@@ -81,7 +84,7 @@ public class DataService implements IDataService {
 			System.out.println(clientOrg.toString());
 		}
 		return foundActiveClientOrgs;
-		
+
 	}
 
 	@Override
@@ -89,7 +92,8 @@ public class DataService implements IDataService {
 
 		Set<ClientDepartment> foundDepartmentsByClient = null;
 		System.out.println("now finding departments by client ");
-		foundDepartmentsByClient = clientDepartmentRepository.findByClient(client);
+		foundDepartmentsByClient = clientDepartmentRepository
+				.findByClient(client);
 		System.out.println("Departments By Client : ");
 		for (ClientDepartment clientDep : foundDepartmentsByClient) {
 			System.out.println(clientDep.toString());
@@ -106,13 +110,13 @@ public class DataService implements IDataService {
 
 	@Override
 	public ClientDepartment findDepartmentById(Long id) {
-		
+
 		ClientDepartment department = null;
 		System.out.println("now finding departments by id ");
 		department = clientDepartmentRepository.findOne(id);
 		System.out.println("Departments By id : " + department.toString());
 		return department;
-		
+
 	}
 
 	@Override
@@ -128,7 +132,7 @@ public class DataService implements IDataService {
 	public Set<WorkGroup> findGroupsByDepartment(ClientDepartment department) {
 		// TODO Auto-generated method stub
 		Set<WorkGroup> workgroupList = null;
-		workgroupList = workgroupRepository.findByDepartment(department);		
+		workgroupList = workgroupRepository.findByDepartment(department);
 		return workgroupList;
 	}
 
@@ -139,18 +143,20 @@ public class DataService implements IDataService {
 		return user;
 	}
 
-	//Not required
+	// Not required
 	@Override
 	public ManagedUser findManagedUserByAppUser(AppUser user) {
 		// TODO Auto-generated method stub
 		ManagedUser userInDb = null;
-		System.out.println("no fetching managed user record for app user = " + user.getEmail());
+		System.out.println("no fetching managed user record for app user = "
+				+ user.getEmail());
 		userInDb = managedUserRepository.findByAppUser(user);
-		System.out.println("Found managed user = " + userInDb.getId() + " -> employer = " + userInDb.getEmployer());
+		System.out.println("Found managed user = " + userInDb.getId()
+				+ " -> employer = " + userInDb.getEmployer());
 		return userInDb;
 	}
 
-	//Not required
+	// Not required
 	@Override
 	public List<ManagedUser> findManagedUsersByEmployer(ClientOrg employer) {
 		// TODO Auto-generated method stub
@@ -158,7 +164,8 @@ public class DataService implements IDataService {
 	}
 
 	@Override
-	public Set<ManagedUser> findManagedUsersByDepartment(ClientDepartment department) {
+	public Set<ManagedUser> findManagedUsersByDepartment(
+			ClientDepartment department) {
 		// TODO Auto-generated method stub
 		Set<ManagedUser> userList = null;
 		userList = managedUserRepository.findByDepartment(department);
@@ -183,7 +190,7 @@ public class DataService implements IDataService {
 		return workgroup;
 	}
 
-	//Not Required
+	// Not Required
 	@Override
 	public ClientDepartment findDepartmentByGroup(WorkGroup group) {
 		// TODO Auto-generated method stub
@@ -208,4 +215,11 @@ public class DataService implements IDataService {
 		return null;
 	}
 
+	@Override
+	public String getSeedForClient(ClientOrg client) {
+		// TODO Auto-generated method stub
+		ClientOrg org = clientOrgRepository.findOne(client.getId());
+		String seed = org.getBlockchainSeed();
+		return seed;
+	}
 }

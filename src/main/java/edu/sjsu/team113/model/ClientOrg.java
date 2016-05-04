@@ -68,6 +68,12 @@ public class ClientOrg implements Serializable {
 	@JsonView(Views.Public.class)
 	private WorkGroup clientAdminGroup;
 	
+	@Column(name = "chain_seed")
+	private String blockchainSeed;
+	
+	@Column(name = "mutation_string")
+	private String mutationString;
+	
 	public Long getId() {
 		return id;
 	}
@@ -116,6 +122,10 @@ public class ClientOrg implements Serializable {
 		this.created = created;
 	}
 
+	public Timestamp getCreated() {
+		return created;
+	}
+	
 	public Set<WorkGroup> getGroups() {
 		return groups;
 	}
@@ -132,7 +142,19 @@ public class ClientOrg implements Serializable {
 		this.clientAdminGroup = clientAdminGroup;
 	}
 
-	public Timestamp getCreated() {
-		return created;
+	public String getBlockchainSeed() {
+		return blockchainSeed;
+	}
+
+	public void setBlockchainSeed(String blockchainSeed) {
+		this.blockchainSeed = blockchainSeed;
+	}
+
+	public String getMutationString() {
+		return mutationString;
+	}
+
+	public void setMutationString(String mutationString) {
+		this.mutationString = mutationString;
 	}
 }

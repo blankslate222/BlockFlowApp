@@ -34,21 +34,21 @@ public class Request implements Serializable {
 	@GeneratedValue
 	@Column(name = "request_id")
 	private Long id;
-	
+
 	@Column(name = "request_title", nullable = false, unique = true)
 	private String title;
-	
+
 	@Column(name = "request_desc", nullable = false, unique = true)
 	private String description;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "workflow_id")
 	private Workflow workflow;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "initiator_id")
 	private AppUser initiatorid;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "initiator_dept_mgr_group_id")
 	private WorkGroup initiator_dept_mgr_group_id;
@@ -58,7 +58,7 @@ public class Request implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "request_status")
-	private RequestStatus status ;
+	private RequestStatus status;
 
 	@OneToMany(mappedBy = "request", fetch = FetchType.LAZY)
 	private Set<RequestNode> nodes = new HashSet<>();
@@ -69,6 +69,9 @@ public class Request implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "last_mod_userid")
 	private AppUser lastModUserId;
+
+	@Column(name = "mutation_hash")
+	private String mutationHash;
 
 	@Column(name = "request_modifiedtime")
 	private Timestamp modified = new Timestamp(new Date().getTime());
@@ -117,7 +120,8 @@ public class Request implements Serializable {
 		return initiator_dept_mgr_group_id;
 	}
 
-	public void setInitiator_dept_mgr_group_id(WorkGroup initiator_dept_mgr_group_id) {
+	public void setInitiator_dept_mgr_group_id(
+			WorkGroup initiator_dept_mgr_group_id) {
 		this.initiator_dept_mgr_group_id = initiator_dept_mgr_group_id;
 	}
 
@@ -127,6 +131,30 @@ public class Request implements Serializable {
 
 	public void setStatus(RequestStatus status) {
 		this.status = status;
+	}
+
+	public Set<RequestComment> getRequestComments() {
+		return requestComments;
+	}
+
+	public void setRequestComments(Set<RequestComment> requestComments) {
+		this.requestComments = requestComments;
+	}
+
+	public Set<RequestNode> getNodes() {
+		return nodes;
+	}
+
+	public void setNodes(Set<RequestNode> nodes) {
+		this.nodes = nodes;
+	}
+
+	public String getMutationHash() {
+		return mutationHash;
+	}
+
+	public void setMutationHash(String mutationHash) {
+		this.mutationHash = mutationHash;
 	}
 
 	public Timestamp getCreated() {
@@ -152,6 +180,5 @@ public class Request implements Serializable {
 	public void setModified(Timestamp modified) {
 		this.modified = modified;
 	}
-
 
 }

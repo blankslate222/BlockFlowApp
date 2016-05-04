@@ -1,16 +1,20 @@
 package edu.sjsu.team113.service;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import edu.sjsu.team113.model.AppUser;
 import edu.sjsu.team113.model.AppUserRole;
+import edu.sjsu.team113.model.ChainAudit;
 import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ManagedUser;
 import edu.sjsu.team113.model.WorkGroup;
 import edu.sjsu.team113.model.Workflow;
 import edu.sjsu.team113.model.WorkflowNode;
+import edu.sjsu.team113.repository.ChainAuditRepository;
 import edu.sjsu.team113.repository.ClientDepartmentRepository;
 import edu.sjsu.team113.repository.ClientOrgRepository;
 import edu.sjsu.team113.repository.ManagedUserRepository;
@@ -40,8 +44,17 @@ public class AdminUserService implements IAdminUserService {
 	private WorkflowRepository flowRepo;
 
 	@Autowired
-	private UtilityService utilService;
+	private IDataService dataService;
+	
+	@Autowired
+	private IBlockchainService chainService;
 
+	@Autowired
+	private ChainAuditRepository auditRepo;
+	
+	@Value("${chain.server}")
+	private String openchainServer;
+	
 	@Override
 	public ClientOrg createClient(ClientOrg client, String authenticatedUser) {
 		// TODO: Check if authenticated user belongs to admin grp
@@ -54,10 +67,31 @@ public class AdminUserService implements IAdminUserService {
 		clientAdminGrp.setName(client.getName() + "_Admin_Group");
 		WorkGroup created = groupRepo.save(clientAdminGrp);
 		client.setClientAdminGroup(created);
+		// create folder on openchain - new seed => new folder
+		String seedValue = chainService.getSeed();
+		
+		while(clientRepo.findByBlockchainSeed(seedValue) != null) {
+			seedValue = chainService.getSeed();
+		}
+		
+		JSONObject obj = new JSONObject();
+		obj.put("host", openchainServer);
+		obj.put("data", "Client Created = " + client.getName());
+		obj.put("seed", seedValue);
+		
+		String mutationHash = chainService.createTransaction(obj.toJSONString());
+		client.setBlockchainSeed(seedValue);
+		client.setMutationString(mutationHash);
+		
 		ClientOrg createdClient = clientRepo.save(client);
 		created.setClient(createdClient);
 		groupRepo.save(created);
 		// TODO: bug in the code
+		// TODO: add to admin table - done
+		ChainAudit audit = new ChainAudit();
+		audit.setClientName(createdClient.getName());
+		audit.setInitialMutationHash(createdClient.getMutationString());
+		auditRepo.save(audit);
 		return createdClient;
 	}
 
