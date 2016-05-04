@@ -19,6 +19,8 @@ import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ControllerResponse;
 import edu.sjsu.team113.model.ManagedUser;
 import edu.sjsu.team113.model.WorkGroup;
+import edu.sjsu.team113.model.Workflow;
+import edu.sjsu.team113.service.AppUserService;
 import edu.sjsu.team113.service.IAdminUserService;
 import edu.sjsu.team113.service.IDataService;
 import edu.sjsu.team113.service.IManagerUserService;
@@ -32,9 +34,12 @@ public class AdminUserController {
 
 	@Autowired
 	private IDataService dataService;
-	
+
 	@Autowired
 	private IManagerUserService mgrService;
+	
+	@Autowired
+	private AppUserService userService;
 
 	@RequestMapping(value = "/audit")
 	public @ResponseBody ControllerResponse auditChain(HttpServletResponse res,
@@ -75,22 +80,24 @@ public class AdminUserController {
 		String authUser = ""; // principal.getName();
 		// TODO: temporary
 		authUser = "admin@admin.com";
-		ClientDepartment createdDepartment = adminService.createDepartment(department, authUser);
+		ClientDepartment createdDepartment = adminService.createDepartment(
+				department, authUser);
 		if (createdDepartment == null) {
 			res.setStatus(409);
 		}
 
-		//ResourceException exc = new ResourceException(
-			//	"something is wrong - testing");
+		// ResourceException exc = new ResourceException(
+		// "something is wrong - testing");
 		resp.addToResponseMap("responseObject", createdDepartment);
-		//resp.addToResponseMap("error", exc);
+		// resp.addToResponseMap("error", exc);
 
 		return resp;
 	}
 
 	@RequestMapping(value = "/group/create", method = RequestMethod.POST)
-	public @ResponseBody ControllerResponse createWorkGroup(@RequestBody WorkGroup grp,
-			HttpServletResponse res, Principal principal) {
+	public @ResponseBody ControllerResponse createWorkGroup(
+			@RequestBody WorkGroup grp, HttpServletResponse res,
+			Principal principal) {
 		ControllerResponse resp = new ControllerResponse();
 		WorkGroup created = mgrService.createGroup(grp);
 		resp.addResponseObject(created);
@@ -112,6 +119,35 @@ public class AdminUserController {
 				client, user, authUser);
 		resp.addToResponseMap("responseObject", returnObject);
 		resp.addToResponseMap("error", null);
+		return resp;
+	}
+
+	@RequestMapping(value = "/workflow/create", method = RequestMethod.POST)
+	public @ResponseBody ControllerResponse createWorkflow(
+			@RequestBody Workflow workflow, HttpServletResponse res,
+			Principal principal) {
+		
+		ControllerResponse resp = new ControllerResponse();
+		String authenticatedUser = "admin@admin.com";
+		if (principal != null){
+			authenticatedUser = principal.getName();
+			System.out.println("principal = " + principal.toString());
+		}
+		else 
+			System.out.println("Principal null");
+		if (workflow.getNodes() != null) {
+			System.out.println(workflow.getNodes().size());
+		} else {
+			System.out.println("no nodes received");
+		}
+		Workflow createdFlow = adminService.createWorkflow(workflow, authenticatedUser);
+		if (createdFlow == null) {
+			resp.addError(new ResourceException("Workflow could not be created"));
+			res.setStatus(400);
+			return resp;
+		}
+		res.setStatus(201);
+		resp.addResponseObject(createdFlow);
 		return resp;
 	}
 }

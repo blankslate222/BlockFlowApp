@@ -4,23 +4,57 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import edu.sjsu.team113.model.AppUser;
 import edu.sjsu.team113.model.AppUserRole;
+import edu.sjsu.team113.model.ClientOrg;
+import edu.sjsu.team113.model.NodeStatus;
+import edu.sjsu.team113.model.Request;
+import edu.sjsu.team113.model.RequestNode;
+import edu.sjsu.team113.model.RequestStatus;
+import edu.sjsu.team113.model.WorkGroup;
+import edu.sjsu.team113.model.Workflow;
+import edu.sjsu.team113.model.WorkflowNode;
+import edu.sjsu.team113.repository.ClientOrgRepository;
+import edu.sjsu.team113.repository.RequestRepository;
 import edu.sjsu.team113.repository.UserRepository;
+import edu.sjsu.team113.repository.WorkflowRepository;
 
 @Service
-public class AppUserService implements IAppUserService{
+public class AppUserService implements IAppUserService {
+
+	@Value("${chain.server}")
+	private String openchainServer;
 
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private WorkflowRepository flowRepo;
+
+	@Autowired
+	private ClientOrgRepository clientRepo;
+
+	@Autowired
+	private RequestRepository reqRepo;
+
+	@Autowired
+	private IBlockchainService chainService;
+
+	@Autowired
+	private ClientOrgRepository cliRepo;
+
 	public AppUser saveUser(AppUser user) {
 		AppUser savedUser = null;
-		
+
 		String email = user.getEmail();
 		if (userRepository.findByEmail(email) != null) {
 			return null;
@@ -49,4 +83,55 @@ public class AppUserService implements IAppUserService{
 		return foundUser;
 	}
 
+	@Override
+	public String raiseRequest(Long workflowId, Long clientId, AppUser user) {
+		// TODO Auto-generated method stub
+		Workflow requestedFlow = flowRepo.findOne(workflowId);
+		Set<WorkflowNode> nodes = requestedFlow.getNodes();
+		Request newrequest = new Request();
+		// mgr grp of node with level = 1
+		WorkGroup initiator_dept_mgr_group_id = null;
+		Set<RequestNode> requestNodes = new HashSet<RequestNode>();
+		for (WorkflowNode node : nodes) {
+			RequestNode reqNode = new RequestNode();
+			if (node.getId() == 1) {
+				initiator_dept_mgr_group_id = node.getWorkgroup();
+				reqNode.setCurrentNode(true);
+				reqNode.setStatus(NodeStatus.PENDING_ACTION);
+			}
+			reqNode.setLevel(node.getLevel());
+			reqNode.setRequest(newrequest);
+			reqNode.setName(node.getName());
+		}
+		newrequest.setStatus(RequestStatus.PENDING);
+		newrequest.setTitle(requestedFlow.getName());
+		newrequest.setInitiatorid(user);
+		newrequest.setWorkflow(requestedFlow);
+		newrequest.setLastModUserId(user);
+		newrequest.setInitiator_dept_mgr_group_id(initiator_dept_mgr_group_id);
+		newrequest.setNodes(requestNodes);
+
+		ClientOrg reqOwner = initiator_dept_mgr_group_id.getClient();
+		String seed = reqOwner.getBlockchainSeed();
+
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonString = null;
+		try {
+			jsonString = mapper.writeValueAsString(newrequest);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JSONObject obj = new JSONObject();
+		obj.put("data", jsonString);
+		obj.put("host", openchainServer);
+		obj.put("seed", seed);
+
+		String mutationhash = chainService
+				.createTransaction(obj.toJSONString());
+		newrequest.setMutationHash(mutationhash);
+		reqRepo.save(newrequest);
+		
+		return mutationhash;
+	}
 }

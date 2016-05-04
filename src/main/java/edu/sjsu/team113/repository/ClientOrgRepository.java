@@ -12,5 +12,5 @@ public interface ClientOrgRepository extends CrudRepository<ClientOrg, Long> {
 	
 	List<ClientOrg> findByIsActive(boolean isActive);
 	ClientOrg findByName(String name);
-	
+	ClientOrg findByBlockchainSeed(String seedValue);
 }

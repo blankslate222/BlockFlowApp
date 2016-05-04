@@ -18,6 +18,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
+
+import edu.sjsu.team113.config.Views;
 
 @Entity
 @Table(name = "app_user")
@@ -32,22 +35,26 @@ public class AppUser implements Serializable {
 	@Column(name = "user_id")
 	@Id
 	@GeneratedValue
+	@JsonView(Views.Public.class)
 	private Long id;
 
 	@Column(name = "user_email", nullable = false, unique = true)
+	@JsonView(Views.Public.class)
 	private String email;
 
 	@Column(name = "password_hash", nullable = false)
 	private String passwordHash;
 
 	@Column(name = "user_fullname", nullable = false)
+	@JsonView(Views.Public.class)
 	private String name;
 
 	@ElementCollection(targetClass = AppUserRole.class, fetch = FetchType.EAGER)
 	@JoinTable(name = "app_user_role",  joinColumns = @JoinColumn(name = "user_id"))
 	@Enumerated(EnumType.STRING)
 	@Column(name = "user_role")
-	private Set<AppUserRole> roles;
+	@JsonView(Views.Public.class)
+	private Set<AppUserRole> role;
 
 	@Column(name = "created_time")
 	private Timestamp created = new Timestamp(new Date().getTime());
@@ -68,7 +75,7 @@ public class AppUser implements Serializable {
 		this.email = email;
 		this.passwordHash = passHash;
 		this.name = name;
-		this.roles = role;
+		this.role = role;
 	}
 
 	public Long getId() {
@@ -104,11 +111,35 @@ public class AppUser implements Serializable {
 	}
 
 	public Set<AppUserRole> getRole() {
-		return roles;
+		return role;
 	}
 
 	public void setRole(Set<AppUserRole> role) {
-		this.roles = role;
+		this.role = role;
+	}
+
+	public Timestamp getCreated() {
+		return created;
+	}
+
+	public void setCreated(Timestamp created) {
+		this.created = created;
+	}
+
+	public Timestamp getModified() {
+		return modified;
+	}
+
+	public void setModified(Timestamp modified) {
+		this.modified = modified;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 	public String toString() {
@@ -121,7 +152,7 @@ public class AppUser implements Serializable {
 		sb.append(", name : ");
 		sb.append(this.name);
 		sb.append(", role : ");
-		sb.append(this.roles);
+		sb.append(this.role);
 		userString = sb.toString();
 		return userString;
 	}

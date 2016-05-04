@@ -7,5 +7,5 @@ import edu.sjsu.team113.model.Workflow;
 
 @Repository
 public interface WorkflowRepository extends CrudRepository<Workflow, Long>{
-
+	
 }

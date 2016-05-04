@@ -2,11 +2,12 @@ cmpe
 		.controller(
 				'loginCtrl',
 				function($scope, $stateParams, $state, $log, $timeout,
-						$rootScope, $http) {
-
+						$rootScope, $http, $cookieStore) {
+					
 					$scope.user = {};
 
 					$scope.doLogin = function() {
+						console.log("in login");
 						var user = {
 							username : $scope.user.email,
 							password : $scope.user.password
@@ -23,9 +24,11 @@ cmpe
 						})
 						.success(function(data) {
 							console.log(data);
-							if (data.email) {
+							if (data.user.email) {
+								$cookieStore.put('user', data.user);
+								$cookieStore.put('client', data.client);
+								//console.log($cookieStore.get('user'));
 								$state.go('root.dash');
-								$window.location.href = '/index.html'
 							} else
 								$scope.status = data.error;
 						})

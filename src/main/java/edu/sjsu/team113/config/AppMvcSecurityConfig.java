@@ -37,7 +37,7 @@ public class AppMvcSecurityConfig extends WebMvcConfigurerAdapter {
         ObjectMapper mapper = new ObjectMapper();
         //Registering Hibernate4Module to support lazy objects
         mapper.registerModule(new Hibernate4Module());
-
+        
         messageConverter.setObjectMapper(mapper);
         return messageConverter;
 
