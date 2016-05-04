@@ -18,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -60,7 +62,8 @@ public class Request implements Serializable {
 	@Column(name = "request_status")
 	private RequestStatus status;
 
-	@OneToMany(mappedBy = "request", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "request", fetch = FetchType.EAGER)
+	@Cascade({org.hibernate.annotations.CascadeType.ALL})
 	private Set<RequestNode> nodes = new HashSet<>();
 
 	@Column(name = "request_createdtime")

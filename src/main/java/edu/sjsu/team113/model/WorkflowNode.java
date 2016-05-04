@@ -42,7 +42,7 @@ public class WorkflowNode implements Serializable {
 	@JoinColumn(name = "workflow_id")
 	private Workflow workflow;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "group_id")
 	private WorkGroup workgroup;
 
@@ -54,7 +54,7 @@ public class WorkflowNode implements Serializable {
 //    private Set<WorkflowNode> nextNodes = new HashSet<WorkflowNode>();
 
 	@Column(name = "is_curent_node", nullable = false)
-	private boolean isCurrentNode = true;
+	private boolean isCurrentNode = false;
 
 	@Column(name = "level_from_initial_node", nullable = false)
 	private int level;

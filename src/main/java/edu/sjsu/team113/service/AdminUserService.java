@@ -1,5 +1,7 @@
 package edu.sjsu.team113.service;
 
+import java.util.List;
+
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -180,6 +182,7 @@ public class AdminUserService implements IAdminUserService {
 
 		flow.setLastModUserId(user);
 		for (WorkflowNode node : flow.getNodes()) {
+			if (node.getLevel() == 1) node.setCurrentNode(true);
 			node.setWorkflow(flow);
 			node.setWorkgroup(flow.getClient().getClientAdminGroup());
 		}
@@ -201,5 +204,12 @@ public class AdminUserService implements IAdminUserService {
 		userToBeCreated.setAppUser(appUser);
 		createdUser = managedUserRepo.save(userToBeCreated);
 		return createdUser;
+	}
+
+	@Override
+	public List<ChainAudit> auditChain() {
+		// TODO Auto-generated method stub
+		
+		return null;
 	}
 }

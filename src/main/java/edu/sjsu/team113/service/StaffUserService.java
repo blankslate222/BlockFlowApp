@@ -53,23 +53,42 @@ public class StaffUserService implements IStaffUserService {
 
 		int lastLevel = nodes.get(nodes.size() - 1).getLevel();
 
+		int n = nodes.size();
 		NodeStatus nextnodestatus = null;
 		RequestStatus nextstatus = null;
-		for (RequestNode node : nodes) {
+		for (int i = 0; i < n; i++) {
+			RequestNode node = nodes.get(i);
 			if (node.getId() == requestNodeId) {
 				switch (status) {
 				case "APPROVED":
 					nextnodestatus = NodeStatus.APPROVED;
+					// current no longer current node
+					node.setCurrentNode(false);
+		
 					if (node.getLevel() == lastLevel) {
 						nextstatus = RequestStatus.APPROVED;
 						changeRequestStatus(request, nextstatus, flowClient);
+						changeNodeStatus(node, nextnodestatus, flowClient);
+						break;
 					}
 					changeNodeStatus(node, nextnodestatus, flowClient);
+					// TODO: change node active value of next node
+					RequestNode nextnode = nodes.get(i + 1);
+					nextnode.setCurrentNode(true);
+					nextnode.setStatus(NodeStatus.PENDING_ACTION);
+					nextnode.setModified(new Timestamp(new Date().getTime()));
+					nodeRepo.save(nextnode);
 					break;
 				case "REJECTED":
 					nextnodestatus = NodeStatus.REJECTED;
 					nextstatus = RequestStatus.REJECTED;
 					changeNodeStatus(node, nextnodestatus, flowClient);
+					// change node status and current value of remaining nodes
+					for (int j = i; j < n; j++) {
+						RequestNode unreachedNode = nodes.get(j);
+						unreachedNode.setStatus(NodeStatus.REJECTED);
+						nodeRepo.save(unreachedNode);
+					}
 					changeRequestStatus(request, nextstatus, flowClient);
 					break;
 				default:

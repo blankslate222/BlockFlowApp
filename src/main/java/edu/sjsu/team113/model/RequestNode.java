@@ -48,14 +48,14 @@ public class RequestNode implements Serializable {
 //    private Set<WorkflowNode> nextNodes = new HashSet<WorkflowNode>();
 
 	@Column(name = "is_curent_node", nullable = false)
-	private boolean isCurrentNode = true;
+	private boolean isCurrentNode = false;
 
 	@Column(name = "level_from_initial_node", nullable = false)
 	private int level;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "node_status")
-	private NodeStatus status ;
+	private NodeStatus status = NodeStatus.PENDING;
 	
 	@Column(name = "mutation_hash")
 	private String mutationHash;
