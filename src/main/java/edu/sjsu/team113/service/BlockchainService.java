@@ -1,6 +1,7 @@
 package edu.sjsu.team113.service;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
@@ -23,6 +24,7 @@ public class BlockchainService implements IBlockchainService {
 	@Value("${chain.server}")
 	private String openchainServer;
 
+	private SecureRandom random = new SecureRandom();
 	private CloseableHttpClient httpClient = HttpClients.createDefault();
 
 	@Override
@@ -102,7 +104,9 @@ public class BlockchainService implements IBlockchainService {
 		String endpoint = nodeServer + path;
 		CloseableHttpResponse response = null;
 		HttpPost postReq = new HttpPost(endpoint);
+
 		try {
+			jsonEntity.setContentType("application/json");
 			postReq.setEntity(jsonEntity);
 			response = httpClient.execute(postReq);
 			HttpEntity responseEntity = response.getEntity();
@@ -127,7 +131,7 @@ public class BlockchainService implements IBlockchainService {
 
 	private String generateId() throws NoSuchAlgorithmException {
 		SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-		byte[] bytes = new byte[5];
+		byte[] bytes = new byte[16];
 		random.nextBytes(bytes);
 		return byteArrayToHex(bytes);
 	}

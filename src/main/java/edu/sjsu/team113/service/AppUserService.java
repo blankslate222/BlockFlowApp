@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -129,6 +131,14 @@ public class AppUserService implements IAppUserService {
 
 		String mutationhash = chainService
 				.createTransaction(obj.toJSONString());
+		JSONParser parser = new JSONParser();
+		try {
+			JSONObject chainResp = (JSONObject) parser.parse(mutationhash);
+			mutationhash = (String) chainResp.get("mutation_hash");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		newrequest.setMutationHash(mutationhash);
 		reqRepo.save(newrequest);
 		

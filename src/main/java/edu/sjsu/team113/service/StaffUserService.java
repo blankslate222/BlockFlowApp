@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -118,6 +120,14 @@ public class StaffUserService implements IStaffUserService {
 			obj.put("seed", seed);
 			String mutationHash = chainService.createTransaction(obj
 					.toJSONString());
+			JSONParser parser = new JSONParser();
+			try {
+				JSONObject chainResp = (JSONObject) parser.parse(mutationHash);
+				mutationHash = (String) chainResp.get("mutation_hash");
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			// insert into database
 			node.setMutationHash(mutationHash);
 			nodeRepo.save(node);
@@ -144,6 +154,14 @@ public class StaffUserService implements IStaffUserService {
 			obj.put("seed", seed);
 			String mutationHash = chainService.createTransaction(obj
 					.toJSONString());
+			JSONParser parser = new JSONParser();
+			try {
+				JSONObject chainResp = (JSONObject) parser.parse(mutationHash);
+				mutationHash = (String) chainResp.get("mutation_hash");
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			// insert into database
 			request.setMutationHash(mutationHash);
 			reqRepo.save(request);
