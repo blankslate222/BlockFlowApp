@@ -9,8 +9,4 @@ public class Views {
 
 	public static class Internal extends ExtendedPublic {
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> cbf202815771341841dff94e44312e79e05222e1
