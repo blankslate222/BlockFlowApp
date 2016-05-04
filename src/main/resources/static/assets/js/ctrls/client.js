@@ -99,21 +99,34 @@ cmpe.controller('clientDeptDetailsCtrl', function($scope, $stateParams, $state,
 	};
 	$scope.getDept();
 	$scope.groups=[];
-	
+	$scope.getGroups = function() {
+		$http.get("/data/groupsbydept/" + $stateParams.deptId).success(
+		function(data) {
+			if (data.controllerResponse.responseObject) {
+				
+				var objs = data.controllerResponse.responseObject;
+				console.log(objs);
+				for (var i = 0; i < objs.length; i++) {
+					$scope.groups = objs[i].name;
+				}
+			}
+		});
+	};
+	$scope.getGroups();
 	$scope.doGrpCreate = function() {
-		console.log( $scope.dept.client);
 		var grp = {
 			name : $scope.name,
-			client: $scope.dept.client
+			department: $scope.dept
 		}
 		
 		$http.post("/admin/group/create", grp, {
 			headers : {'Content-Type' : 'application/json'}
 		}).success(function(data) {
-			console.log(data);
+			//console.log(data);
 			if (data.controllerResponse.responseObject) {
-				$scope.client.clientDepartments.push(data.controllerResponse.responseObject);
-				//console.log(data.controllerResponse.responseObject);
+				console.log(data.controllerResponse.responseObject);
+				$scope.groups.push(data.controllerResponse.responseObject);
+				
 			} else {
 			}
 		}).error(function(err) {

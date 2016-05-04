@@ -18,7 +18,10 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import edu.sjsu.team113.config.Views;
 
 @Entity
 @Table(name = "client_org")
@@ -34,14 +37,17 @@ public class ClientOrg implements Serializable {
 	@Id
 	@GeneratedValue
 	@Column(name = "client_id")
+	@JsonView(Views.Public.class)
 	private Long id;
 
+	@JsonView(Views.Public.class)
 	@Column(name = "client_name", nullable = false, unique = true)
 	private String name;
 
 	@Column(name = "is_active", nullable = false)
 	private boolean isActive = true;
 
+	@JsonView(Views.Public.class)
 	@Column(name = "client_address", nullable = false)
 	private String address;
 
@@ -59,7 +65,14 @@ public class ClientOrg implements Serializable {
 	
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "admin_grp_id")
+	@JsonView(Views.Public.class)
 	private WorkGroup clientAdminGroup;
+	
+	@Column(name = "chain_seed")
+	private String blockchainSeed;
+	
+	@Column(name = "mutation_string")
+	private String mutationString;
 	
 	public Long getId() {
 		return id;
@@ -109,6 +122,10 @@ public class ClientOrg implements Serializable {
 		this.created = created;
 	}
 
+	public Timestamp getCreated() {
+		return created;
+	}
+	
 	public Set<WorkGroup> getGroups() {
 		return groups;
 	}
@@ -125,7 +142,19 @@ public class ClientOrg implements Serializable {
 		this.clientAdminGroup = clientAdminGroup;
 	}
 
-	public Timestamp getCreated() {
-		return created;
+	public String getBlockchainSeed() {
+		return blockchainSeed;
+	}
+
+	public void setBlockchainSeed(String blockchainSeed) {
+		this.blockchainSeed = blockchainSeed;
+	}
+
+	public String getMutationString() {
+		return mutationString;
+	}
+
+	public void setMutationString(String mutationString) {
+		this.mutationString = mutationString;
 	}
 }

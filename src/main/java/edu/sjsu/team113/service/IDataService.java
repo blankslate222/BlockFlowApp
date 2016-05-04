@@ -42,5 +42,5 @@ public interface IDataService {
 	
 	//Fetches Requests approved/rejected by me
 	Request fetchMyActionedRequests(String userId);
+	String getSeedForClient(ClientOrg client);
 }
-

@@ -2,9 +2,8 @@ package edu.sjsu.team113.web;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.Query;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ControllerResponse;
+import edu.sjsu.team113.model.WorkGroup;
 import edu.sjsu.team113.service.IDataService;
 
 @Controller
@@ -61,6 +61,15 @@ public class DataController {
 		System.out.println("department details"+department.getGroups());
 		resp.addResponseObject(department);
 		resp.addError(null);
+		return resp;
+	}
+	
+	@RequestMapping(value = "/groupsbydept/{deptId}")
+	public @ResponseBody ControllerResponse getGroupsByDepartment(@PathVariable Long deptId, HttpServletResponse res) {
+		ControllerResponse resp = new ControllerResponse();
+		ClientDepartment department = dataService.findDepartmentById(deptId);
+		Set<WorkGroup> grpsByDept = dataService.findGroupsByDepartment(department);
+		resp.addResponseObject(grpsByDept);
 		return resp;
 	}
 
