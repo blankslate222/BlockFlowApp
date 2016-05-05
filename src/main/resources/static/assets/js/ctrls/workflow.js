@@ -135,6 +135,7 @@ cmpe.controller('workCtrl',[
 								};
 
 								$scope.chartViewModel.addNode(newNodeDataModel);
+								
 							};
 
 							//

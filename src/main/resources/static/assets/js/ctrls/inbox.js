@@ -95,6 +95,15 @@ cmpe.controller('inboxCtrl', function($scope, $rootScope, $http){
 
 			};
 		$scope.chartViewModel = new flowchart.ChartViewModel(temp);
+
+		//Set the Color of a node
+		$scope.dragSelectionRect = {
+	            x: 0,
+	            y: 0,
+	            width: 800,
+	            height: 800,
+	        };
+		 $scope.chartViewModel.applySelectionRect($scope.dragSelectionRect);
 	}
 	
 	

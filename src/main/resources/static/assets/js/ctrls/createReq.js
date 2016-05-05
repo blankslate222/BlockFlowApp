@@ -79,9 +79,11 @@ cmpe
 							$scope.getWorkflows();
 							
 							$scope.load = function() {
-								console.log($scope.selectedworkflow);
 								$scope.chartViewModel = new flowchart.ChartViewModel(
 										$scope.workflows[$scope.selectedworkflow]);
+								
+								//console.log($scope.chartViewModel);
+								//$scope.chartViewModel.addSelectedNode($scope.chartViewModel);
 							}
 							
 							
