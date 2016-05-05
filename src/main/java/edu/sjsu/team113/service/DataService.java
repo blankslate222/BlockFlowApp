@@ -89,7 +89,6 @@ public class DataService implements IDataService {
 			System.out.println(clientOrg.toString());
 		}
 		return foundActiveClientOrgs;
-
 	}
 
 	@Override
@@ -241,6 +240,4 @@ public class DataService implements IDataService {
 		String seed = org.getBlockchainSeed();
 		return seed;
 	}
-	
-	
 }

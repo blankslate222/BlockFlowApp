@@ -45,7 +45,7 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				},
 				'container@' : {
 					templateUrl : 'views/blockChainFeed.html',
-					controller : ''
+					controller : 'feedCtrl'
 				}
 			}
 		})

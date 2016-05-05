@@ -83,7 +83,7 @@ public class BlockchainService implements IBlockchainService {
 
 	@Override
 	/**
-	 * @param body: should contain only host element - json string
+	 * @param body: should contain only host, mutation hash for the client element - json string
 	 */
 	public String getMutationHashList(String body) {
 		String response = null;

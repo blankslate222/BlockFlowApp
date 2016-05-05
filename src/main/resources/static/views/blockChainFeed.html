@@ -1,29 +1,20 @@
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
 <script>
-	$(document).ready(
-			function() {
-
-				$.post("http://10.250.143.29:3000/getMutationHashList", {
-					"host" : "http://54.153.102.235:8080"
-				}, function(data, status) {
-					var output = "";
-					for (var i = 0; i < data.length; i++) {
-						output = output + "<p>" + " <div>" + "<B>"
-								+ "transaction_id:  " + "</B>"
-								+ data[i].mutation_hash + "</br>" + "<B>"
-								+ "key: " + "</B>"
-								+ data[i].transaction_data.key + "</br>"
-								+ "<B>" + "value:  " + "</B>"
-								+ data[i].transaction_data.value + "</div>"
-								+ "</p>";
-					}
-					$("#transaction").html(output);
-				});
-
-			});
+$(document).ready( function() {
+	$.post("http://10.250.143.29:3000/chainfeed/21", { "host" :
+	"http://54.153.102.235:8080" }, function(data, status) { var output =
+	""; for (var i = 0; i < data.length; i++) { output = output + "
+	<p>" + "
+	<div>
+		" + "<B>" + "transaction_id: " + "</B>" + data[i].mutation_hash + "</br>" +
+		"<B>" + "key: " + "</B>" + data[i].transaction_data.key + "</br>" + "<B>"
+			+ "value: " + "</B>" + data[i].transaction_data.value + "
+	</div>
+	" + "
+	</p>
+	"; } $("#transaction").html(output); }); });
 </script>
-
 
 <!--main content start-->
 <section id="main-content">
@@ -31,8 +22,27 @@
 		<h1>Blockchain</h1>
 		<p>Transaction Feed</p>
 
-		<marquee direction="up">
-			<div id="transaction"></div>
-		</marquee>
+		<!-- 		<marquee direction="up"> -->
+		<div id="transactiondiv" ng-model="feedlist">
+			<ul>
+				<li ng-repeat="feed in feedList">{{ feed }}</li>
+			</ul>
+			<!-- 	<div ng-switch on="feedlist"> -->
+			<!--     	<div ng-switch-when="feedlist.length > 0"> -->
+			<!--         	code to render a large video block -->
+			<!--         	<p> transaction feed</p> -->
+			<!--         	<ul> -->
+			<!--     			<li ng-repeat="feed in feedList"> -->
+			<!--       				{{ feed }} -->
+			<!--     			</li> -->
+			<!--   			</ul> -->
+			<!--     	</div> -->
+			<!--     	<div ng-switch-default> -->
+			<!--         	code to render the regular video block -->
+			<!--         	<p> Nothing to see </p> -->
+			<!--     	</div> -->
+			<!-- 	</div> -->
+		</div>
+		<!-- 		</marquee> -->
 	</section>
 </section>
