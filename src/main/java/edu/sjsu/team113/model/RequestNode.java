@@ -17,12 +17,16 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import edu.sjsu.team113.config.Views;
 
 @Entity
 @Table(name = "request_node_details")
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id",scope=RequestNode.class)
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class RequestNode implements Serializable {
 
 	private static final long serialVersionUID = 5010248316247689840L;
@@ -30,17 +34,22 @@ public class RequestNode implements Serializable {
 	@Id
 	@GeneratedValue
 	@Column(name = "node_id")
+	@JsonView(Views.Public.class)
 	private Long id;
 
 	@Column(name = "node_name", nullable = false, unique = true)
+	@JsonView(Views.Public.class)
 	private String name;
 
 	@ManyToOne
 	@JoinColumn(name = "request_id")
+	@JsonManagedReference
+	@JsonView(Views.Public.class)
 	private Request request;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "group_id")
+	@JsonView(Views.Public.class)
 	private WorkGroup workgroup;
 
 //    @ManyToOne(cascade={CascadeType.ALL})
@@ -51,16 +60,20 @@ public class RequestNode implements Serializable {
 //    private Set<WorkflowNode> nextNodes = new HashSet<WorkflowNode>();
 
 	@Column(name = "is_curent_node", nullable = false)
+	@JsonView(Views.Public.class)
 	private boolean isCurrentNode = false;
 
 	@Column(name = "level_from_initial_node", nullable = false)
+	@JsonView(Views.Public.class)
 	private int level;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "node_status")
+	@JsonView(Views.Public.class)
 	private NodeStatus status = NodeStatus.PENDING;
 	
 	@Column(name = "mutation_hash")
+	@JsonView(Views.Public.class)
 	private String mutationHash;
 
 	public Long getId() {

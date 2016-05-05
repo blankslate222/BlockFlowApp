@@ -9,11 +9,14 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import edu.sjsu.team113.config.Views;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.NodeStatus;
 import edu.sjsu.team113.model.Request;
@@ -25,6 +28,9 @@ import edu.sjsu.team113.repository.WorkflowRepository;
 
 @Service
 public class StaffUserService implements IStaffUserService {
+
+	@Autowired
+	private MappingJackson2HttpMessageConverter converter;
 
 	@Autowired
 	private RequestNodeRepository nodeRepo;
@@ -51,7 +57,6 @@ public class StaffUserService implements IStaffUserService {
 		Request request = reqRepo.findOne(requestId);
 		ClientOrg flowClient = request.getWorkflow().getClient();
 
-		NodeStatus newStatus = NodeStatus.valueOf(status);
 		List<RequestNode> nodes = nodeRepo
 				.findByRequestOrderByLevelAsc(request);
 
@@ -68,14 +73,14 @@ public class StaffUserService implements IStaffUserService {
 					nextnodestatus = NodeStatus.APPROVED;
 					// current no longer current node
 					node.setCurrentNode(false);
-		
+
 					if (node.getLevel() == lastLevel) {
 						nextstatus = RequestStatus.APPROVED;
 						changeRequestStatus(request, nextstatus, flowClient);
 						changeNodeStatus(node, nextnodestatus, flowClient);
 						break;
 					}
-					changeNodeStatus(node, nextnodestatus, flowClient);
+					transactionHex = changeNodeStatus(node, nextnodestatus, flowClient);
 					// TODO: change node active value of next node
 					RequestNode nextnode = nodes.get(i + 1);
 					nextnode.setCurrentNode(true);
@@ -93,7 +98,7 @@ public class StaffUserService implements IStaffUserService {
 						unreachedNode.setStatus(NodeStatus.REJECTED);
 						nodeRepo.save(unreachedNode);
 					}
-					changeRequestStatus(request, nextstatus, flowClient);
+					transactionHex = changeRequestStatus(request, nextstatus, flowClient);
 					break;
 				default:
 					System.out.println("not a legal state");
@@ -105,11 +110,13 @@ public class StaffUserService implements IStaffUserService {
 		return transactionHex;
 	}
 
-	private void changeNodeStatus(RequestNode node, NodeStatus newstatus,
+	private String changeNodeStatus(RequestNode node, NodeStatus newstatus,
 			ClientOrg client) {
 		// TODO Auto-generated method stub
 		String seed = null;
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = converter.getObjectMapper();
+		String mutationHash = null;
+
 		node.setStatus(newstatus);
 		Timestamp modified = new Timestamp(new Date().getTime());
 		node.setModified(modified);
@@ -120,8 +127,7 @@ public class StaffUserService implements IStaffUserService {
 			obj.put("data", jsonString);
 			obj.put("host", openchainServer);
 			obj.put("seed", seed);
-			String mutationHash = chainService.createTransaction(obj
-					.toJSONString());
+			mutationHash = chainService.createTransaction(obj.toJSONString());
 			JSONParser parser = new JSONParser();
 			try {
 				JSONObject chainResp = (JSONObject) parser.parse(mutationHash);
@@ -137,12 +143,14 @@ public class StaffUserService implements IStaffUserService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return mutationHash;
 	}
 
-	private void changeRequestStatus(Request request, RequestStatus newstatus,
-			ClientOrg client) {
+	private String changeRequestStatus(Request request,
+			RequestStatus newstatus, ClientOrg client) {
 		// TODO Auto-generated method stub
 		String seed = null;
+		String mutationHash = null;
 		ObjectMapper mapper = new ObjectMapper();
 		request.setStatus(newstatus);
 		Timestamp modified = new Timestamp(new Date().getTime());
@@ -154,8 +162,7 @@ public class StaffUserService implements IStaffUserService {
 			obj.put("data", jsonString);
 			obj.put("host", openchainServer);
 			obj.put("seed", seed);
-			String mutationHash = chainService.createTransaction(obj
-					.toJSONString());
+			mutationHash = chainService.createTransaction(obj.toJSONString());
 			JSONParser parser = new JSONParser();
 			try {
 				JSONObject chainResp = (JSONObject) parser.parse(mutationHash);
@@ -171,5 +178,6 @@ public class StaffUserService implements IStaffUserService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return mutationHash;
 	}
 }

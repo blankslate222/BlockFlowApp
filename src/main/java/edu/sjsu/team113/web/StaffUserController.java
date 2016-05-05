@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import edu.sjsu.team113.config.Views;
 import edu.sjsu.team113.model.ControllerResponse;
 import edu.sjsu.team113.service.IStaffUserService;
 
@@ -19,17 +22,18 @@ public class StaffUserController {
 	@Autowired
 	private IStaffUserService staffService;
 
+	@JsonView(Views.Public.class)
 	@RequestMapping(value = "staff/request/update", method = RequestMethod.POST)
 	public @ResponseBody ControllerResponse createRequest(
-			@RequestBody Map<String, Object> body, Principal principal) {
+			@RequestBody Map<String, String> body, Principal principal) {
 		ControllerResponse resp = new ControllerResponse();
 		Long requestNodeId = null;
 		Long requestId = null;
 		String status = null;
 
-		requestId = (Long) body.get("requestid");
-		requestNodeId = (Long) body.get("requestnodeid");
-		status = (String) body.get("status");
+		requestId = Long.parseLong(body.get("requestid"));
+		requestNodeId = Long.parseLong(body.get("requestnodeid"));
+		status = body.get("status");
 
 		String mutationhash = staffService.changeRequestNodeStatus(
 				requestNodeId, requestId, status);

@@ -20,6 +20,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -27,7 +28,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Entity
 @Table(name = "request_details")
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id",scope=Request.class)
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Request implements Serializable {
 
 	/**
@@ -46,15 +47,15 @@ public class Request implements Serializable {
 	@Column(name = "request_desc", nullable = false, unique = true)
 	private String description;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "workflow_id")
 	private Workflow workflow;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "initiator_id")
 	private AppUser initiatorid;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "initiator_dept_mgr_group_id")
 	private WorkGroup initiator_dept_mgr_group_id;
 
@@ -67,6 +68,7 @@ public class Request implements Serializable {
 
 	@OneToMany(mappedBy = "request", fetch = FetchType.EAGER)
 	@Cascade({org.hibernate.annotations.CascadeType.ALL})
+	@JsonBackReference
 	private Set<RequestNode> nodes = new HashSet<>();
 
 	@Column(name = "request_createdtime")

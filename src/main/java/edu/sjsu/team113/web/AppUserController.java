@@ -83,10 +83,11 @@ public class AppUserController {
 		ControllerResponse resp = new ControllerResponse();
 		Long workflowId = Long.parseLong(body.get("workflowid"));
 		Long clientId = Long.parseLong(body.get("clientid"));
+		String description = body.get("description");
 		String principalUser = principal.getName();
 		AppUser requestingUser = userService.findByEmail(principalUser);
 		String mutationHash = userService.raiseRequest(workflowId, clientId,
-				requestingUser);
+				description, requestingUser);
 		resp.addToResponseMap("hash", mutationHash);
 		return resp;
 	}

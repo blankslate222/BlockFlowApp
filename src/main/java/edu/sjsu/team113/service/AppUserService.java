@@ -9,6 +9,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +54,9 @@ public class AppUserService implements IAppUserService {
 
 	@Autowired
 	private ClientOrgRepository cliRepo;
+	
+	@Autowired
+	private MappingJackson2HttpMessageConverter converter;
 
 	public AppUser saveUser(AppUser user) {
 		AppUser savedUser = null;
@@ -86,7 +90,7 @@ public class AppUserService implements IAppUserService {
 	}
 
 	@Override
-	public String raiseRequest(Long workflowId, Long clientId, AppUser user) {
+	public String raiseRequest(Long workflowId, Long clientId, String reqDescription, AppUser user) {
 		// TODO Auto-generated method stub
 		Workflow requestedFlow = flowRepo.findOne(workflowId);
 		Set<WorkflowNode> nodes = requestedFlow.getNodes();
@@ -104,6 +108,7 @@ public class AppUserService implements IAppUserService {
 			reqNode.setLevel(node.getLevel());
 			reqNode.setRequest(newrequest);
 			reqNode.setName(node.getName());
+			reqNode.setWorkgroup(node.getWorkgroup());
 			requestNodes.add(reqNode);
 		}
 		newrequest.setStatus(RequestStatus.PENDING);
@@ -113,11 +118,12 @@ public class AppUserService implements IAppUserService {
 		newrequest.setLastModUserId(user);
 		newrequest.setInitiator_dept_mgr_group_id(initiator_dept_mgr_group_id);
 		newrequest.setNodes(requestNodes);
+		newrequest.setDescription(reqDescription);
 
 		ClientOrg reqOwner = initiator_dept_mgr_group_id.getClient();
 		String seed = reqOwner.getBlockchainSeed();
 
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = converter.getObjectMapper();
 		String jsonString = null;
 		try {
 			jsonString = mapper.writeValueAsString(newrequest);
