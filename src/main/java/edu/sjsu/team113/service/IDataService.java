@@ -39,7 +39,7 @@ public interface IDataService {
 	Set<ManagedUser> findManagedUsersByGroup(WorkGroup group);
 
 	//Fetches Requests both assigned to myself and any group assigned to me
-	Request fetchMyRequestList(String userId);
+	List<Request> fetchMyRequestList(String userId);
 	
 	//Fetches Requests approved/rejected by me
 	Request fetchMyActionedRequests(String userId);
@@ -48,5 +48,6 @@ public interface IDataService {
 	Request findRequestById(Long id);
 
 	List<Workflow> findActiveWorkflows();
+	List<Request> userInbox(String userId);
 
 }

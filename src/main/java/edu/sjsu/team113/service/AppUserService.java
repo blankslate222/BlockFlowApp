@@ -116,7 +116,7 @@ public class AppUserService implements IAppUserService {
 		newrequest.setInitiatorid(user);
 		newrequest.setWorkflow(requestedFlow);
 		newrequest.setLastModUserId(user);
-		newrequest.setInitiator_dept_mgr_group_id(initiator_dept_mgr_group_id);
+		newrequest.setAssignedGroup(initiator_dept_mgr_group_id);
 		newrequest.setNodes(requestNodes);
 		newrequest.setDescription(reqDescription);
 		newrequest.setRequestJson(requestedFlow.getWorkflowJson());

@@ -30,12 +30,16 @@ import edu.sjsu.team113.model.Request;
 import edu.sjsu.team113.model.WorkGroup;
 import edu.sjsu.team113.model.Workflow;
 import edu.sjsu.team113.repository.ChainAuditRepository;
+import edu.sjsu.team113.service.IAppUserService;
 import edu.sjsu.team113.service.IBlockchainService;
 import edu.sjsu.team113.service.IDataService;
 
 @Controller
 @RequestMapping(value = "/data")
 public class DataController {
+
+	@Autowired
+	private IAppUserService userService;
 
 	@Autowired
 	private IDataService dataService;
@@ -191,10 +195,44 @@ public class DataController {
 		return feedList;
 	}
 
-	@RequestMapping(value = "/inbox")
-	public @ResponseBody ControllerResponse getInbox(Principal principal) {
+	@RequestMapping(value = "/staffinbox")
+	public @ResponseBody ControllerResponse getRequestsAssignedToMe(
+			Principal principal) {
 		ControllerResponse resp = new ControllerResponse();
-		String userinSession = principal.getName();
+
+		String userinSession = null;
+		if (principal == null) {
+			userinSession = "admin@admin.com";
+			System.out.println("Inbox of Admin");
+		} else {
+			userinSession = principal.getName();
+		}
+
+		List<Request> staffreqlist = dataService
+				.fetchMyRequestList(userinSession);
+		JSONObject respObj = new JSONObject();
+		respObj.put("requestlist", staffreqlist);
+		resp.addResponseObject(respObj);
+		return resp;
+	}
+
+	@RequestMapping(value = "/userinbox")
+	public @ResponseBody ControllerResponse getRequestsRaisedByMe(
+			Principal principal) {
+		ControllerResponse resp = new ControllerResponse();
+
+		String userinSession = null;
+		if (principal == null) {
+			userinSession = "admin@admin.com";
+			System.out.println("Inbox of Admin");
+		} else {
+			userinSession = principal.getName();
+		}
+
+		List<Request> userinitiated = dataService.userInbox(userinSession);
+		JSONObject respObj = new JSONObject();
+		respObj.put("requestlist", userinitiated);
+		resp.addResponseObject(respObj);
 		return resp;
 	}
 

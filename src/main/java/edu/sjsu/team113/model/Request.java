@@ -71,7 +71,7 @@ public class Request implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "initiator_dept_mgr_group_id")
 	@JsonView(Views.Public.class)
-	private WorkGroup initiator_dept_mgr_group_id;
+	private WorkGroup assignedGroup;
 
 	@OneToMany(mappedBy = "request")
 	private Set<RequestComment> requestComments = new HashSet<>();
@@ -149,13 +149,12 @@ public class Request implements Serializable {
 		this.initiatorid = initiatorid;
 	}
 
-	public WorkGroup getInitiator_dept_mgr_group_id() {
-		return initiator_dept_mgr_group_id;
+	public WorkGroup getAssignedGroup() {
+		return assignedGroup;
 	}
 
-	public void setInitiator_dept_mgr_group_id(
-			WorkGroup initiator_dept_mgr_group_id) {
-		this.initiator_dept_mgr_group_id = initiator_dept_mgr_group_id;
+	public void setAssignedGroup(WorkGroup assignedGroup) {
+		this.assignedGroup = assignedGroup;
 	}
 
 	public RequestStatus getStatus() {

@@ -24,6 +24,9 @@ import edu.sjsu.team113.repository.WorkflowRepository;
 public class DataService implements IDataService {
 
 	@Autowired
+	private IAppUserService userService;
+
+	@Autowired
 	private ClientOrgRepository clientOrgRepository;
 
 	@Autowired
@@ -117,8 +120,7 @@ public class DataService implements IDataService {
 		request = requestRepository.findOne(id);
 		// System.out.println("found departments = " +
 		// findDepartmentsByClient(foundClientOrg));
-		System.out.println("found request = "
-				+ request);
+		System.out.println("found request = " + request);
 
 		return request;
 
@@ -242,13 +244,29 @@ public class DataService implements IDataService {
 
 	@Override
 	/**
-	 * Inbox service
+	 * Staff Inbox service
 	 */
-	public Request fetchMyRequestList(String userId) {
+	public List<Request> fetchMyRequestList(String userId) {
 		// TODO Auto-generated method stub
-		return null;
+		AppUser user = userService.findByEmail(userId);
+		ManagedUser employee = managedUserRepository.findByAppUser(user);
+		WorkGroup grp = employee.getDepartment().getClient()
+				.getClientAdminGroup();
+		List<Request> requests = requestRepository.findByAssignedGroup(grp);
+		return requests;
 	}
 
+	@Override
+	/**
+	 * User Inbox service
+	 */
+	public List<Request> userInbox(String userId) {
+		// TODO Auto-generated method stub
+		AppUser user = userService.findByEmail(userId);		
+		List<Request> requests = requestRepository.findByInitiatorid(user);
+		return requests;
+	}
+	
 	@Override
 	public Request fetchMyActionedRequests(String userId) {
 		// TODO Auto-generated method stub
