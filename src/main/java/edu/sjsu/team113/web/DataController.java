@@ -79,7 +79,7 @@ public class DataController {
 			@PathVariable Long requestId, HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
 		Request request = dataService.findRequestById(requestId);
-		System.out.println("Request details"+request.toString());
+		System.out.println("Request details" + request.toString());
 		resp.addResponseObject(request);
 		resp.addError(null);
 		return resp;
@@ -125,7 +125,7 @@ public class DataController {
 		ControllerResponse resp = new ControllerResponse();
 		ClientOrg clientOrg = dataService.findClientOrgById(clientId);
 		String mutation = clientOrg.getMutationString();
-		List<String> feedList = getFeedList(mutation);
+		List<JSONObject> feedList = getFeedList(mutation);
 		resp.addResponseObject(feedList);
 		return resp;
 	}
@@ -135,13 +135,13 @@ public class DataController {
 		ControllerResponse resp = new ControllerResponse();
 		Iterable<ChainAudit> clientList = auditRepo.findAll();
 		Iterator<ChainAudit> iter = clientList.iterator();
-		List<String> feedList = new ArrayList<String>();
+		List<JSONObject> feedList = new ArrayList<>();
 
 		while (iter.hasNext()) {
 			ChainAudit audit = iter.next();
 			String mutation = audit.getInitialMutationHash();
-			if (mutation != null || mutation.length() > 0) {
-				List<String> feeds = getFeedList(mutation);
+			if (mutation != null && mutation.length() > 0) {
+				List<JSONObject> feeds = getFeedList(mutation);
 				feedList.addAll(feeds);
 			}
 		}
@@ -150,14 +150,15 @@ public class DataController {
 		return resp;
 	}
 
-	private List<String> getFeedList(String mutation) {
-		List<String> feedList = new ArrayList<>();
+	private List<JSONObject> getFeedList(String mutation) {
+		List<JSONObject> feedList = new ArrayList<>();
 		JSONObject reqBody = new JSONObject();
 		reqBody.put("host", openchainServer);
 		String jsonBody = reqBody.toJSONString();
 		String transactionRecord = chainService.getTransactionHashData(
 				mutation, jsonBody);
-		if (transactionRecord == null || transactionRecord.length() == 0) return null;
+		if (transactionRecord == null || transactionRecord.length() == 0)
+			return null;
 		JSONParser parser = new JSONParser();
 		JSONObject txnRec = null;
 		try {
@@ -179,13 +180,22 @@ public class DataController {
 
 			while (iter.hasNext()) {
 				JSONObject obj = (JSONObject) iter.next();
-				feedList.add((String) obj.get("mutation_hash"));
+				JSONObject o1 = new JSONObject();
+				o1.put("transactionid", obj.get("mutation_hash"));
+				feedList.add(o1);
 			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return feedList;
+	}
+
+	@RequestMapping(value = "/inbox")
+	public @ResponseBody ControllerResponse getInbox(Principal principal) {
+		ControllerResponse resp = new ControllerResponse();
+		String userinSession = principal.getName();
+		return resp;
 	}
 
 	@RequestMapping(value = "/testing")
