@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -54,6 +55,7 @@ public class WorkGroup implements Serializable {
 	private ClientDepartment department;
 
 	@ManyToMany(mappedBy = "groups")
+	@JsonIgnore
 	private Set<ManagedUser> groupUsers = new HashSet<>();
 
 	@Column(name = "created_time")

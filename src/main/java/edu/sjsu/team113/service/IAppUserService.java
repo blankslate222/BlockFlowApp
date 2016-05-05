@@ -8,5 +8,5 @@ public interface IAppUserService {
 	AppUser saveUser(AppUser user);
 	List<AppUser> getUserList();
 	AppUser findByEmail(String email);
-	String raiseRequest(Long workflowId, Long clientId, AppUser requestingUser);
+	String raiseRequest(Long workflowId, Long clientId, String requestDescription, AppUser requestingUser);
 }

@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 
 @Configuration
@@ -37,7 +38,7 @@ public class AppMvcSecurityConfig extends WebMvcConfigurerAdapter {
         ObjectMapper mapper = new ObjectMapper();
         //Registering Hibernate4Module to support lazy objects
         mapper.registerModule(new Hibernate4Module());
-        
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         messageConverter.setObjectMapper(mapper);
         return messageConverter;
 
