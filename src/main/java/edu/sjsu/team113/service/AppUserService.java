@@ -90,7 +90,7 @@ public class AppUserService implements IAppUserService {
 	}
 
 	@Override
-	public String raiseRequest(Long workflowId, Long clientId, String reqDescription, AppUser user) {
+	public Request raiseRequest(Long workflowId, Long clientId, String reqDescription, AppUser user) {
 		// TODO Auto-generated method stub
 		Workflow requestedFlow = flowRepo.findOne(workflowId);
 		Set<WorkflowNode> nodes = requestedFlow.getNodes();
@@ -112,13 +112,14 @@ public class AppUserService implements IAppUserService {
 			requestNodes.add(reqNode);
 		}
 		newrequest.setStatus(RequestStatus.PENDING);
-		newrequest.setTitle(requestedFlow.getName());
+		newrequest.setTitle(requestedFlow.getName()+" "+System.currentTimeMillis());
 		newrequest.setInitiatorid(user);
 		newrequest.setWorkflow(requestedFlow);
 		newrequest.setLastModUserId(user);
 		newrequest.setInitiator_dept_mgr_group_id(initiator_dept_mgr_group_id);
 		newrequest.setNodes(requestNodes);
 		newrequest.setDescription(reqDescription);
+		newrequest.setRequestJson(requestedFlow.getWorkflowJson());
 
 		ClientOrg reqOwner = initiator_dept_mgr_group_id.getClient();
 		String seed = reqOwner.getBlockchainSeed();
@@ -147,8 +148,8 @@ public class AppUserService implements IAppUserService {
 			e.printStackTrace();
 		}
 		newrequest.setMutationHash(mutationhash);
-		reqRepo.save(newrequest);
+		Request createdRequest = reqRepo.save(newrequest);
 		
-		return mutationhash;
+		return createdRequest;
 	}
 }

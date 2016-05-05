@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import edu.sjsu.team113.config.Views;
 import edu.sjsu.team113.model.AppUser;
 import edu.sjsu.team113.model.ControllerResponse;
+import edu.sjsu.team113.model.Request;
 import edu.sjsu.team113.service.IAdminUserService;
 import edu.sjsu.team113.service.IAppUserService;
 
@@ -87,9 +88,9 @@ public class AppUserController {
 		System.out.println("my map:"+body.toString());
 		String principalUser = principal.getName();
 		AppUser requestingUser = userService.findByEmail(principalUser);
-		String mutationHash = userService.raiseRequest(workflowId, clientId,
+		Request createdRequest = userService.raiseRequest(workflowId, clientId,
 				description, requestingUser);
-		resp.addToResponseMap("hash", mutationHash);
+		resp.addResponseObject(createdRequest);
 		return resp;
 	}
 

@@ -7,25 +7,16 @@
 <section id="main-content">
 	<section class="wrapper">
 		<h3>
-			<i class="fa fa-angle-right"></i> Create Request
+			<i class="fa fa-angle-right"></i> Request: {{request.title}}
 		</h3>
 		<div class="row mt">
 
 			<div class="col-md-12">
-				<h4>
-					Select WorkFlow: <select name="workflow"
-						ng-model="selectedworkflow" ng-change="load()">
-						<option ng-repeat="workflow in workflows" value="{{$index}}">{{workflow.name}}</option>
-					</select>
-				</h4>
 				<div style="pointer-events: none; opacity: 0.5;">
 					<flow-chart class="col-md-12" ng-disabled="true"
 						style="margin-top: 10px; margin-bottom: 10px;  height: 380px;"
 						chart="chartViewModel"> </flow-chart>
 				</div>
-					<button class="btn btn-theme02" ng-click="createReq()">
-				
-					Create Request</button>
 			</div>
 		</div>
 		<br />

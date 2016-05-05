@@ -14,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -52,6 +53,10 @@ public class Request implements Serializable {
 	@Column(name = "request_desc", nullable = false)
 	@JsonView(Views.Public.class)
 	private String description;
+
+	@Column(name = "request_json", nullable = false)
+	@Lob
+	private String requestJson;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "workflow_id")
@@ -118,6 +123,14 @@ public class Request implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getRequestJson() {
+		return requestJson;
+	}
+
+	public void setRequestJson(String requestJson) {
+		this.requestJson = requestJson;
 	}
 
 	public Workflow getWorkflow() {
