@@ -43,9 +43,9 @@ cmpe.controller(
 										$scope.workflows.push(objs[i]);
 									}
 									console.log($scope.workflows);*/
-									console.log("Request data:");
+									console.log("Request data:"+data.controllerResponse.responseObject.id);
 									console.log(data);
-									$window.location.href = '/#/requestdetail';
+									$window.location.href = '/#/request/'+data.controllerResponse.responseObject.id;
 								});
 								
 							};
@@ -58,23 +58,30 @@ cmpe.controller(
 				'$scope',
 				'$http',
 				'prompt',
-				'$cookieStore',
-				function AppCtrl($scope, $http, prompt, $cookieStore) {
-					$scope.workflows=[];
-					$scope.getWorkflows = function() {
-						$http.get("/data/workflows").success(function(data) {
-							var objs = data.controllerResponse.responseObject;
-							for (var i = 0; i < objs.length; i++) {
-								$scope.workflows.push(objs[i]);
+				'$cookieStore','$stateParams',
+				function AppCtrl($scope, $http, prompt, $cookieStore, $stateParams) {
+					var requestId = $stateParams.requestID;
+
+					$scope.request=[];
+					$scope.getRequest = function() {
+						$http.get("/data/request/"+ requestId).success(function(data) {
+							if (data.controllerResponse.responseObject) {
+								var objs = data.controllerResponse.responseObject;
+								$scope.request = objs;
+								console.log('here object');
+								console.log($scope.request);
+								$scope.chartViewModel = new flowchart.ChartViewModel(
+										JSON.parse($scope.request.requestJson));
 							}
-							console.log($scope.workflows);
 						});
 					};
-					$scope.getWorkflows();
+					$scope.getRequest();
 
 					$scope.load = function() {
+						console.log("Request JSON");
+						console.log($scope.request.requestJson);
 						$scope.chartViewModel = new flowchart.ChartViewModel(
-								JSON.parse($scope.workflows[$scope.selectedworkflow].workflowJson));
+								JSON.parse($scope.request.requestJson));
 					}
 					
 					

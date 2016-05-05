@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ControllerResponse;
+import edu.sjsu.team113.model.Request;
 import edu.sjsu.team113.model.WorkGroup;
 import edu.sjsu.team113.model.Workflow;
 import edu.sjsu.team113.service.IDataService;
@@ -50,6 +51,17 @@ public class DataController {
 		ClientOrg client = dataService.findClientOrgById(clientId);
 		System.out.println("client details"+client.toString());
 		resp.addResponseObject(client);
+		resp.addError(null);
+		return resp;
+	}
+
+	@RequestMapping(value = "/request/{requestId}")
+	public @ResponseBody ControllerResponse getRequest(
+			@PathVariable Long requestId, HttpServletResponse res) {
+		ControllerResponse resp = new ControllerResponse();
+		Request request = dataService.findRequestById(requestId);
+		System.out.println("Request details"+request.toString());
+		resp.addResponseObject(request);
 		resp.addError(null);
 		return resp;
 	}

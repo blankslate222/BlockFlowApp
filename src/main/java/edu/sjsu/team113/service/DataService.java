@@ -16,6 +16,7 @@ import edu.sjsu.team113.model.Workflow;
 import edu.sjsu.team113.repository.ClientDepartmentRepository;
 import edu.sjsu.team113.repository.ClientOrgRepository;
 import edu.sjsu.team113.repository.ManagedUserRepository;
+import edu.sjsu.team113.repository.RequestRepository;
 import edu.sjsu.team113.repository.WorkGroupRepository;
 import edu.sjsu.team113.repository.WorkflowRepository;
 
@@ -36,6 +37,9 @@ public class DataService implements IDataService {
 
 	@Autowired
 	private WorkflowRepository workflowRepository;
+
+	@Autowired
+	private RequestRepository requestRepository;
 
 	@Override
 	public ClientOrg findClientOrgById(Long id) {
@@ -103,6 +107,21 @@ public class DataService implements IDataService {
 			System.out.println(workflow.toString());
 		}
 		return foundActiveWorkflows;
+
+	}
+
+	@Override
+	public Request findRequestById(Long id) {
+
+		Request request = null;
+		System.out.println("now finding request by id " + id);
+		request = requestRepository.findOne(id);
+		// System.out.println("found departments = " +
+		// findDepartmentsByClient(foundClientOrg));
+		System.out.println("found request = "
+				+ request);
+
+		return request;
 
 	}
 

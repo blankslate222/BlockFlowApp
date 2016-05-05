@@ -49,8 +49,8 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				}
 			}
 		})
-		.state('root.createReq', {
-			url: '/createReq',
+		.state('root.request', {
+			url: '/request',
 			views: {
 				'header@': {
 					templateUrl: 'views/header.html',
@@ -62,8 +62,8 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				}
 			}
 		})
-		.state('root.requestdetail', {
-			url: '/requestdetail',
+		.state('root.request.id', {
+			url: '/:requestID',
 			views: {
 				'header@': {
 					templateUrl: 'views/header.html',

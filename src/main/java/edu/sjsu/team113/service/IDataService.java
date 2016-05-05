@@ -45,6 +45,8 @@ public interface IDataService {
 	Request fetchMyActionedRequests(String userId);
 	String getSeedForClient(ClientOrg client);
 
+	Request findRequestById(Long id);
+
 	List<Workflow> findActiveWorkflows();
 
 }
