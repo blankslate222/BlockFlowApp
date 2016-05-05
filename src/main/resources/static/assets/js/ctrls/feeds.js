@@ -1,4 +1,5 @@
-cmpe.controller('feedCtrl', function($scope, $rootScope, $http, $cookieStore) {
+cmpe
+.controller('feedCtrl', function($scope, $state, $rootScope, $http, $cookieStore) {
 	
 	$scope.feedList = [];
 	var clientid = 21;
@@ -18,6 +19,9 @@ cmpe.controller('feedCtrl', function($scope, $rootScope, $http, $cookieStore) {
 	};
 	$scope.getFeed();
 
+	$scope.getadminfeed = function() {
+		$state.go('root.adminfeed');
+	};
 /*	$scope.getFeed = function() {
 		feeds(function(feeds) {
 			$scope.feedlist = feeds; 
@@ -44,4 +48,24 @@ cmpe.controller('feedCtrl', function($scope, $rootScope, $http, $cookieStore) {
 	};
 	// init()
 	$scope.getFeed();*/
+});
+
+cmpe.controller('adminFeedCtrl', function($scope, $state, $rootScope, $http, $cookieStore) {
+	$scope.feedList = [];
+	var clientid = 21;
+	$scope.getFeed = function() {
+		console.log("inside get feed");
+		$http.get("data/adminfeed").success(function(data) {
+			var objs = data.controllerResponse.responseObject;
+			for (var i = 0; i < objs.length; i++) {
+				$scope.feedList.push(objs[i]);
+				//$scope.feedList.push(objs[i]);
+			}
+			console.log(objs);
+			console.log("Feed List");
+			console.log($scope.feedList);
+			console.log($scope.feedList[0].transactionid);
+		});
+	};
+	$scope.getFeed();
 });

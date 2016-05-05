@@ -49,6 +49,19 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				}
 			}
 		})
+		.state('root.adminfeed', {
+			url: '/block',
+			views: {
+				'header@': {
+					templateUrl: 'views/header.html',
+					controller: 'headCtrl'
+				},
+				'container@' : {
+					templateUrl : 'views/adminFeed.html',
+					controller : 'adminFeedCtrl'
+				}
+			}
+		})
 		.state('root.request', {
 			url: '/request',
 			views: {
