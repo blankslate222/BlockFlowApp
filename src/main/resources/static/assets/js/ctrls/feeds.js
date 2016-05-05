@@ -1,6 +1,24 @@
 cmpe.controller('feedCtrl', function($scope, $rootScope, $http, $cookieStore) {
 	
+	$scope.feedList = [];
+	var clientid = 21;
 	$scope.getFeed = function() {
+		console.log("inside get feed");
+		$http.get("data/chainfeed/" + clientid).success(function(data) {
+			var objs = data.controllerResponse.responseObject;
+			for (var i = 0; i < objs.length; i++) {
+				$scope.feedList.push(objs[i]);
+				//$scope.feedList.push(objs[i]);
+			}
+			console.log(objs);
+			console.log("Feed List");
+			console.log($scope.feedList);
+			console.log($scope.feedList[0].transactionid);
+		});
+	};
+	$scope.getFeed();
+
+/*	$scope.getFeed = function() {
 		feeds(function(feeds) {
 			$scope.feedlist = feeds; 
 			console.log("in feedback")
@@ -25,5 +43,5 @@ cmpe.controller('feedCtrl', function($scope, $rootScope, $http, $cookieStore) {
 		});
 	};
 	// init()
-	$scope.getFeed();
+	$scope.getFeed();*/
 });
