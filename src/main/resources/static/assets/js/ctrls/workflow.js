@@ -1,10 +1,7 @@
 cmpe.factory('prompt', function() {
 	return prompt;
 })
-cmpe
-		.controller(
-				'workCtrl',
-				[
+cmpe.controller('workCtrl',[
 						'$scope',
 						'$http',
 						'prompt',
@@ -25,82 +22,35 @@ cmpe
 
 							var chartDataModel = {
 
-								"nodes" : [ 
-								            /*{
-									"name" : "Dept 1",
-									"id" : 0,
-									"x" : 36,
-									"y" : 28,
-									"inputConnectors" : [ {
-										"name" : "DeptUser1"
-									} ],
-									"outputConnectors" : [ {
-										"name" : "DeptUser1"
-									} ]
-								}, {
-									"name" : "Dept 2",
-									"id" : 1,
-									"x" : 335,
-									"y" : 174,
-									"inputConnectors" : [ {
-										"name" : "DeptUser2"
-									} ],
-									"outputConnectors" : [ {
-										"name" : "DeptUser2"
-									} ]
-								}, {
-									"name" : "Dept 3",
-									"id" : 10,
-									"x" : 635,
-									"y" : 30,
-									"inputConnectors" : [ {
-										"name" : "DeptUser3"
-									} ],
-									"outputConnectors" : [ {
-										"name" : "DeptUser3"
-									} ]
-								}, {
-									"name" : "Dept 4",
-									"id" : 11,
-									"x" : 923,
-									"y" : 164,
-									"inputConnectors" : [ {
-										"name" : "DeptUser4"
-									} ],
-									"outputConnectors" : [ {
-										"name" : "DeptUser4"
-									} ]
-								} */
+								"nodes" : [
+								/*
+								 * { "name" : "Dept 1", "id" : 0, "x" : 36, "y" :
+								 * 28, "inputConnectors" : [ { "name" :
+								 * "DeptUser1" } ], "outputConnectors" : [ {
+								 * "name" : "DeptUser1" } ] }, { "name" : "Dept
+								 * 2", "id" : 1, "x" : 335, "y" : 174,
+								 * "inputConnectors" : [ { "name" : "DeptUser2" } ],
+								 * "outputConnectors" : [ { "name" : "DeptUser2" } ] }, {
+								 * "name" : "Dept 3", "id" : 10, "x" : 635, "y" :
+								 * 30, "inputConnectors" : [ { "name" :
+								 * "DeptUser3" } ], "outputConnectors" : [ {
+								 * "name" : "DeptUser3" } ] }, { "name" : "Dept
+								 * 4", "id" : 11, "x" : 923, "y" : 164,
+								 * "inputConnectors" : [ { "name" : "DeptUser4" } ],
+								 * "outputConnectors" : [ { "name" : "DeptUser4" } ] }
+								 */
 								],
-								"connections" : [ 
-								                /*  {
-									"source" : {
-										"nodeID" : 0,
-										"connectorIndex" : 0
-									},
-									"dest" : {
-										"nodeID" : 1,
-										"connectorIndex" : 0
-									}
-								}, {
-									"source" : {
-										"nodeID" : 1,
-										"connectorIndex" : 0
-									},
-									"dest" : {
-										"nodeID" : 10,
-										"connectorIndex" : 0
-									}
-								}, {
-									"source" : {
-										"nodeID" : 10,
-										"connectorIndex" : 0
-									},
-									"dest" : {
-										"nodeID" : 11,
-										"connectorIndex" : 0
-									}
-								}*/
+								"connections" : [
+								/*
+								 * { "source" : { "nodeID" : 0, "connectorIndex" :
+								 * 0 }, "dest" : { "nodeID" : 1,
+								 * "connectorIndex" : 0 } }, { "source" : {
+								 * "nodeID" : 1, "connectorIndex" : 0 }, "dest" : {
+								 * "nodeID" : 10, "connectorIndex" : 0 } }, {
+								 * "source" : { "nodeID" : 10, "connectorIndex" :
+								 * 0 }, "dest" : { "nodeID" : 11,
+								 * "connectorIndex" : 0 } }
+								 */
 								]
 
 							};
@@ -149,11 +99,18 @@ cmpe
 									evt.preventDefault();
 								}
 							};
-
+							$scope.groups=[];
+							$scope.getGroups = function() {
+								var tgrps=[{name:"Grp1", id:1},{name:"Grp2", id:2}];
+								$scope.groups=tgrps;
+								console.log($scope.groups);
+							}
+							$scope.getGroups();
 							//
 							// Add a new node to the chart.
 							//
 							$scope.addNewNode = function() {
+								
 								var nodeName = $scope.name;// prompt("Enter a
 								// node
 								// name:", "New node");
@@ -170,13 +127,11 @@ cmpe
 									x : 0,
 									y : 0,
 									inputConnectors : [ {
-										name : "X"
-									}, {
-										name : "X"
+										name :  $scope.selectedgroup
 									} ],
 									outputConnectors : [ {
-										name : "1"
-									} ],
+										name : $scope.selectedgroup
+									} ]
 								};
 
 								$scope.chartViewModel.addNode(newNodeDataModel);
@@ -294,19 +249,19 @@ cmpe
 									edge.push(connlist[i].source.nodeID);
 									graph.push(edge);
 								}
-//								var client = {
-//										//name : $scope.client.name,
-//										id : 6,
-//										name : "Infy",
-//										address : "India"
-//									}
+								// var client = {
+								// //name : $scope.client.name,
+								// id : 6,
+								// name : "Infy",
+								// address : "India"
+								// }
 								// console.log(toposort(graph));
 								// console.log(toposort(graph).reverse());
 								var workflow = {};
 								workflow.name = $scope.workflowname;
 								workflow.client = $cookieStore.get('client');
 								workflow.nodes = [];
-								//debugger;
+								// debugger;
 								// var uniquenodes = uniqueNodes(graph);
 								var nodeseq = topologicalsort(graph).reverse();
 								// [ 0, 1, 10, 11 ]
@@ -332,7 +287,8 @@ cmpe
 												workflow)
 										.success(
 												function(data) {
-													console.log("after workflow create : \n");
+													console
+															.log("after workflow create : \n");
 													console.log(data);
 												}).error(function(err) {
 											// $scope.status = data.error;
@@ -343,14 +299,7 @@ cmpe
 									chartDataModel);
 						} ]);
 
-cmpe
-.controller(
-		'workViewCtrl',
-		[
-				'$scope',
-				'$http',
-				'prompt',
-				'$cookieStore',
-				function ($scope, $http, prompt, $cookieStore) {
-					
-				}]);
+cmpe.controller('workViewCtrl', [ '$scope', '$http', 'prompt', '$cookieStore',
+		function($scope, $http, prompt, $cookieStore) {
+
+		} ]);

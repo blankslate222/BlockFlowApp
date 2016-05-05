@@ -20,6 +20,7 @@
 				</textarea>
 </div>-->
 		<div class="row mt">
+		
 <!-- 		 <div class="col-md-6" style="float: left;">  -->
 <!-- 				<textarea  -->
 <!-- 					style="width: 100%; height: 420px;" -->
@@ -28,36 +29,34 @@
 <!-- 					> -->
 <!-- 				</textarea> -->
 <!-- 			</div> -->
-			<div class="col-md-6">
-			<button class="btn btn-theme" data-toggle="modal" href="#myModal"	
+			<div class="col-md-12">
+			<h4>WorkFlow Name: <input ng-model = "workflowname" type = "text" placeholder = "Enter Workflow Name"/></h4>
+			
+				<!--
+				This custom element defines the flowchart.
+				-->
+				<flow-chart class="col-md-12" style="margin-top: 10px; margin-bottom: 10px;  height: 380px;"
+					chart="chartViewModel"> </flow-chart>
+					
+					<button class="btn btn-theme" data-toggle="modal" href="#myModal"	
 			title="Add a new node to the chart">Add Node</button>
 <!-- 				<button class="btn btn-theme" ng-click="addNewNode()" -->
 <!-- 					title="Add a new node to the chart">Add Node</button> -->
-				<button class="btn btn-theme02" ng-click="addNewInputConnector()"
+			<!-- 	<button class="btn btn-theme02" ng-click="addNewInputConnector()"
 					ng-disabled="chartViewModel.getSelectedNodes().length == 0"
 					title="Add a new input connector to the selected node">
-					Add Input Connector</button>
-				<button class="btn btn-theme04" ng-click="addNewOutputConnector()"
-					ng-disabled="chartViewModel.getSelectedNodes().length == 0"
-					title="Add a new output connector to the selected node">
-					Add Output Connector</button>
+					Add Group</button> -->
 				<button class="btn btn-theme03" ng-click="deleteSelected()"
 					ng-disabled="chartViewModel.getSelectedNodes().length == 0 && chartViewModel.getSelectedConnections().length == 0"
 					title="Delete selected nodes and connections">
 					Delete Selected</button>
-<button class="btn btn-theme03" ng-click="createWorkflow()"
+<button class="btn btn-theme02" ng-click="createWorkflow()"
 					title="Save workflow">
 					Create Workflow</button>
-				<!--
-				This custom element defines the flowchart.
-				-->
-				<flow-chart class="col-md-12" style="margin-top: 10px;height: 380px;"
-					chart="chartViewModel"> </flow-chart>
 			</div>
 		</div>
 		<br/>
-		<h4>WorkFlow Name: <input ng-model = "workflowname" type = "text" placeholder = "Enter Workflow Name"/></h4>
-
+		
 		<div class="row mt">
 			<div class="col-md-12">
 				<div class="content-panel">
@@ -183,12 +182,18 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Add Department</h4>
+				<h4 class="modal-title">New Node</h4>
 			</div>
 			<div class="modal-body">
-				<p>Select Department</p>
+				<p>Select Node Name</p>
 				<input type="text" ng-model="name" placeholder="Name"
 					autocomplete="off" class="form-control placeholder-no-fix">
+			</div>
+			<div class="modal-body">
+				<p>Select Group</p>
+	<select name="group" ng-model="selectedgroup">
+      <option ng-repeat="option in groups" value="{{option.name}}">{{option.name}}</option>
+    </select>
 			</div>
 			<div class="modal-footer">
 				<button data-dismiss="modal" class="btn btn-default"
