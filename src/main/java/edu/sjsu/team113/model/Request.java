@@ -23,7 +23,10 @@ import org.hibernate.annotations.Cascade;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import edu.sjsu.team113.config.Views;
 
 @Entity
 @Table(name = "request_details")
@@ -39,24 +42,30 @@ public class Request implements Serializable {
 	@Id
 	@GeneratedValue
 	@Column(name = "request_id")
+	@JsonView(Views.Public.class)
 	private Long id;
 
-	@Column(name = "request_title", nullable = false, unique = true)
+	@Column(name = "request_title", nullable = false)
+	@JsonView(Views.Public.class)
 	private String title;
 
-	@Column(name = "request_desc", nullable = false, unique = true)
+	@Column(name = "request_desc", nullable = false)
+	@JsonView(Views.Public.class)
 	private String description;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "workflow_id")
+	@JsonView(Views.Public.class)
 	private Workflow workflow;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "initiator_id")
+	@JsonView(Views.Public.class)
 	private AppUser initiatorid;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "initiator_dept_mgr_group_id")
+	@JsonView(Views.Public.class)
 	private WorkGroup initiator_dept_mgr_group_id;
 
 	@OneToMany(mappedBy = "request")
@@ -64,11 +73,13 @@ public class Request implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "request_status")
+	@JsonView(Views.Public.class)
 	private RequestStatus status;
 
 	@OneToMany(mappedBy = "request", fetch = FetchType.EAGER)
 	@Cascade({org.hibernate.annotations.CascadeType.ALL})
 	@JsonBackReference
+	@JsonView(Views.Public.class)
 	private Set<RequestNode> nodes = new HashSet<>();
 
 	@Column(name = "request_createdtime")
@@ -79,6 +90,7 @@ public class Request implements Serializable {
 	private AppUser lastModUserId;
 
 	@Column(name = "mutation_hash")
+	@JsonView(Views.Public.class)
 	private String mutationHash;
 
 	@Column(name = "request_modifiedtime")
