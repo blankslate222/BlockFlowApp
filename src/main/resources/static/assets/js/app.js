@@ -50,7 +50,7 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 			}
 		})
 		.state('root.adminfeed', {
-			url: '/block',
+			url: '/adminfeed',
 			views: {
 				'header@': {
 					templateUrl: 'views/header.html',

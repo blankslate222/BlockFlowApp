@@ -18,4 +18,6 @@ cmpe.controller('headCtrl', function($scope, $rootScope, $http, $location,
 		return ($location.path().substr(0) === path) ? 'active' : '';
 	}
 	$scope.user = $cookieStore.get('user');
+	$scope.admin = ($scope.user.id == 1);
+	console.log(($scope.user.id == 1));
 });

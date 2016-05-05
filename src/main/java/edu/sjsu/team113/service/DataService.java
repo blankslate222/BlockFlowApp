@@ -250,8 +250,8 @@ public class DataService implements IDataService {
 		// TODO Auto-generated method stub
 		AppUser user = userService.findByEmail(userId);
 		ManagedUser employee = managedUserRepository.findByAppUser(user);
-		WorkGroup grp = employee.getDepartment().getClient()
-				.getClientAdminGroup();
+
+		WorkGroup grp = employee.getEmployer().getClientAdminGroup();
 		List<Request> requests = requestRepository.findByAssignedGroup(grp);
 		return requests;
 	}
@@ -262,11 +262,11 @@ public class DataService implements IDataService {
 	 */
 	public List<Request> userInbox(String userId) {
 		// TODO Auto-generated method stub
-		AppUser user = userService.findByEmail(userId);		
+		AppUser user = userService.findByEmail(userId);
 		List<Request> requests = requestRepository.findByInitiatorid(user);
 		return requests;
 	}
-	
+
 	@Override
 	public Request fetchMyActionedRequests(String userId) {
 		// TODO Auto-generated method stub

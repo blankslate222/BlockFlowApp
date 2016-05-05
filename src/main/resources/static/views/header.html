@@ -17,7 +17,7 @@
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle">
                             <i class="fa fa-tasks"></i>
-                            <span class="badge bg-theme">{{tasks.length}}</span>
+<!--                             <span class="badge bg-theme">{{tasks.length}}</span> -->
                         </a>
                         <ul class="dropdown-menu extended tasks-bar">
                             <div class="notify-arrow notify-arrow-green"></div>
@@ -48,7 +48,7 @@
             </div>
             <div class="top-menu">
             	<ul class="nav pull-right top-menu">
-                    <li><a class="logout" href="login.html">Logout</a></li>
+                    <li><a class="logout" href="/">Logout</a></li>
             	</ul>
             </div>
         </header>
@@ -95,6 +95,12 @@
                       <a data-ui-sref="root.blockchain"  ng-class="getClass('/block')">
                           <i class="fa fa-chain"></i>
                           <span>BlockChain Feed</span>
+                      </a>
+                  </li>
+                  <li class="mt" data-ng-if="admin">
+                      <a data-ui-sref="root.adminfeed"  ng-class="getClass('/adminfeed')">
+                          <i class="fa fa-chain"></i>
+                          <span>Admin Feed</span>
                       </a>
                   </li>
                   <li class="mt">
