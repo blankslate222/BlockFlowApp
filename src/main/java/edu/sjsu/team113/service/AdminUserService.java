@@ -3,6 +3,8 @@ package edu.sjsu.team113.service;
 import java.util.List;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -82,6 +84,14 @@ public class AdminUserService implements IAdminUserService {
 		obj.put("seed", seedValue);
 		
 		String mutationHash = chainService.createTransaction(obj.toJSONString());
+		JSONParser parser = new JSONParser();
+		try {
+			JSONObject chainResp = (JSONObject) parser.parse(mutationHash);
+			mutationHash = (String) chainResp.get("mutation_hash");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		client.setBlockchainSeed(seedValue);
 		client.setMutationString(mutationHash);
 		
