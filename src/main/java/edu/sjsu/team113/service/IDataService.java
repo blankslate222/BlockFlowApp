@@ -44,8 +44,4 @@ public interface IDataService {
 	Request fetchMyActionedRequests(String userId);
 	String getSeedForClient(ClientOrg client);
 
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> a61442f4a8ad8d19c70b28c41a35a2b114309218

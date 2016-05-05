@@ -124,7 +124,7 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				}
 			}
 		})
-		.state('root.workflowcrete', {
+		.state('root.workflow', {
 			url : '/workflow',
 			views : {
 				'header@': {
@@ -137,7 +137,7 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				}
 			}
 		})
-		.state('root.workflow', {
+		.state('root.workflowcrete', {
 			url : '',
 			views : {
 				'header@': {
