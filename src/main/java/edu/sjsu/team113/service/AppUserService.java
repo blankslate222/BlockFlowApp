@@ -96,7 +96,7 @@ public class AppUserService implements IAppUserService {
 		Set<RequestNode> requestNodes = new HashSet<RequestNode>();
 		for (WorkflowNode node : nodes) {
 			RequestNode reqNode = new RequestNode();
-			if (node.getId() == 1) {
+			if (node.getLevel() == 1) {
 				initiator_dept_mgr_group_id = node.getWorkgroup();
 				reqNode.setCurrentNode(true);
 				reqNode.setStatus(NodeStatus.PENDING_ACTION);
@@ -104,6 +104,7 @@ public class AppUserService implements IAppUserService {
 			reqNode.setLevel(node.getLevel());
 			reqNode.setRequest(newrequest);
 			reqNode.setName(node.getName());
+			requestNodes.add(reqNode);
 		}
 		newrequest.setStatus(RequestStatus.PENDING);
 		newrequest.setTitle(requestedFlow.getName());

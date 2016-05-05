@@ -9,6 +9,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,6 +23,7 @@ import edu.sjsu.team113.repository.RequestNodeRepository;
 import edu.sjsu.team113.repository.RequestRepository;
 import edu.sjsu.team113.repository.WorkflowRepository;
 
+@Service
 public class StaffUserService implements IStaffUserService {
 
 	@Autowired

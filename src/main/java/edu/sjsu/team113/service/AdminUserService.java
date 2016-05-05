@@ -43,22 +43,22 @@ public class AdminUserService implements IAdminUserService {
 
 	@Autowired
 	private WorkGroupRepository groupRepo;
-	
+
 	@Autowired
 	private WorkflowRepository flowRepo;
 
 	@Autowired
 	private IDataService dataService;
-	
+
 	@Autowired
 	private IBlockchainService chainService;
 
 	@Autowired
 	private ChainAuditRepository auditRepo;
-	
+
 	@Value("${chain.server}")
 	private String openchainServer;
-	
+
 	@Override
 	public ClientOrg createClient(ClientOrg client, String authenticatedUser) {
 		// TODO: Check if authenticated user belongs to admin grp
@@ -67,23 +67,24 @@ public class AdminUserService implements IAdminUserService {
 			return null;
 		}
 		WorkGroup clientAdminGrp = new WorkGroup();
-		//clientAdminGrp.setClient(createdClient);
+		// clientAdminGrp.setClient(createdClient);
 		clientAdminGrp.setName(client.getName() + "_Admin_Group");
 		WorkGroup created = groupRepo.save(clientAdminGrp);
 		client.setClientAdminGroup(created);
 		// create folder on openchain - new seed => new folder
 		String seedValue = chainService.getSeed();
-		
-		while(clientRepo.findByBlockchainSeed(seedValue) != null) {
+
+		while (clientRepo.findByBlockchainSeed(seedValue) != null) {
 			seedValue = chainService.getSeed();
 		}
-		
+
 		JSONObject obj = new JSONObject();
 		obj.put("host", openchainServer);
 		obj.put("data", "Client Created = " + client.getName());
 		obj.put("seed", seedValue);
-		
-		String mutationHash = chainService.createTransaction(obj.toJSONString());
+
+		String mutationHash = chainService
+				.createTransaction(obj.toJSONString());
 		JSONParser parser = new JSONParser();
 		try {
 			JSONObject chainResp = (JSONObject) parser.parse(mutationHash);
@@ -94,7 +95,7 @@ public class AdminUserService implements IAdminUserService {
 		}
 		client.setBlockchainSeed(seedValue);
 		client.setMutationString(mutationHash);
-		
+
 		ClientOrg createdClient = clientRepo.save(client);
 		created.setClient(createdClient);
 		groupRepo.save(created);
@@ -110,12 +111,13 @@ public class AdminUserService implements IAdminUserService {
 	@Override
 	public ClientDepartment createDepartment(ClientDepartment department,
 			String authenticatedUser) {
-		department.setClient(clientRepo.findOne(department.getClient().getId()));
+		department
+				.setClient(clientRepo.findOne(department.getClient().getId()));
 		WorkGroup mgrGrp = new WorkGroup();
 		mgrGrp.setDepartment(department);
 		mgrGrp.setClient(department.getClient());
 		mgrGrp.setName(department.getName() + "_Manager_Group");
-//		WorkGroup grp = groupRepo.save(mgrGrp);
+		// WorkGroup grp = groupRepo.save(mgrGrp);
 		department.setManagerGroup(mgrGrp);
 		ClientDepartment createdDept = deptRepo.save(department);
 		return createdDept;
@@ -145,7 +147,8 @@ public class AdminUserService implements IAdminUserService {
 		ManagedUser mgdAuthUser = managedUserRepo.findByAppUser(authUser);
 		WorkGroup adminGrp = client.getClientAdminGroup();
 		// TODO: Override equals and hashcode
-		if (!mgdAuthUser.getGroups().contains(adminGrp) || mgdAuthUser.getId() != 1) {
+		if (!mgdAuthUser.getGroups().contains(adminGrp)
+				|| mgdAuthUser.getId() != 1) {
 			// TODO: throw exception
 			return null;
 		}
@@ -163,10 +166,10 @@ public class AdminUserService implements IAdminUserService {
 		mgdUser.setEmployer(client);
 		mgdUser.getGroups().add(adminGrp);
 		mgdUser = managedUserRepo.save(mgdUser);
-		
+
 		client.getClientAdminGroup().addUserToGroup(mgdUser);
 		clientRepo.save(client);
-		
+
 		mgdUser = managedUserRepo.findByAppUser(user);
 		return mgdUser;
 	}
@@ -192,7 +195,8 @@ public class AdminUserService implements IAdminUserService {
 
 		flow.setLastModUserId(user);
 		for (WorkflowNode node : flow.getNodes()) {
-			if (node.getLevel() == 1) node.setCurrentNode(true);
+			if (node.getLevel() == 1)
+				node.setCurrentNode(true);
 			node.setWorkflow(flow);
 			node.setWorkgroup(flow.getClient().getClientAdminGroup());
 		}
@@ -219,7 +223,7 @@ public class AdminUserService implements IAdminUserService {
 	@Override
 	public List<ChainAudit> auditChain() {
 		// TODO Auto-generated method stub
-		
+
 		return null;
 	}
 }

@@ -1,5 +1,6 @@
 package edu.sjsu.team113.web;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import edu.sjsu.team113.config.Views;
 import edu.sjsu.team113.model.AppUser;
 import edu.sjsu.team113.model.ControllerResponse;
+import edu.sjsu.team113.service.IAdminUserService;
 import edu.sjsu.team113.service.IAppUserService;
 
 @Controller
@@ -24,6 +26,9 @@ public class AppUserController {
 
 	@Autowired
 	private IAppUserService userService;
+
+	@Autowired
+	private IAdminUserService adminService;
 
 	@RequestMapping(value = { "/" })
 	public String getIndexPage() {
@@ -71,13 +76,28 @@ public class AppUserController {
 		resp.addToResponseMap("responseObject", userList);
 		return resp;
 	}
-	
+
+	@RequestMapping(value = "user/request/create", method = RequestMethod.POST)
+	public @ResponseBody ControllerResponse createRequest(
+			@RequestBody Map<String, String> body, Principal principal) {
+		ControllerResponse resp = new ControllerResponse();
+		Long workflowId = Long.parseLong(body.get("workflowid"));
+		Long clientId = Long.parseLong(body.get("clientid"));
+		String principalUser = principal.getName();
+		AppUser requestingUser = userService.findByEmail(principalUser);
+		String mutationHash = userService.raiseRequest(workflowId, clientId,
+				requestingUser);
+		resp.addToResponseMap("hash", mutationHash);
+		return resp;
+	}
+
 	@RequestMapping(value = "/testpost2", method = RequestMethod.POST)
-	public @ResponseBody ControllerResponse testPost3(@RequestBody Map<String,String> body) {
+	public @ResponseBody ControllerResponse testPost3(
+			@RequestBody Map<String, String> body) {
 		ControllerResponse resp = new ControllerResponse();
 		System.out.println("body null ? " + (body == null));
 		System.out.println(body.get("f1"));
 		return resp;
 	}
-	
+
 }
