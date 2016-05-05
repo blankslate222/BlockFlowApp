@@ -49,6 +49,19 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				}
 			}
 		})
+		.state('root.createReq', {
+			url: '/createReq',
+			views: {
+				'header@': {
+					templateUrl: 'views/header.html',
+					controller: 'headCtrl'
+				},
+				'container@' : {
+					templateUrl : 'views/createReq.html',
+					controller : 'createReqCtrl'
+				}
+			}
+		})
 		.state('root.register', {
 			url: '/register',
 			views: {
