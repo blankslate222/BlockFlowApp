@@ -106,7 +106,20 @@ cmpe.controller('workCtrl',[
 								console.log($scope.groups);
 							}
 							$scope.getGroups();
-							//
+
+							
+							$scope.workflows=[];
+							$scope.getWorkflows = function() {
+								$http.get("/data/workflows").success(function(data) {
+									var objs = data.controllerResponse.responseObject;
+									for (var i = 0; i < objs.length; i++) {
+										$scope.workflows.push(objs[i]);
+									}
+									console.log($scope.workflows);
+								});
+							};
+							$scope.getWorkflows();
+//
 							// Add a new node to the chart.
 							//
 							$scope.addNewNode = function() {
@@ -135,7 +148,6 @@ cmpe.controller('workCtrl',[
 								};
 
 								$scope.chartViewModel.addNode(newNodeDataModel);
-								
 							};
 
 							//
@@ -262,6 +274,7 @@ cmpe.controller('workCtrl',[
 								workflow.name = $scope.workflowname;
 								workflow.client = $cookieStore.get('client');
 								workflow.nodes = [];
+								workflow.workflowJson = JSON.stringify(chartDataModel);
 								// debugger;
 								// var uniquenodes = uniqueNodes(graph);
 								var nodeseq = topologicalsort(graph).reverse();
@@ -288,9 +301,14 @@ cmpe.controller('workCtrl',[
 												workflow)
 										.success(
 												function(data) {
-													console
-															.log("after workflow create : \n");
-													console.log(data);
+													console.log("after workflow create : \n");
+													console.log(chartDataModel);
+													console.log("after workflow create 1: \n");
+													console.log(data.controllerResponse.responseObject.workflowJson);
+													console.log("after workflow create 2: \n");
+													console.log(JSON.stringify(data));
+													$scope.chartViewModel = new flowchart.ChartViewModel(
+															JSON.parse(data.controllerResponse.responseObject.workflowJson));
 												}).error(function(err) {
 											// $scope.status = data.error;
 											console.log("Error: \n" + err);

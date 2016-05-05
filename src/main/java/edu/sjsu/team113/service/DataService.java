@@ -12,10 +12,12 @@ import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ManagedUser;
 import edu.sjsu.team113.model.Request;
 import edu.sjsu.team113.model.WorkGroup;
+import edu.sjsu.team113.model.Workflow;
 import edu.sjsu.team113.repository.ClientDepartmentRepository;
 import edu.sjsu.team113.repository.ClientOrgRepository;
 import edu.sjsu.team113.repository.ManagedUserRepository;
 import edu.sjsu.team113.repository.WorkGroupRepository;
+import edu.sjsu.team113.repository.WorkflowRepository;
 
 @Service
 public class DataService implements IDataService {
@@ -31,6 +33,9 @@ public class DataService implements IDataService {
 
 	@Autowired
 	private ManagedUserRepository managedUserRepository;
+
+	@Autowired
+	private WorkflowRepository workflowRepository;
 
 	@Override
 	public ClientOrg findClientOrgById(Long id) {
@@ -84,6 +89,20 @@ public class DataService implements IDataService {
 			System.out.println(clientOrg.toString());
 		}
 		return foundActiveClientOrgs;
+
+	}
+
+	@Override
+	public List<Workflow> findActiveWorkflows() {
+
+		List<Workflow> foundActiveWorkflows = null;
+		System.out.println("now finding all active workflow list ");
+		foundActiveWorkflows = workflowRepository.findByIsActive(true);
+		System.out.println("workflow list : ");
+		for (Workflow workflow : foundActiveWorkflows) {
+			System.out.println(workflow.toString());
+		}
+		return foundActiveWorkflows;
 
 	}
 

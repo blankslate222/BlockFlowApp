@@ -140,6 +140,9 @@ public class AdminUserController {
 		} else {
 			System.out.println("no nodes received");
 		}
+		
+		System.out.println("WorkFLOW Client"+workflow.getClient());
+		workflow.setClient(dataService.findClientOrgById(workflow.getClient().getId()));
 		Workflow createdFlow = adminService.createWorkflow(workflow, authenticatedUser);
 		if (createdFlow == null) {
 			resp.addError(new ResourceException("Workflow could not be created"));

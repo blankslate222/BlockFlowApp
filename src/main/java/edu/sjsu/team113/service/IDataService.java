@@ -9,6 +9,7 @@ import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ManagedUser;
 import edu.sjsu.team113.model.Request;
 import edu.sjsu.team113.model.WorkGroup;
+import edu.sjsu.team113.model.Workflow;
 
 public interface IDataService {
 	
@@ -43,5 +44,7 @@ public interface IDataService {
 	//Fetches Requests approved/rejected by me
 	Request fetchMyActionedRequests(String userId);
 	String getSeedForClient(ClientOrg client);
+
+	List<Workflow> findActiveWorkflows();
 
 }

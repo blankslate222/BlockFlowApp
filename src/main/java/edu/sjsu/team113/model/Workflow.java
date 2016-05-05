@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -45,6 +46,10 @@ public class Workflow implements Serializable {
 	@JoinColumn(name = "client_id")
 	private ClientOrg client;
 	
+	@Column(name = "workflow_json", nullable = false)
+	@Lob
+	private String workflowJson;
+
 	@Column(name = "is_workflow_active")
 	private boolean isActive = true;
 
@@ -80,6 +85,14 @@ public class Workflow implements Serializable {
 
 	public void setClient(ClientOrg client) {
 		this.client = client;
+	}
+
+	public String getWorkflowJson() {
+		return workflowJson;
+	}
+
+	public void setWorkflowJson(String workflowJson) {
+		this.workflowJson = workflowJson;
 	}
 
 	public boolean isActive() {

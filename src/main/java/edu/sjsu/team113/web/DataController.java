@@ -19,6 +19,7 @@ import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ControllerResponse;
 import edu.sjsu.team113.model.WorkGroup;
+import edu.sjsu.team113.model.Workflow;
 import edu.sjsu.team113.service.IDataService;
 
 @Controller
@@ -70,6 +71,17 @@ public class DataController {
 		ClientDepartment department = dataService.findDepartmentById(deptId);
 		Set<WorkGroup> grpsByDept = dataService.findGroupsByDepartment(department);
 		resp.addResponseObject(grpsByDept);
+		return resp;
+	}
+
+	@RequestMapping(value = "/workflows")
+	public @ResponseBody ControllerResponse getWorkflows(HttpServletResponse res,
+			Principal principal) {
+		List<Workflow> workflowList = null;
+		ControllerResponse resp = new ControllerResponse();
+		workflowList = dataService.findActiveWorkflows();
+		resp.addResponseObject(workflowList);
+		resp.addError(null);
 		return resp;
 	}
 

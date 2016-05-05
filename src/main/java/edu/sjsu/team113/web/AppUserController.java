@@ -84,6 +84,7 @@ public class AppUserController {
 		Long workflowId = Long.parseLong(body.get("workflowid"));
 		Long clientId = Long.parseLong(body.get("clientid"));
 		String description = body.get("description");
+		System.out.println("my map:"+body.toString());
 		String principalUser = principal.getName();
 		AppUser requestingUser = userService.findByEmail(principalUser);
 		String mutationHash = userService.raiseRequest(workflowId, clientId,

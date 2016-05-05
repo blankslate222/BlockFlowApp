@@ -62,6 +62,19 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				}
 			}
 		})
+		.state('root.requestdetail', {
+			url: '/requestdetail',
+			views: {
+				'header@': {
+					templateUrl: 'views/header.html',
+					controller: 'headCtrl'
+				},
+				'container@' : {
+					templateUrl : 'views/requestdetails.html',
+					controller : 'requestDetailCtrl'
+				}
+			}
+		})
 		.state('root.inbox', {
 			url: '/inbox',
 			views: {
