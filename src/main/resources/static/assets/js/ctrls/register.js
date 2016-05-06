@@ -1,8 +1,19 @@
-cmpe.controller('registerCtrl', function($scope, $rootScope, $http){
-	$scope.tasks = 
-			[{task: 'School Transcript', percent:10},
-			 {task: 'SSN Update', percent:20},
-			 {task: 'Class Schedule', percent:30},
-			 {task: 'School Payment', percent:40},
-			 ];
+cmpe.controller('registerCtrl', function($scope, $rootScope, $http, $window){
+	
+	$scope.requests=[];
+	
+	$scope.doSignUp = function(){
+		console.log('creating signup request');
+		var paramMap = {
+				"name": $scope.user.name,
+				"email": $scope.user.email,
+				"passwordHash": $scope.user.password
+			}
+		$http.post("/signup", paramMap).success(function(data) {
+			console.log(data);
+			$window.location.href = '/#/login';
+		});
+		
+	};
+	
 });
