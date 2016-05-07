@@ -1,60 +1,18 @@
 cmpe.controller('inboxCtrl', function($scope, $rootScope, $http){
 	$scope.requests=[];
-	$scope.getRequests = function(){
-		var reqs=[{
-			name:"Req1",
-			id:1,
-			desc:"SSN update",
-			username:"Nikhil"
-		},{
-			name:"Req2",
-			id:2,
-			desc:"Transript update",
-			username:"Chris"
-		},{
-			name:"Req1",
-			id:1,
-			desc:"SSN update",
-			username:"Nikhil"
-		},{
-			name:"Req2",
-			id:2,
-			desc:"Transript update",
-			username:"Chris"
-		},{
-			name:"Req1",
-			id:1,
-			desc:"SSN update",
-			username:"Nikhil"
-		},{
-			name:"Req2",
-			id:2,
-			desc:"Transript update",
-			username:"Chris"
-		},{
-			name:"Req1",
-			id:1,
-			desc:"SSN update",
-			username:"Nikhil"
-		},{
-			name:"Req2",
-			id:2,
-			desc:"Transript update",
-			username:"Chris"
-		},{
-			name:"Req1",
-			id:1,
-			desc:"SSN update",
-			username:"Nikhil"
-		},{
-			name:"Req2",
-			id:2,
-			desc:"Transript update",
-			username:"Chris"
-		}];
-		$scope.requests=reqs;
-	}
+	var tempArr = [];
+	$scope.getRequests = function() {
+		$http.get("/data/userinbox").success(function(data) {
+			console.log(data);
+			var objs = data.controllerResponse.responseObject.requestlist;
+			for (var i = 0; i < objs.length; i++) {
+				$scope.requests.push(objs[i]);
+			}
+			console.log($scope.requests);
+		});
+	};
 	$scope.getRequests();
+
 	$scope.req=null;
 	$scope.getReqDetails = function(id){
 		$scope.getWorkflowByReqId(id);
