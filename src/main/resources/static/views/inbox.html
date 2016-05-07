@@ -56,8 +56,8 @@
 							<textarea class="form-control" rows="5"></textarea>
 						</div>
 					</div>
-					<button class="btn btn-theme02">Accept</button>
-					<button class="btn btn-theme03">Reject</button>
+					<button class="btn btn-theme02" data-ng-click="doActionOnRequest(req.id,req.workflow.nodes,'APPROVED')">Accept</button>
+					<button class="btn btn-theme03" data-ng-click="doActionOnRequest(req.id,req.workflow.nodes,'REJECTED')">Reject</button>
 				</form>
 			</div>
 		</div>

@@ -106,7 +106,8 @@ public class AdminUserController {
 	}
 
 	@RequestMapping(value = "/client/addadmin")
-	public @ResponseBody ControllerResponse addUserToClientAdminGroup(
+	@ResponseBody
+	public ControllerResponse addUserToClientAdminGroup(
 			@RequestParam String user, @RequestParam Long clientId,
 			Model model, HttpServletResponse res, Principal principal) {
 		ControllerResponse resp = new ControllerResponse();

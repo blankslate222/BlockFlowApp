@@ -56,12 +56,12 @@ public class ClientOrg implements Serializable {
 
 	@Column(name = "modified_time")
 	private Timestamp modified = new Timestamp(new Date().getTime());
-
-	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
-	private Set<ClientDepartment> clientDepartments = new HashSet<>();
-	
-	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
-	private Set<WorkGroup> groups = new HashSet<>();
+//
+//	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+//	private Set<ClientDepartment> clientDepartments = new HashSet<>();
+//	
+//	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+//	private Set<WorkGroup> groups = new HashSet<>();
 	
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "admin_grp_id")
@@ -102,13 +102,13 @@ public class ClientOrg implements Serializable {
 		this.address = address;
 	}
 
-	public Set<ClientDepartment> getClientDepartments() {
-		return clientDepartments;
-	}
-
-	public void setClientDepartments(Set<ClientDepartment> clientDepartments) {
-		this.clientDepartments = clientDepartments;
-	}
+//	public Set<ClientDepartment> getClientDepartments() {
+//		return clientDepartments;
+//	}
+//
+//	public void setClientDepartments(Set<ClientDepartment> clientDepartments) {
+//		this.clientDepartments = clientDepartments;
+//	}
 
 	public Timestamp getModified() {
 		return modified;
@@ -126,13 +126,13 @@ public class ClientOrg implements Serializable {
 		return created;
 	}
 	
-	public Set<WorkGroup> getGroups() {
-		return groups;
-	}
-
-	public void setGroups(Set<WorkGroup> groups) {
-		this.groups = groups;
-	}
+//	public Set<WorkGroup> getGroups() {
+//		return groups;
+//	}
+//
+//	public void setGroups(Set<WorkGroup> groups) {
+//		this.groups = groups;
+//	}
 
 	public WorkGroup getClientAdminGroup() {
 		return clientAdminGroup;

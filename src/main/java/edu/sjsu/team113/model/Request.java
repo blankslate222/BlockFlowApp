@@ -72,20 +72,20 @@ public class Request implements Serializable {
 	@JoinColumn(name = "initiator_dept_mgr_group_id")
 	@JsonView(Views.Public.class)
 	private WorkGroup assignedGroup;
-
-	@OneToMany(mappedBy = "request")
-	private Set<RequestComment> requestComments = new HashSet<>();
+//
+//	@OneToMany(mappedBy = "request")
+//	private Set<RequestComment> requestComments = new HashSet<>();
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "request_status")
 	@JsonView(Views.Public.class)
 	private RequestStatus status;
 
-	@OneToMany(mappedBy = "request", fetch = FetchType.EAGER)
-	@Cascade({org.hibernate.annotations.CascadeType.ALL})
-	@JsonBackReference
-	@JsonView(Views.Public.class)
-	private Set<RequestNode> nodes = new HashSet<>();
+//	@OneToMany(mappedBy = "request", fetch = FetchType.EAGER)
+//	@Cascade({org.hibernate.annotations.CascadeType.ALL})
+//	@JsonBackReference
+//	@JsonView(Views.Public.class)
+//	private Set<RequestNode> nodes = new HashSet<>();
 
 	@Column(name = "request_createdtime")
 	private Timestamp created = new Timestamp(new Date().getTime());
@@ -165,21 +165,21 @@ public class Request implements Serializable {
 		this.status = status;
 	}
 
-	public Set<RequestComment> getRequestComments() {
-		return requestComments;
-	}
+//	public Set<RequestComment> getRequestComments() {
+//		return requestComments;
+//	}
+//
+//	public void setRequestComments(Set<RequestComment> requestComments) {
+//		this.requestComments = requestComments;
+//	}
 
-	public void setRequestComments(Set<RequestComment> requestComments) {
-		this.requestComments = requestComments;
-	}
-
-	public Set<RequestNode> getNodes() {
-		return nodes;
-	}
-
-	public void setNodes(Set<RequestNode> nodes) {
-		this.nodes = nodes;
-	}
+//	public Set<RequestNode> getNodes() {
+//		return nodes;
+//	}
+//
+//	public void setNodes(Set<RequestNode> nodes) {
+//		this.nodes = nodes;
+//	}
 
 	public String getMutationHash() {
 		return mutationHash;

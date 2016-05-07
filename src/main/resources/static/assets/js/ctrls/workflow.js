@@ -302,6 +302,7 @@ cmpe.controller('workCtrl',[
 													console.log(data.controllerResponse.responseObject.workflowJson);
 													console.log("after workflow create 2: \n");
 													console.log(JSON.stringify(data));
+													$scope.workflows.push(data.controllerResponse.responseObject);
 													$scope.chartViewModel = new flowchart.ChartViewModel(
 															JSON.parse(data.controllerResponse.responseObject.workflowJson));
 												}).error(function(err) {

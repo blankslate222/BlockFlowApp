@@ -49,8 +49,8 @@ public class ClientDepartment implements Serializable {
 	@JoinColumn(name = "manager_grp")
 	private WorkGroup managerGroup;
 
-	@OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
-	private Set<WorkGroup> groups = new HashSet<>();
+//	@OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
+//	private Set<WorkGroup> groups = new HashSet<>();
 
 	@Column(name = "dept_isactive")
 	private boolean isActive = true;
@@ -88,14 +88,14 @@ public class ClientDepartment implements Serializable {
 	public void setManagerGroup(WorkGroup managerGroup) {
 		this.managerGroup = managerGroup;
 	}
-
-	public Set<WorkGroup> getGroups() {
-		return groups;
-	}
-
-	public void setGroups(Set<WorkGroup> groups) {
-		this.groups = groups;
-	}
+//
+//	public Set<WorkGroup> getGroups() {
+//		return groups;
+//	}
+//
+//	public void setGroups(Set<WorkGroup> groups) {
+//		this.groups = groups;
+//	}
 
 	public boolean isActive() {
 		return isActive;

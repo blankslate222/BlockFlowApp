@@ -56,7 +56,7 @@ public class Workflow implements Serializable {
 	@Column(name = "workflow_createdtime")
 	private Timestamp created = new Timestamp(new Date().getTime());
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "last_mod_userid")
 	private AppUser lastModUserId;
 
