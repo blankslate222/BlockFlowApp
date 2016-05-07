@@ -96,6 +96,16 @@ public class DataController {
 		return resp;
 	}
 
+	@RequestMapping(value = "/deptbyclient/{clientId}")
+	public @ResponseBody ControllerResponse getDepartmentByClient(@PathVariable Long clientId, HttpServletResponse res) {
+		ControllerResponse resp = new ControllerResponse();
+		Set<ClientDepartment> departments = dataService.findDepartmentsByClient(dataService.findClientOrgById(clientId));
+		// System.out.println("department details" + department.getGroups());
+		resp.addResponseObject(departments);
+		resp.addError(null);
+		return resp;
+	}
+
 	@RequestMapping(value = "/groupsbydept/{deptId}")
 	public @ResponseBody ControllerResponse getGroupsByDepartment(@PathVariable Long deptId, HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
@@ -204,6 +214,7 @@ public class DataController {
 		return resp;
 	}
 
+	
 	@RequestMapping(value = "/userinbox")
 	public @ResponseBody ControllerResponse getRequestsRaisedByMe(Principal principal) {
 		ControllerResponse resp = new ControllerResponse();
