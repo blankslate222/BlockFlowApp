@@ -65,7 +65,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-show="client.clientDepartments.length!=0" data-ng-repeat="dept in client.clientDepartments">
+							<tr ng-show="client.clientDepartments.length!=0" data-ng-repeat="dept in depts">
 								<td><a href="/#/client/{{client.id}}/dept/{{dept.id}}">{{dept.name}}</a></td>
 								<td>{{dept.name}}</td>
 								<td>

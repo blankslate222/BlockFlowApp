@@ -47,18 +47,21 @@ cmpe.controller('clientDetailsCtrl', function($scope, $stateParams, $state,
 				});
 	};
 	$scope.getClient();
-	$scope.getDepts = function() {
-		/*
-		 * $http.get("/data/dept/" +
-		 * $stateParams.clientID).success(function(data){
-		 * if(data.controllerResponse.responseObject){ var
-		 * objs=data.controllerResponse.responseObject; for(var i=0;i<objs.length;i++){
-		 * $scope.depts.push(objs[i]); } console.log($scope.depts); }
-		 * //console.log(data.controllerResponse.responseObject); });
-		 */
-	};
-	$scope.getDepts();
+	
 	$scope.depts = [];
+	$scope.getDepts = function() {
+		  $http.get("/data/deptbyclient/" +
+		  $stateParams.clientID).success(function(data){
+			  if(data.controllerResponse.responseObject){ 
+				  var objs=data.controllerResponse.responseObject; 
+				  for(var i=0;i<objs.length;i++){
+					  $scope.depts.push(objs[i]); 
+				  } 
+				  console.log($scope.depts); 
+			  }
+		  });
+	}
+	$scope.getDepts();
 	
 	$scope.doDeptCreate = function() {
 		var dept = {
