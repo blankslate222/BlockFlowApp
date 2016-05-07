@@ -52,8 +52,8 @@ public class DataService implements IDataService {
 		foundClientOrg = clientOrgRepository.findOne(id);
 		// System.out.println("found departments = " +
 		// findDepartmentsByClient(foundClientOrg));
-		System.out.println("found departments = "
-				+ foundClientOrg.getClientDepartments());
+//		System.out.println("found departments = "
+//				+ foundClientOrg.getClientDepartments());
 
 		return foundClientOrg;
 

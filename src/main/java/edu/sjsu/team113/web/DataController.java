@@ -95,7 +95,7 @@ public class DataController {
 		ControllerResponse resp = new ControllerResponse();
 		ClientDepartment department = dataService
 				.findDepartmentById(departmentId);
-		System.out.println("department details" + department.getGroups());
+//		System.out.println("department details" + department.getGroups());
 		resp.addResponseObject(department);
 		resp.addError(null);
 		return resp;

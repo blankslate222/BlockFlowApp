@@ -27,8 +27,10 @@ import edu.sjsu.team113.model.WorkGroup;
 import edu.sjsu.team113.model.Workflow;
 import edu.sjsu.team113.model.WorkflowNode;
 import edu.sjsu.team113.repository.ClientOrgRepository;
+import edu.sjsu.team113.repository.RequestNodeRepository;
 import edu.sjsu.team113.repository.RequestRepository;
 import edu.sjsu.team113.repository.UserRepository;
+import edu.sjsu.team113.repository.WorkflowNodeRepository;
 import edu.sjsu.team113.repository.WorkflowRepository;
 
 @Service
@@ -44,11 +46,17 @@ public class AppUserService implements IAppUserService {
 	private WorkflowRepository flowRepo;
 
 	@Autowired
+	private WorkflowNodeRepository flowNodeRepo;
+	
+	@Autowired
 	private ClientOrgRepository clientRepo;
 
 	@Autowired
 	private RequestRepository reqRepo;
 
+	@Autowired
+	private RequestNodeRepository reqNodeRepo;
+	
 	@Autowired
 	private IBlockchainService chainService;
 
@@ -93,7 +101,7 @@ public class AppUserService implements IAppUserService {
 	public Request raiseRequest(Long workflowId, Long clientId, String reqDescription, AppUser user) {
 		// TODO Auto-generated method stub
 		Workflow requestedFlow = flowRepo.findOne(workflowId);
-		Set<WorkflowNode> nodes = requestedFlow.getNodes();
+		List<WorkflowNode> nodes = flowNodeRepo.findByWorkflow(requestedFlow);
 		Request newrequest = new Request();
 		// mgr grp of node with level = 1
 		WorkGroup initiator_dept_mgr_group_id = null;
@@ -117,7 +125,6 @@ public class AppUserService implements IAppUserService {
 		newrequest.setWorkflow(requestedFlow);
 		newrequest.setLastModUserId(user);
 		newrequest.setAssignedGroup(initiator_dept_mgr_group_id);
-		newrequest.setNodes(requestNodes);
 		newrequest.setDescription(reqDescription);
 		newrequest.setRequestJson(requestedFlow.getWorkflowJson());
 
@@ -149,6 +156,10 @@ public class AppUserService implements IAppUserService {
 		}
 		newrequest.setMutationHash(mutationhash);
 		Request createdRequest = reqRepo.save(newrequest);
+		for (RequestNode reqNode : requestNodes) {
+			reqNode.setRequest(createdRequest);
+			reqNodeRepo.save(reqNode);
+		}
 		
 		return createdRequest;
 	}
