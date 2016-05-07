@@ -2,7 +2,7 @@ cmpe.controller('inboxCtrl', function($scope, $rootScope, $http, $window) {
 	$scope.requests = [];
 	var tempArr = [];
 	$scope.getRequests = function() {
-		$http.get("/data/userinbox").success(function(data) {
+		$http.get("/data/staffinbox").success(function(data) {
 			console.log(data);
 			var objs = data.controllerResponse.responseObject.requestlist;
 			for (var i = 0; i < objs.length; i++) {
