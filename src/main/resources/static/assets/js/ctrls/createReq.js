@@ -37,7 +37,7 @@ cmpe.controller(
 										   "clientid" : "2" ,
 										   "description" : "My New Description"
 										}
-								$http.post("user/request/create").success(function(data) {
+								$http.post("user/request/create",paramMap).success(function(data) {
 									/*
 									 * var objs =
 									 * data.controllerResponse.responseObject;

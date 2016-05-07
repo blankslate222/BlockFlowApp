@@ -8,6 +8,7 @@ import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ManagedUser;
 import edu.sjsu.team113.model.Request;
+import edu.sjsu.team113.model.RequestNode;
 import edu.sjsu.team113.model.WorkGroup;
 import edu.sjsu.team113.model.Workflow;
 
@@ -46,6 +47,7 @@ public interface IDataService {
 	String getSeedForClient(ClientOrg client);
 
 	Request findRequestById(Long id);
+	List<RequestNode> findNodesByRequest(Long id);
 
 	List<Workflow> findActiveWorkflows();
 	List<Request> userInbox(String userId);
