@@ -11,11 +11,13 @@ import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ManagedUser;
 import edu.sjsu.team113.model.Request;
+import edu.sjsu.team113.model.RequestNode;
 import edu.sjsu.team113.model.WorkGroup;
 import edu.sjsu.team113.model.Workflow;
 import edu.sjsu.team113.repository.ClientDepartmentRepository;
 import edu.sjsu.team113.repository.ClientOrgRepository;
 import edu.sjsu.team113.repository.ManagedUserRepository;
+import edu.sjsu.team113.repository.RequestNodeRepository;
 import edu.sjsu.team113.repository.RequestRepository;
 import edu.sjsu.team113.repository.WorkGroupRepository;
 import edu.sjsu.team113.repository.WorkflowRepository;
@@ -43,6 +45,9 @@ public class DataService implements IDataService {
 
 	@Autowired
 	private RequestRepository requestRepository;
+
+	@Autowired
+	private RequestNodeRepository requestNodeRepository;
 
 	@Override
 	public ClientOrg findClientOrgById(Long id) {
@@ -173,6 +178,14 @@ public class DataService implements IDataService {
 		Set<WorkGroup> workgroupList = null;
 		workgroupList = workgroupRepository.findByDepartment(department);
 		return workgroupList;
+	}
+
+	@Override
+	public List<RequestNode> findNodesByRequest(Long requestId) {
+		// TODO Auto-generated method stub
+		List<RequestNode> nodeList = null;
+		nodeList = requestNodeRepository.findByRequest(requestRepository.findOne(requestId));
+		return nodeList;
 	}
 
 	@Override

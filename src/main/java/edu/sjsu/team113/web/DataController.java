@@ -27,6 +27,7 @@ import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ControllerResponse;
 import edu.sjsu.team113.model.Request;
+import edu.sjsu.team113.model.RequestNode;
 import edu.sjsu.team113.model.WorkGroup;
 import edu.sjsu.team113.model.Workflow;
 import edu.sjsu.team113.repository.ChainAuditRepository;
@@ -81,7 +82,9 @@ public class DataController {
 		ControllerResponse resp = new ControllerResponse();
 		Request request = dataService.findRequestById(requestId);
 		System.out.println("Request details" + request.toString());
+		List<RequestNode> nodeList = dataService.findNodesByRequest(requestId);
 		resp.addResponseObject(request);
+		resp.addResponseObject(nodeList);
 		resp.addError(null);
 		return resp;
 	}
