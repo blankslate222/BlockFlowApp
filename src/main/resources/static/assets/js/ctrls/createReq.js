@@ -37,18 +37,37 @@ cmpe.controller(
 										   "clientid" : "2" ,
 										   "description" : "My New Description"
 										}
-								$http.post("user/request/create", paramMap).success(function(data) {
-									/*var objs = data.controllerResponse.responseObject;
-									for (var i = 0; i < objs.length; i++) {
-										$scope.workflows.push(objs[i]);
-									}
-									console.log($scope.workflows);*/
+								$http.post("user/request/create").success(function(data) {
+									/*
+									 * var objs =
+									 * data.controllerResponse.responseObject;
+									 * for (var i = 0; i < objs.length; i++) {
+									 * $scope.workflows.push(objs[i]); }
+									 * console.log($scope.workflows);
+									 */
 									console.log("Request data:"+data.controllerResponse.responseObject.id);
 									console.log(data);
 									$window.location.href = '/#/request/'+data.controllerResponse.responseObject.id;
 								});
 								
 							};
+							
+							$scope.getReqs = function(){
+								console.log('>>> a request here');
+								
+								$http.get("/data/userinbox").success(function(data) {
+										$scope.userReqs=[];
+										var objs = data.controllerResponse.responseObject.requestlist;
+										for (var i = 0; i < objs.length; i++) {
+											$scope.userReqs.push(objs[i]);
+										}
+										console.log($scope.userReqs);
+									});
+							
+							};
+							$scope.getReqs();
+							
+							
 						} ]);
 
 
