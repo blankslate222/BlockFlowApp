@@ -128,10 +128,13 @@ cmpe.controller('workCtrl',[
 							// Add a new node to the chart.
 							//
 							$scope.addNewNode = function() {
-
+								var selectedDepartment = JSON.parse($scope.selectedDept);
+								console.log("Selected department id"+selectedDepartment.id);
+								
 								var newNodeDataModel = {
-									name : $scope.selectedDept,
+									name : selectedDepartment.name,
 									id : nextNodeID++,
+									deptId : selectedDepartment.id,
 									x : 0,
 									y : 0,
 									inputConnectors : [ {
@@ -286,6 +289,7 @@ cmpe.controller('workCtrl',[
 										workflownode.status = "PENDING_ACTION";
 									else
 										workflownode.status = "PENDING";
+									workflownode.department_id = uiNode.deptId ;
 									workflow.nodes.push(workflownode);
 								}
 

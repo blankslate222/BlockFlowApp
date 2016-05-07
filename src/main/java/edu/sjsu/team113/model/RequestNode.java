@@ -47,10 +47,15 @@ public class RequestNode implements Serializable {
 	@JsonView(Views.Public.class)
 	private Request request;
 
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "group_id")
+//	@JsonView(Views.Public.class)
+//	private WorkGroup workgroup;
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "group_id")
+	@JoinColumn(name = "department_id")
 	@JsonView(Views.Public.class)
-	private WorkGroup workgroup;
+	private ClientDepartment department;
 
 //    @ManyToOne(cascade={CascadeType.ALL})
 //    @JoinColumn(name="prev_node_id")
@@ -96,13 +101,13 @@ public class RequestNode implements Serializable {
 		this.request = request;
 	}
 
-	public WorkGroup getWorkgroup() {
-		return workgroup;
-	}
-
-	public void setWorkgroup(WorkGroup workgroup) {
-		this.workgroup = workgroup;
-	}
+//	public WorkGroup getWorkgroup() {
+//		return workgroup;
+//	}
+//
+//	public void setWorkgroup(WorkGroup workgroup) {
+//		this.workgroup = workgroup;
+//	}
 
 //	public WorkflowNode getPrevnode() {
 //		return prevnode;
@@ -142,6 +147,14 @@ public class RequestNode implements Serializable {
 
 	public void setStatus(NodeStatus status) {
 		this.status = status;
+	}
+
+	public ClientDepartment getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(ClientDepartment department) {
+		this.department = department;
 	}
 
 	public String getMutationHash() {

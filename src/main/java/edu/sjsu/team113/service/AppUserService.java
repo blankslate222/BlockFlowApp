@@ -109,14 +109,14 @@ public class AppUserService implements IAppUserService {
 		for (WorkflowNode node : nodes) {
 			RequestNode reqNode = new RequestNode();
 			if (node.getLevel() == 1) {
-				initiator_dept_mgr_group_id = node.getWorkgroup();
+				//initiator_dept_mgr_group_id = node.getWorkgroup();
 				reqNode.setCurrentNode(true);
 				reqNode.setStatus(NodeStatus.PENDING_ACTION);
 			}
 			reqNode.setLevel(node.getLevel());
 			reqNode.setRequest(newrequest);
 			reqNode.setName(node.getName());
-			reqNode.setWorkgroup(node.getWorkgroup());
+			//reqNode.setWorkgroup(node.getWorkgroup());
 			requestNodes.add(reqNode);
 		}
 		newrequest.setStatus(RequestStatus.PENDING);

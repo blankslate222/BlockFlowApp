@@ -198,7 +198,8 @@ public class AdminUserService implements IAdminUserService {
 			if (node.getLevel() == 1)
 				node.setCurrentNode(true);
 			node.setWorkflow(flow);
-			node.setWorkgroup(flow.getClient().getClientAdminGroup());
+			//node.setDepartment(department);
+			//node.setWorkgroup(flow.getClient().getClientAdminGroup());
 		}
 		createdFlow = flowRepo.save(flow);
 		return createdFlow;

@@ -42,9 +42,12 @@ public class WorkflowNode implements Serializable {
 	@JoinColumn(name = "workflow_id")
 	private Workflow workflow;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "group_id")
-	private WorkGroup workgroup;
+//	@ManyToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "group_id")
+//	private WorkGroup workgroup;
+
+	@Column(name = "dept_id", nullable = false)
+	private Long department_id;
 
 //    @ManyToOne(cascade={CascadeType.ALL})
 //    @JoinColumn(name="prev_node_id")
@@ -75,6 +78,14 @@ public class WorkflowNode implements Serializable {
 		this.name = name;
 	}
 
+	public Long getDepartment_id() {
+		return department_id;
+	}
+
+	public void setDepartment_id(Long department_id) {
+		this.department_id = department_id;
+	}
+
 	public Workflow getWorkflow() {
 		return workflow;
 	}
@@ -83,13 +94,13 @@ public class WorkflowNode implements Serializable {
 		this.workflow = workflow;
 	}
 
-	public WorkGroup getWorkgroup() {
-		return workgroup;
-	}
-
-	public void setWorkgroup(WorkGroup workgroup) {
-		this.workgroup = workgroup;
-	}
+//	public WorkGroup getWorkgroup() {
+//		return workgroup;
+//	}
+//
+//	public void setWorkgroup(WorkGroup workgroup) {
+//		this.workgroup = workgroup;
+//	}
 
 //	public WorkflowNode getPrevnode() {
 //		return prevnode;
