@@ -47,13 +47,13 @@
 
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label">Request
-							Name</label>
-						<div class="col-sm-10">{{req.name}}</div>
+							Title</label>
+						<div class="col-sm-10">{{req.title}}</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label">Description</label>
 						<div class="col-sm-10">
-							<textarea class="form-control" rows="5"></textarea>
+							<textarea class="form-control" rows="5">{{req.description}}</textarea>
 						</div>
 					</div>
 					<button class="btn btn-theme02" data-ng-click="doActionOnRequest(req.id,req.workflow.nodes,'APPROVED')">Accept</button>

@@ -39,14 +39,19 @@ cmpe.controller(
 							}
 							
 							$scope.createReq = function(){
-								
+								if(!$scope.selectedworkflow){
+									alert("Select a Request");
+									return ;
+								}
 								console.log('creating a request here');
 								var paramMap = {
-										   "workflowid" : "50", 
-										   "clientid" : "2" ,
-										   "description" : "New Leave Request"
+										   "workflowid" : $scope.workflows[$scope.selectedworkflow].id, 
+										   "clientid" : $scope.workflows[$scope.selectedworkflow].client ,
+										   "description" : $scope.desc
 										}
-								$http.post("user/request/create", paramMap).success(function(data) {
+								
+								$http.post("user/request/create",paramMap).success(function(data) {
+
 									/*
 									 * var objs =
 									 * data.controllerResponse.responseObject;
@@ -54,6 +59,7 @@ cmpe.controller(
 									 * $scope.workflows.push(objs[i]); }
 									 * console.log($scope.workflows);
 									 */
+								
 									console.log("Request data:"+data.controllerResponse.responseObject.id);
 									console.log(data);
 									$window.location.href = '/#/request/'+data.controllerResponse.responseObject.id;

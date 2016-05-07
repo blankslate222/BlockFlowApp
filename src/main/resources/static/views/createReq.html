@@ -8,14 +8,16 @@
 	<section class="wrapper">
 		<h3>
 			<i class="fa fa-angle-right"></i> Create Request
-			<spinner name="booksSpinner" img-src="../spinner.gif" style="opacity:0.7;
+			<spinner name="booksSpinner" img-src="../spinner.gif"
+				style="opacity:0.7;
 		 position:absolute;
     width:1000px; /*image width */
     height:1000px; /*image height */
     left:50%; 
-    top:50%;z-index: 1000;" show="loading"></spinner>
+    top:50%;z-index: 1000;"
+				show="loading"></spinner>
 		</h3>
-		 
+
 		<div class="row mt">
 
 			<div class="col-md-12">
@@ -30,8 +32,9 @@
 						style="margin-top: 10px; margin-bottom: 10px;  height: 380px;"
 						chart="chartViewModel"> </flow-chart>
 				</div>
-					<button class="btn btn-theme02" ng-click="createReq()">
+				<div class="row mt">
 				
+<<<<<<< Updated upstream
 					Create Request</button>
 		
 		<div class="row mt">
@@ -63,16 +66,78 @@
 							</tr>
 						</tbody>
 					</table>
+=======
+					<div class="col-md-1">
+					<h4>
+					Description:
+					</h4></div>
+					<div class="col-md-11">
+						<textarea data-ng-model="desc" class="form-control" rows="2"></textarea>
+					</div>
 				</div>
-				<!-- /content-panel -->
+				<div class="row mt">
+				<div class="col-md-12">
+					<button class="btn btn-theme02" ng-click="createReq()">
+						Create Request</button></div>
+				</div>
+				<div class="row mt">
+					<div class="col-md-12">
+						<div class="content-panel">
+							<table class="table table-striped table-advance table-hover">
+								<h4>
+									<i class="fa fa-angle-right"></i> Requests
+								</h4>
+								<hr>
+								<thead>
+									<tr>
+										<th><i class="fa fa-bullhorn"></i>Title</th>
+										<th class="hidden-phone"><i class="fa fa-question-circle"></i>Description</th>
+										<th><i class=" fa fa-edit"></i> Create Time</th>
+										<th><i class=" fa fa-edit"></i> Modified Time</th>
+										<th><i class=" fa fa-edit"></i> Status</th>
+										<th><i class=" fa fa-edit"></i> Blockchain Transaction
+											Hash</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr data-ng-repeat="userReq in userReqs">
+										<td><a href="">{{userReq.title}}</a></td>
+										<td>{{userReq.description}}</td>
+										<td>{{userReq.created}}</td>
+										<td>{{userReq.modified}}</td>
+										<td>{{userReq.status}}</td>
+										<td><a href="">{{userReq.mutationHash}}</a></td>
+									</tr>
+								</tbody>
+								<!-- <tbody>
+							<tr data-ng-repeat="workflow in workflows">
+								<td><a href="/#/request" >{{userReq.name}}</a></td>
+								<td>{{workflow.client.name}}</td>
+								<td>
+									<button class="btn btn-success btn-xs">
+										<i class="fa fa-check"></i>
+									</button>
+									<button class="btn btn-primary btn-xs">
+										<i class="fa fa-pencil"></i>
+									</button>
+									<button class="btn btn-danger btn-xs">
+										<i class="fa fa-trash-o "></i>
+									</button>
+								</td>
+							</tr>
+						</tbody> -->
+							</table>
+						</div>
+						<!-- /content-panel -->
+					</div>
+					<!-- /col-md-12 -->
+>>>>>>> Stashed changes
+				</div>
+				<!-- /row -->
+
+
 			</div>
-			<!-- /col-md-12 -->
-		</div>
-		<!-- /row -->
-		
-		
-		</div>	
-			
+
 		</div>
 		<br />
 
