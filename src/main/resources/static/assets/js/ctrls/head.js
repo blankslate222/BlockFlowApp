@@ -19,5 +19,5 @@ cmpe.controller('headCtrl', function($scope, $rootScope, $http, $location,
 	}
 	$scope.user = $cookieStore.get('user');
 	$scope.admin = ($scope.user.id == 1);
-	console.log(($scope.user.id == 1));
+	
 });

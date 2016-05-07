@@ -115,14 +115,9 @@
 				<h4 class="modal-title">New Node</h4>
 			</div>
 			<div class="modal-body">
-				<p>Select Node Name</p>
-				<input type="text" ng-model="name" placeholder="Name"
-					autocomplete="off" class="form-control placeholder-no-fix">
-			</div>
-			<div class="modal-body">
-				<p>Select Group</p>
-	<select name="group" ng-model="selectedgroup">
-      <option ng-repeat="option in groups" value="{{option.name}}">{{option.name}}</option>
+				<p>Select Department</p>
+	<select name="group" ng-model="selectedDept">
+      <option ng-repeat="option in depts" value="{{option.name}}">{{option.name}}</option>
     </select>
 			</div>
 			<div class="modal-footer">

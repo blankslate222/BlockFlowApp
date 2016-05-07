@@ -6,16 +6,24 @@ cmpe.controller(
 						'prompt',
 						'$cookieStore',
 						'$window',
-						function AppCtrl($scope, $http, prompt, $cookieStore, $window) {
+						'spinnerService',	
+						function AppCtrl($scope, $http, prompt, $cookieStore, $window, spinnerService) {
 							$scope.workflows=[];
+							$scope.loading=false;
+							
 							$scope.getWorkflows = function() {
+								$scope.loading=true;
 								$http.get("/data/workflows").success(function(data) {
+									
 									var objs = data.controllerResponse.responseObject;
 									for (var i = 0; i < objs.length; i++) {
 										$scope.workflows.push(objs[i]);
 									}
 									console.log($scope.workflows);
-								});
+								})
+								.finally(function () {
+									$scope.loading=false;
+							    });
 							};
 							$scope.getWorkflows();
 		
@@ -31,6 +39,7 @@ cmpe.controller(
 							}
 							
 							$scope.createReq = function(){
+								
 								console.log('creating a request here');
 								var paramMap = {
 										   "workflowid" : "40", 

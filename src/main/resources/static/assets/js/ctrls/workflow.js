@@ -99,13 +99,18 @@ cmpe.controller('workCtrl',[
 									evt.preventDefault();
 								}
 							};
-							$scope.groups=[];
-							$scope.getGroups = function() {
-								var tgrps=[{name:"Grp1", id:1},{name:"Grp2", id:2}];
-								$scope.groups=tgrps;
-								console.log($scope.groups);
+							$scope.depts=[];
+							$scope.getDepts = function() {
+								$http.get("/data/deptbyclient/"+$cookieStore.get('client').id).success(function(data) {
+									var objs = data.controllerResponse.responseObject;
+									for (var i = 0; i < objs.length; i++) {
+										console.log(objs[i]);
+										$scope.depts.push(objs[i]);
+									}
+									console.log($scope.depts);
+								});
 							}
-							$scope.getGroups();
+							$scope.getDepts();
 
 							
 							$scope.workflows=[];
@@ -123,27 +128,17 @@ cmpe.controller('workCtrl',[
 							// Add a new node to the chart.
 							//
 							$scope.addNewNode = function() {
-								
-								var nodeName = $scope.name;// prompt("Enter a
-								// node
-								// name:", "New node");
-								if (!nodeName) {
-									return;
-								}
 
-								//
-								// Template for a new node.
-								//
 								var newNodeDataModel = {
-									name : nodeName,
+									name : $scope.selectedDept,
 									id : nextNodeID++,
 									x : 0,
 									y : 0,
 									inputConnectors : [ {
-										name :  $scope.selectedgroup
+										name :  ""
 									} ],
 									outputConnectors : [ {
-										name : $scope.selectedgroup
+										name : ""
 									} ]
 								};
 
