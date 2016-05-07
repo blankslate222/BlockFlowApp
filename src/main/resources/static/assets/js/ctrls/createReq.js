@@ -42,11 +42,11 @@ cmpe.controller(
 								
 								console.log('creating a request here');
 								var paramMap = {
-										   "workflowid" : "40", 
+										   "workflowid" : "50", 
 										   "clientid" : "2" ,
-										   "description" : "My New Description"
+										   "description" : "New Leave Request"
 										}
-								$http.post("user/request/create",paramMap).success(function(data) {
+								$http.post("user/request/create", paramMap).success(function(data) {
 									/*
 									 * var objs =
 									 * data.controllerResponse.responseObject;
@@ -99,7 +99,7 @@ cmpe.controller(
 								console.log('here object');
 								console.log($scope.request);
 								$scope.chartViewModel = new flowchart.ChartViewModel(
-										JSON.parse($scope.request.requestJson));
+										JSON.parse($scope.request[0].request.requestJson));
 							}
 						});
 					};

@@ -54,7 +54,7 @@
 						</thead>
 						<tbody>
 							<tr data-ng-repeat="userReq in userReqs">
-								<td><a href="" >{{userReq.title}}</a></td>
+								 <td><a href="/#/request/{{userReq.id}}" >{{userReq.title}}</a></td>
 								<td>{{userReq.description}}</td>
 								<td>{{userReq.created}}</td>
 								<td>{{userReq.modified}}</td>
@@ -62,23 +62,6 @@
 								<td><a href="" >{{userReq.mutationHash}}</a></td>
 							</tr>
 						</tbody>
-						<!-- <tbody>
-							<tr data-ng-repeat="workflow in workflows">
-								<td><a href="/#/request" >{{userReq.name}}</a></td>
-								<td>{{workflow.client.name}}</td>
-								<td>
-									<button class="btn btn-success btn-xs">
-										<i class="fa fa-check"></i>
-									</button>
-									<button class="btn btn-primary btn-xs">
-										<i class="fa fa-pencil"></i>
-									</button>
-									<button class="btn btn-danger btn-xs">
-										<i class="fa fa-trash-o "></i>
-									</button>
-								</td>
-							</tr>
-						</tbody> -->
 					</table>
 				</div>
 				<!-- /content-panel -->
