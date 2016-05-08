@@ -30,4 +30,10 @@ cmpe.controller('headCtrl', function($scope, $rootScope, $http, $location, $stat
 				$state.go('root.login');
 	}
 	$scope.checkAuth();
+	
+	$scope.logout = function() {
+		$scope.user=null;
+		$state.go('root.login');
+	}
+	
 });
