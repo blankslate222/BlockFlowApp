@@ -8,8 +8,25 @@ cmpe.controller(
 						'$window',
 						'spinnerService',	
 						function AppCtrl($scope, $http, prompt, $cookieStore, $window, spinnerService) {
-							$scope.workflows=[];
+							$scope.workflowsList=[];
+							$scope.clients=[];
 							$scope.loading=false;
+							
+							$scope.getClients = function() {
+								$scope.loading=true;
+								$http.get("/data/clients").success(function(data) {
+									
+									var objs = data.controllerResponse.responseObject;
+									for (var i = 0; i < objs.length; i++) {
+										$scope.clients.push(objs[i]);
+									}
+									console.log($scope.clients);
+								})
+								.finally(function () {
+									$scope.loading=false;
+							    });
+							};
+							$scope.getClients();
 							
 							$scope.getWorkflows = function() {
 								$scope.loading=true;
@@ -17,16 +34,23 @@ cmpe.controller(
 									
 									var objs = data.controllerResponse.responseObject;
 									for (var i = 0; i < objs.length; i++) {
-										$scope.workflows.push(objs[i]);
+										$scope.workflowsList.push(objs[i]);
 									}
-									console.log($scope.workflows);
 								})
 								.finally(function () {
 									$scope.loading=false;
 							    });
 							};
 							$scope.getWorkflows();
-		
+							
+							$scope.getWorkflowByClient = function() {
+								$scope.workflows=[];
+								for (var i = 0; i < $scope.workflowsList.length; i++) {
+									if($scope.workflowsList[i].client== $scope.clients[$scope.selectedClient].id )
+										$scope.workflows.push($scope.workflowsList[i]);
+								}
+							}
+							
 							$scope.load = function() {
 								console.log("selected workflow");
 								console.log($scope.selectedworkflow);

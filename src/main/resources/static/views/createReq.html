@@ -22,6 +22,12 @@
 
 			<div class="col-md-12">
 				<h4>
+					Select Client: <select name="workflow"
+						ng-model="selectedClient" ng-change="getWorkflowByClient()">
+						<option ng-repeat="client in clients" value="{{$index}}">{{client.name}}</option>
+					</select>
+				</h4>
+				<h4>
 					Select WorkFlow: <select name="workflow"
 						ng-model="selectedworkflow" ng-change="load()">
 						<option ng-repeat="workflow in workflows" value="{{$index}}">{{workflow.name}}</option>
