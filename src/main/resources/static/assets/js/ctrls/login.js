@@ -12,10 +12,6 @@ cmpe
 							username : $scope.user.email,
 							password : $scope.user.password
 						}
-	
-						console.log(user.username);
-						console.log(user.password);
-
 						$http.post(
 								"/login",
 								'username=' + user.username + '&password='
@@ -23,18 +19,19 @@ cmpe
 									headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
 						})
 						.success(function(data) {
-							console.log(data);
+							console.log(data.user.role);
 							if (data.user.email) {
 								$cookieStore.put('user', data.user);
 								$cookieStore.put('client', data.client);
 								//console.log($cookieStore.get('user'));
-								$state.go('root.dash');
+								if(data.user.role='ENDUSER')
+									$state.go('root.request');
 							} else
 								$scope.status = data.error;
 						})
 						.error(function(err) {
 							//$scope.status = data.error;
-							console.log(err);
+							$scope.status ="Invalid Username or Password";
 						});
 					};
 				});
