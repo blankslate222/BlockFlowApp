@@ -68,6 +68,10 @@ public class ClientOrg implements Serializable {
 	@JsonView(Views.Public.class)
 	private WorkGroup clientAdminGroup;
 	
+	@Column(name = "admin_grp_id")
+	@JsonView(Views.Public.class)
+	private Long adminDeptId;
+	
 	@Column(name = "chain_seed")
 	private String blockchainSeed;
 	
@@ -140,6 +144,14 @@ public class ClientOrg implements Serializable {
 
 	public void setClientAdminGroup(WorkGroup clientAdminGroup) {
 		this.clientAdminGroup = clientAdminGroup;
+	}
+
+	public Long getAdminDeptId() {
+		return adminDeptId;
+	}
+
+	public void setAdminDeptId(Long adminDeptId) {
+		this.adminDeptId = adminDeptId;
 	}
 
 	public String getBlockchainSeed() {

@@ -107,7 +107,7 @@ public class AppUserService implements IAppUserService {
 		Request newrequest = new Request();
 		// mgr grp of node with level = 1
 		WorkGroup initiator_dept_mgr_group_id = null;
-		System.out.println("Printing nodes string"+nodes.toString());
+		// System.out.println("Printing nodes string"+nodes.toString());
 		Long deptId = 0l;
 		Set<RequestNode> requestNodes = new HashSet<RequestNode>();
 		for (WorkflowNode node : nodes) {
@@ -115,14 +115,15 @@ public class AppUserService implements IAppUserService {
 			RequestNode reqNode = new RequestNode();
 			if (node.getLevel() == 1) {
 				//initiator_dept_mgr_group_id = node.getWorkgroup();
-				System.out.println("inside node level 1 ");
+				//System.out.println("inside node level 1 ");
 				reqNode.setCurrentNode(true);
 				reqNode.setStatus(NodeStatus.PENDING_ACTION);
-				System.out.println("node department id"+node.getDepartment_id() );
+				//System.out.println("node department id"+node.getDepartment_id() );
 				deptId = node.getDepartment_id();
 				reqNode.setDepartment_id(node.getDepartment_id());
+				newrequest.setRequestWithDepartment(node.getDepartment_id());
 			}
-			System.out.println("others ");
+			//System.out.println("others ");
 			reqNode.setLevel(node.getLevel());
 			reqNode.setRequest(newrequest);
 			reqNode.setName(node.getName());

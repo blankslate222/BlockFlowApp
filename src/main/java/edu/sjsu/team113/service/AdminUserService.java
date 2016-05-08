@@ -67,11 +67,6 @@ public class AdminUserService implements IAdminUserService {
 		if (toBeCreated != null) {
 			return null;
 		}
-		WorkGroup clientAdminGrp = new WorkGroup();
-		// clientAdminGrp.setClient(createdClient);
-		clientAdminGrp.setName(client.getName() + "_Admin_Group");
-		WorkGroup created = groupRepo.save(clientAdminGrp);
-		client.setClientAdminGroup(created);
 		// create folder on openchain - new seed => new folder
 		String seedValue = chainService.getSeed();
 
@@ -96,10 +91,30 @@ public class AdminUserService implements IAdminUserService {
 		}
 		client.setBlockchainSeed(seedValue);
 		client.setMutationString(mutationHash);
-
+		
 		ClientOrg createdClient = clientRepo.save(client);
-		created.setClient(createdClient);
+		WorkGroup clientAdminGrp = new WorkGroup();
+		// clientAdminGrp.setClient(createdClient);
+		clientAdminGrp.setName(client.getName() + "_Admin_Group");
+		clientAdminGrp.setClient(createdClient);
+		WorkGroup created = groupRepo.save(clientAdminGrp);
+		
+		createdClient.setClientAdminGroup(created);
+		
+		// create admin dept and save group and client again
+		ClientDepartment adminDept = new ClientDepartment();
+		adminDept.setActive(true);
+		adminDept.setClient(createdClient);
+		adminDept.setManagerGroup(created);
+		adminDept.setName(createdClient.getName()+"_Admin_Dept");
+		adminDept = deptRepo.save(adminDept);
+		
+		created.setDepartment(adminDept);
 		groupRepo.save(created);
+		
+		createdClient.setAdminDeptId(adminDept.getId());
+		clientRepo.save(createdClient);
+		
 		// TODO: bug in the code
 		// TODO: add to admin table - done
 		ChainAudit audit = new ChainAudit();

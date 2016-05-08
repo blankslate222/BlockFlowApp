@@ -12,11 +12,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import edu.sjsu.team113.config.Views;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.NodeStatus;
 import edu.sjsu.team113.model.Request;
@@ -86,7 +84,9 @@ public class StaffUserService implements IStaffUserService {
 					nextnode.setCurrentNode(true);
 					nextnode.setStatus(NodeStatus.PENDING_ACTION);
 					nextnode.setModified(new Timestamp(new Date().getTime()));
-					nodeRepo.save(nextnode);
+					nextnode = nodeRepo.save(nextnode);
+					request.setRequestWithDepartment(nextnode.getDepartment_id());
+					reqRepo.save(request);
 					break;
 				case "REJECTED":
 					nextnodestatus = NodeStatus.REJECTED;
