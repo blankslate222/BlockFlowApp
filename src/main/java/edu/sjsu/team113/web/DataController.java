@@ -17,6 +17,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,6 +47,9 @@ public class DataController {
 	private IDataService dataService;
 
 	@Autowired
+	private MappingJackson2HttpMessageConverter converter;
+	
+	@Autowired
 	private ChainAuditRepository auditRepo;
 
 	@Autowired
@@ -56,7 +60,7 @@ public class DataController {
 
 	@Autowired
 	private SessionFactory sessionFactory;
-
+	
 	@RequestMapping(value = "/clients")
 	public @ResponseBody ControllerResponse getClients(HttpServletResponse res, Principal principal) {
 		List<ClientOrg> clientList = null;
@@ -135,6 +139,26 @@ public class DataController {
 		String mutation = clientOrg.getMutationString();
 		List<JSONObject> feedList = getFeedList(mutation);
 		resp.addResponseObject(feedList);
+		return resp;
+	}
+	
+	@RequestMapping(value = "/transactionData/{mutationHash}")
+	public @ResponseBody ControllerResponse getTransactionData(@PathVariable String mutationHash) {
+		ControllerResponse resp = new ControllerResponse();
+		JSONObject reqBody = new JSONObject();
+		reqBody.put("host", openchainServer);
+
+		String jsonBody = reqBody.toJSONString();
+		String jsonResponse = chainService.getTransactionHashData(mutationHash, jsonBody);
+		JSONParser parser = new JSONParser();
+		JSONObject response = null;
+		try {
+			response = (JSONObject)parser.parse(jsonResponse);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		resp.addResponseObject(response);
 		return resp;
 	}
 
@@ -245,4 +269,13 @@ public class DataController {
 				+ "select concat(email,' ',name) , passwordHash, name from AppUser where id = 2");
 		int result = query.executeUpdate();
 	}
+	
+	@RequestMapping(value = "/getBlockChainServerHost")
+	public @ResponseBody ControllerResponse getBlockChainServerHost() {
+		ControllerResponse resp = new ControllerResponse();
+		System.out.println("going to return block chain host");
+		resp.addToResponseMap("host", openchainServer);
+		return resp;
+	}
+	
 }
