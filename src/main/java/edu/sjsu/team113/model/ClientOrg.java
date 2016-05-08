@@ -68,7 +68,7 @@ public class ClientOrg implements Serializable {
 	@JsonView(Views.Public.class)
 	private WorkGroup clientAdminGroup;
 	
-	@Column(name = "admin_grp_id")
+	@Column(name = "admin_dept_id")
 	@JsonView(Views.Public.class)
 	private Long adminDeptId;
 	

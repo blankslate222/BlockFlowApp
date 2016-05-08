@@ -1,4 +1,5 @@
-var cmpe = angular.module('cmpe', ['ui.router', 'flowChart', 'ngCookies', 'angularSpinners']);
+.0
+333.var cmpe = angular.module('cmpe', ['ui.router', 'flowChart', 'ngCookies', 'angularSpinners']);
 
 cmpe.config(function($stateProvider, $urlRouterProvider){
 
