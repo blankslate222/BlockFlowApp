@@ -32,6 +32,7 @@ cmpe.controller('adminFeedCtrl', function($scope, $state, $rootScope, $http, $co
 	$scope.feedList = [];
 	var clientid = 21;
 	$scope.getFeed = function() {
+		
 		console.log("inside get feed");
 		$http.get("data/adminfeed").success(function(data) {
 			console.log(data);
@@ -53,7 +54,16 @@ cmpe.controller('adminFeedCtrl', function($scope, $state, $rootScope, $http, $co
 			}
 			console.log("Feed List");
 			console.log($scope.feedList);
+
 //			console.log($scope.feedList[0].transactionid);
+		});
+	};
+	$scope.t={};
+	$scope.load = function(t) {
+
+		$http.get("/data/transactionData/"+t).success(function(data) {
+				console.log(data.controllerResponse.responseObject);
+				$scope.t=data.controllerResponse.responseObject;
 		});
 	};
 	$scope.getFeed();
