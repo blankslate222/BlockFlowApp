@@ -143,18 +143,16 @@ public class DataController {
 		ControllerResponse resp = new ControllerResponse();
 		Iterable<ChainAudit> clientList = auditRepo.findAll();
 		Iterator<ChainAudit> iter = clientList.iterator();
-		List<JSONObject> feedList = new ArrayList<>();
 
 		while (iter.hasNext()) {
 			ChainAudit audit = iter.next();
 			String mutation = audit.getInitialMutationHash();
+			String client = audit.getClientName();
 			if (mutation != null && mutation.length() > 0) {
 				List<JSONObject> feeds = getFeedList(mutation);
-				feedList.addAll(feeds);
+				resp.addToResponseMap(client, feeds);
 			}
 		}
-
-		resp.addResponseObject(feedList);
 		return resp;
 	}
 

@@ -101,6 +101,19 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				}
 			}
 		})
+		.state('root.myrequests', {
+			url: '/myrequests',
+			views: {
+				'header@': {
+					templateUrl: 'views/header.html',
+					controller: 'headCtrl'
+				},
+				'container@' : {
+					templateUrl : 'views/myrequests.html',
+					controller : 'myreqCtrl'
+				}
+			}
+		})
 		.state('root.register', {
 			url: '/register',
 			views: {
