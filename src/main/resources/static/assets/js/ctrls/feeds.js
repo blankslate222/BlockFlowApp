@@ -23,6 +23,14 @@ cmpe
 		$state.go('root.adminfeed');
 	};
 	
+	$scope.t={};
+	$scope.load = function(t) {
+
+		$http.get("/data/transactionData/"+t).success(function(data) {
+				console.log(data.controllerResponse.responseObject);
+				$scope.t=data.controllerResponse.responseObject;
+		});
+	};
 	
 	
 });
@@ -101,6 +109,7 @@ cmpe.controller('deptFeedCtrl', function($scope, $state, $rootScope, $http, $coo
 //			console.log($scope.feedList[0].transactionid);
 		});
 	};
+	
 	$scope.t={};
 	$scope.load = function(t) {
 
@@ -110,15 +119,6 @@ cmpe.controller('deptFeedCtrl', function($scope, $state, $rootScope, $http, $coo
 		});
 	};
 	$scope.getFeed();
-	
-	
-	$scope.getTransactionDetail = function() {
-		console.log("going to get blockchain host!");
-	};
-	
-	$scope.init = function (mutationHash) {
-	  console.log(">>>"+mutationHash);
-	};
 	
 	
 });

@@ -1,20 +1,4 @@
 
-<!--  <script>
-$(document).ready( function() {
-	$.post("http://10.250.143.29:3000/chainfeed/21", { "host" :
-	"http://54.153.102.235:8080" }, function(data, status) { var output =
-	""; for (var i = 0; i < data.length; i++) { output = output + "
-	<p>" + "
-	<div>
-		" + "<B>" + "transaction_id: " + "</B>" + data[i].mutation_hash + "</br>" +
-		"<B>" + "key: " + "</B>" + data[i].transaction_data.key + "</br>" + "<B>"
-			+ "value: " + "</B>" + data[i].transaction_data.value + "
-	</div>
-	" + "
-	</p>
-	"; } $("#transaction").html(output); }); });
-</script> -->
-<!--main content start-->
 <section id="main-content">
 	<section class="wrapper">
 		<h1>Blockchain</h1>
@@ -53,15 +37,15 @@ $(document).ready( function() {
 			</div>
 			<div class="modal-body">
 				<h4>Transaction Data</h4>
-				<div class="alert alert-success">
+				<div class="alert alert-success" style="overflow:auto;">
 					<b>{{t.transaction_data}}</b>
 				</div>
 				<h4>Mutation hash</h4>
-				<div class="alert alert-info">
+				<div class="alert alert-info" style="overflow:auto;">
 					<b>{{t.mutation_hash}}</b>
 				</div>
 				<h4>Timestamp</h4>
-				<div class="alert alert-warning">
+				<div class="alert alert-warning" style="overflow:auto;">
 					<b>{{t.timestamp}}</b>
 				</div>
 			</div>

@@ -1,20 +1,5 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
-<!--  <script>
-$(document).ready( function() {
-	$.post("http://10.250.143.29:3000/chainfeed/21", { "host" :
-	"http://54.153.102.235:8080" }, function(data, status) { var output =
-	""; for (var i = 0; i < data.length; i++) { output = output + "
-	<p>" + "
-	<div>
-		" + "<B>" + "transaction_id: " + "</B>" + data[i].mutation_hash + "</br>" +
-		"<B>" + "key: " + "</B>" + data[i].transaction_data.key + "</br>" + "<B>"
-			+ "value: " + "</B>" + data[i].transaction_data.value + "
-	</div>
-	" + "
-	</p>
-	"; } $("#transaction").html(output); }); });
-</script> -->
 
 <!--main content start-->
 <section id="main-content">
@@ -33,12 +18,14 @@ $(document).ready( function() {
 						<tbody>
 							<tr data-ng-repeat="feed in feedList">
 								<td>
-								<!-- <a href="#myModal">{{feed.transactionid}}</a> -->
-								<button class="btn btn-success btn"  data-toggle="modal"
+								
+			<!-- 				<button class="btn btn-success btn"  data-toggle="modal"
 								href="#" data-ng-click="#myModal"
 							 			style="float:ledt; margin-left:0px;">
 										{{feed.transactionid}}
-									</button>
+									</button> -->
+								<button href="#myModal" class="btn btn-default" data-toggle="modal"
+								ng-click="load(feed.transactionid)">{{feed.transactionid}}</button>
 								</td>
 							</tr>
 							</tbody>
@@ -56,16 +43,24 @@ $(document).ready( function() {
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Blockchain Transaction Detail</h4>
+				<h4 class="modal-title">Transaction Details</h4>
 			</div>
 			<div class="modal-body">
-				<p>Department Name</p>
-				
-				<label for="MyField">Sanket</label>
-				</br>
-				<label for="MyField">Sanket</label>
-				</br>
-				<label for="MyField">Sanket</label>
+				<h4>Transaction Data</h4>
+				<div class="alert alert-success" style="overflow:auto;">
+					<b>{{t.transaction_data}}</b>
+				</div>
+				<h4>Mutation hash</h4>
+				<div class="alert alert-info" style="overflow:auto;">
+					<b>{{t.mutation_hash}}</b>
+				</div>
+				<h4>Timestamp</h4>
+				<div class="alert alert-warning" style="overflow:auto;">
+					<b>{{t.timestamp}}</b>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button data-dismiss="modal" class="btn btn-success" type="button">OK</button>
 			</div>
 		</div>
 	</div>
