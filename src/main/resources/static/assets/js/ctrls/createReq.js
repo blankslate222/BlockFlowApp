@@ -45,8 +45,11 @@ cmpe.controller(
 							
 							$scope.getWorkflowByClient = function() {
 								$scope.workflows=[];
+								console.log($scope.workflowsList);
 								for (var i = 0; i < $scope.workflowsList.length; i++) {
 									if($scope.workflowsList[i].client== $scope.clients[$scope.selectedClient].id )
+										$scope.workflows.push($scope.workflowsList[i]);
+									if($scope.workflowsList[i].client.id && $scope.workflowsList[i].client.id== $scope.clients[$scope.selectedClient].id )
 										$scope.workflows.push($scope.workflowsList[i]);
 								}
 							}
