@@ -32,7 +32,13 @@ cmpe.controller('headCtrl', function($scope, $rootScope, $http, $location, $stat
 	$scope.checkAuth();
 	
 	$scope.logout = function() {
+		//console.log("in logout");
+		$http.post("/logout").success(function(data) {
+			console.log("log out success");
+		});
 		$scope.user=null;
+		$cookieStore.remove('user');
+		$cookieStore.remove('client');
 		$state.go('root.login');
 	}
 	
