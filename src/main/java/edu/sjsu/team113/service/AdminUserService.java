@@ -95,7 +95,7 @@ public class AdminUserService implements IAdminUserService {
 		ClientOrg createdClient = clientRepo.save(client);
 		WorkGroup clientAdminGrp = new WorkGroup();
 		// clientAdminGrp.setClient(createdClient);
-		clientAdminGrp.setName(client.getName() + "_Admin_Group");
+		clientAdminGrp.setName(client.getName() + "_Group");
 		clientAdminGrp.setClient(createdClient);
 		WorkGroup created = groupRepo.save(clientAdminGrp);
 
@@ -106,7 +106,7 @@ public class AdminUserService implements IAdminUserService {
 		adminDept.setActive(true);
 		adminDept.setClient(createdClient);
 		adminDept.setManagerGroup(created);
-		adminDept.setName(createdClient.getName() + "_Admin_Dept");
+		adminDept.setName(createdClient.getName() + "_Department");
 		adminDept = deptRepo.save(adminDept);
 
 		created.setDepartment(adminDept);
@@ -207,7 +207,7 @@ public class AdminUserService implements IAdminUserService {
 			// TODO: throw exception
 			return null;
 		}
-
+		
 		AppUser user = userRepo.findByEmail(userEmail);
 		if (user == null) {
 			// TODO: throw exception
@@ -217,6 +217,12 @@ public class AdminUserService implements IAdminUserService {
 		ManagedUser mgdUser = managedUserRepo.findByAppUser(user);
 		if (mgdUser == null) {
 			mgdUser = createManagedUser(user);
+		}
+		if (group.getId() == group.getClient().getClientAdminGroup().getId()) {
+			user.getRole().add(AppUserRole.ADMIN);
+		} else {
+			user.getRole().add(AppUserRole.MANAGER);
+			user.getRole().add(AppUserRole.STAFF);
 		}
 		mgdUser.setEmployer(group.getClient());
 		mgdUser.setDepartment(group.getDepartment());

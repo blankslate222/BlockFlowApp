@@ -136,7 +136,7 @@ public class AppUserService implements IAppUserService {
 		System.out.println("deptId:"+deptId);
 		
 		newrequest.setStatus(RequestStatus.PENDING);
-		newrequest.setTitle(requestedFlow.getName()+" "+System.currentTimeMillis());
+		newrequest.setTitle(requestedFlow.getName());
 		newrequest.setInitiatorid(user);
 		newrequest.setWorkflow(requestedFlow);
 		newrequest.setLastModUserId(user);

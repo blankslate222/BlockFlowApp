@@ -73,10 +73,12 @@ cmpe.controller(
 								console.log('creating a request here');
 								var paramMap = {
 										   "workflowid" : $scope.workflows[$scope.selectedworkflow].id, 
-										   "clientid" : $scope.workflows[$scope.selectedworkflow].client ,
+										   "clientid" : $scope.workflows[$scope.selectedworkflow].client.id ,
 										   "description" : $scope.desc
 										}
 								
+								console.log("params map \n");
+								console.log(paramMap);
 								$http.post("user/request/create",paramMap).success(function(data) {
 
 									/*
