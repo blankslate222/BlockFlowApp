@@ -32,7 +32,14 @@ $(document).ready( function() {
 						</thead>
 						<tbody>
 							<tr data-ng-repeat="feed in feedList">
-								<td>{{feed.transactionid}}</a></td>
+								<td>
+								<!-- <a href="#myModal">{{feed.transactionid}}</a> -->
+								<button class="btn btn-success btn"  data-toggle="modal"
+								href="#" data-ng-click="#myModal"
+							 			style="float:ledt; margin-left:0px;">
+										{{feed.transactionid}}
+									</button>
+								</td>
 							</tr>
 							</tbody>
 					</table>
@@ -40,3 +47,27 @@ $(document).ready( function() {
 		<!-- 		</marquee> -->
 	</section>
 </section>
+
+<!-- Modal -->
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog"
+	tabindex="-1" id="myModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Blockchain Transaction Detail</h4>
+			</div>
+			<div class="modal-body">
+				<p>Department Name</p>
+				
+				<label for="MyField">Sanket</label>
+				</br>
+				<label for="MyField">Sanket</label>
+				</br>
+				<label for="MyField">Sanket</label>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- modal -->
