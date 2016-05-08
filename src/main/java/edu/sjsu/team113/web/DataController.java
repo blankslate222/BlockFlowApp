@@ -27,6 +27,7 @@ import edu.sjsu.team113.model.ChainAudit;
 import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ControllerResponse;
+import edu.sjsu.team113.model.ManagedUser;
 import edu.sjsu.team113.model.Request;
 import edu.sjsu.team113.model.RequestNode;
 import edu.sjsu.team113.model.WorkGroup;
@@ -103,6 +104,15 @@ public class DataController {
 		return resp;
 	}
 
+	@RequestMapping(value = "/group/{groupId}")
+	public @ResponseBody ControllerResponse getGroup(@PathVariable Long groupId, HttpServletResponse res) {
+		ControllerResponse resp = new ControllerResponse();
+		WorkGroup groupdetails = dataService.findGroupById(groupId);
+		resp.addResponseObject(groupdetails);
+		resp.addError(null);
+		return resp;
+	}
+
 	@RequestMapping(value = "/deptbyclient/{clientId}")
 	public @ResponseBody ControllerResponse getDepartmentByClient(@PathVariable Long clientId, HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
@@ -122,6 +132,15 @@ public class DataController {
 		return resp;
 	}
 
+	
+	@RequestMapping(value = "/usersbygroup/{groupId}")
+	public @ResponseBody ControllerResponse getUsersByGroup(@PathVariable Long groupId, HttpServletResponse res) {
+		ControllerResponse resp = new ControllerResponse();
+		Set<ManagedUser> usersByGroup = dataService.findManagedUsersByGroup(groupId);
+		resp.addResponseObject(usersByGroup);
+		return resp;
+	}
+	
 	@RequestMapping(value = "/workflows")
 	public @ResponseBody ControllerResponse getWorkflows(HttpServletResponse res, Principal principal) {
 		List<Workflow> workflowList = null;

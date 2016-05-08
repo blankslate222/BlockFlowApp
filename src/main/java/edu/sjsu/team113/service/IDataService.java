@@ -34,10 +34,10 @@ public interface IDataService {
 	Set<ManagedUser> findManagedUsersByDepartment(ClientDepartment department);
 	Set<WorkGroup> findGroupsByManagedUser(ManagedUser user);
 	
-	WorkGroup findGroupById(String id);
+	WorkGroup findGroupById(Long id);
 	WorkGroup findGroupByName(String name);
 	ClientDepartment findDepartmentByGroup(WorkGroup workgroup);
-	Set<ManagedUser> findManagedUsersByGroup(WorkGroup group);
+	Set<ManagedUser> findManagedUsersByGroup(Long groupId);
 
 	//Fetches Requests both assigned to myself and any group assigned to me
 	List<Request> fetchMyRequestList(String userId);

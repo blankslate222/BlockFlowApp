@@ -84,9 +84,13 @@ cmpe.controller('clientDetailsCtrl', function($scope, $stateParams, $state,
 });
 
 cmpe.controller('clientDeptDetailsCtrl', function($scope, $stateParams, $state,
-		$log, $timeout, $rootScope, $http) {
+		$log, $timeout, $rootScope, $http, $cookieStore ) {
 	$scope.clientId = $stateParams.clientId;
+	console.log('$scope.clientId'+$scope.clientId);
+	console.log('$cookieStore.clientId'+$cookieStore.get('client').id);
+	$scope.clientId = $cookieStore.get('client').id;
 	$scope.deptId = $stateParams.deptId;
+	$scope.groups=[];
 	$scope.dept = {};
 	$scope.getDept = function() {
 		$http.get("/data/department/" + $stateParams.deptId).success(
@@ -95,13 +99,9 @@ cmpe.controller('clientDeptDetailsCtrl', function($scope, $stateParams, $state,
 					var objs = data.controllerResponse.responseObject;
 					$scope.dept = objs;
 				}
-				if(!$scope.dept.groups){
-					$scope.groups=$scope.dept.groups;
-				}
 			});
 	};
 	$scope.getDept();
-	$scope.groups=[];
 	$scope.getGroups = function() {
 		$http.get("/data/groupsbydept/" + $stateParams.deptId).success(
 		function(data) {
@@ -110,7 +110,7 @@ cmpe.controller('clientDeptDetailsCtrl', function($scope, $stateParams, $state,
 				var objs = data.controllerResponse.responseObject;
 				console.log(objs);
 				for (var i = 0; i < objs.length; i++) {
-					$scope.groups = objs[i].name;
+					 $scope.groups.push(objs[i]);
 				}
 			}
 		});
@@ -125,7 +125,7 @@ cmpe.controller('clientDeptDetailsCtrl', function($scope, $stateParams, $state,
 		$http.post("/admin/group/create", grp, {
 			headers : {'Content-Type' : 'application/json'}
 		}).success(function(data) {
-			//console.log(data);
+			console.log(data);
 			if (data.controllerResponse.responseObject) {
 				console.log(data.controllerResponse.responseObject);
 				$scope.groups.push(data.controllerResponse.responseObject);
@@ -143,59 +143,53 @@ cmpe.controller('clientDeptGrpDetailsCtrl', function($scope, $stateParams,
 		$state, $log, $timeout, $rootScope, $http) {
 	$scope.clientId = $stateParams.clientID;
 	$scope.deptID = $stateParams.deptID;
+	$scope.groupId = $stateParams.grpId;
+
 	$scope.grp = {};
 	$scope.getGrp = function() {
-		/*
-		 * $http.get("/data/dept/" +
-		 * $stateParams.deptID).success(function(data){
-		 * if(data.controllerResponse.responseObject){ var
-		 * objs=data.controllerResponse.responseObject; $scope.client=objs;
-		 * console.log($scope.client); }
-		 * //console.log(data.controllerResponse.responseObject); });
-		 */
-		var g = {
-			id : 1,
-			name : "Grp1"
-		}
-		$scope.grp = g;
+		$http.get("/data/group/" + $stateParams.grpId).success(
+			function(data) {
+				if (data.controllerResponse.responseObject) {
+					var objs = data.controllerResponse.responseObject;
+					$scope.grp = objs;
+				}
+			});
 	};
-	$scope.getDept();
+	$scope.getGrp();
+	
 	$scope.users = [];
 	$scope.getUsersForGrp = function() {
-		/*
-		 * $http.get("/data/dept/" +
-		 * $stateParams.deptID).success(function(data){
-		 * if(data.controllerResponse.responseObject){ var
-		 * objs=data.controllerResponse.responseObject; for(var i=0;i<objs.length;i++){
-		 * $scope.groups.push(objs[i]); } console.log($scope.groups); }
-		 * //console.log(data.controllerResponse.responseObject); });
-		 */
+		$http.get("/data/usersbygroup/" + $stateParams.grpId).success(
+				function(data) {
+					if (data.controllerResponse.responseObject) {
+						
+						var objs = data.controllerResponse.responseObject;
+						console.log("Objects:"+objs);
+						for (var i = 0; i < objs.length; i++) {
+							console.log("App User:");
+							console.log(objs[i].appUser);
+							 $scope.users.push(objs[i].appUser);
+						}
+					}
+				});
 	};
 	$scope.getUsersForGrp();
 
 	$scope.getAllUsers = function() {
-		/*
-		 * $http.get("/data/dept/" +
-		 * $stateParams.deptID).success(function(data){
-		 * if(data.controllerResponse.responseObject){ var
-		 * objs=data.controllerResponse.responseObject; for(var i=0;i<objs.length;i++){
-		 * $scope.groups.push(objs[i]); } console.log($scope.groups); }
-		 * //console.log(data.controllerResponse.responseObject); });
-		 */
 	};
 
+	
 	$scope.addUserToGrp = function() {
-		var grp = {
-			id : $scope.clientId,
-			name : $scope.name
+		
+		var paramMap = {
+			groupId : $scope.groupId,
+			userEmail : $scope.email
 		}
-		$scope.groups.push(grp);
-		/*
-		 * $http.post("/admin/dept/create",dept).success(function(data){
-		 * if(data.controllerResponse.responseObject){
-		 * $scope.depts.push(data.controllerResponse.responseObject); } else{ }
-		 * }).error(function(err){ //$scope.status = data.error;
-		 * console.log("Error"); });
-		 */
+		$http.post("admin/group/adduser",paramMap).success(function(data) {
+			console.log("Managed User data:");
+			console.log(data);
+			$scope.users.push(data.controllerResponse.responseObject.appUser);
+		});
+
 	};
 });

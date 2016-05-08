@@ -22,6 +22,8 @@ public interface IAdminUserService {
 	
 	boolean removeUserFromClientAdminGroup(ClientOrg client, String email, String authenticatedUser);
 	
+	ManagedUser addUserToGroup(Long groupId, String userEmail, String authenticatedUser);
+
 	Workflow createWorkflow(Workflow flow, String authenticatedUser);
 	
 	boolean deactivateWorkflow(Workflow flow, String authenticatedUser);

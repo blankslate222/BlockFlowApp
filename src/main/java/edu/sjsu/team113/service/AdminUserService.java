@@ -197,6 +197,37 @@ public class AdminUserService implements IAdminUserService {
 	}
 
 	@Override
+	public ManagedUser addUserToGroup(Long groupId,
+			String userEmail, String authenticatedUser) {
+		AppUser authUser = userRepo.findByEmail(authenticatedUser);
+		ManagedUser mgdAuthUser = managedUserRepo.findByAppUser(authUser);
+		WorkGroup group = groupRepo.findOne(groupId);
+		// TODO: Override equals and hashcode
+		if (mgdAuthUser.getId() != 1) {
+			// TODO: throw exception
+			return null;
+		}
+
+		AppUser user = userRepo.findByEmail(userEmail);
+		if (user == null) {
+			// TODO: throw exception
+			return null;
+		}
+
+		ManagedUser mgdUser = managedUserRepo.findByAppUser(user);
+		if (mgdUser == null) {
+			mgdUser = createManagedUser(user);
+		}
+		mgdUser.setEmployer(group.getClient());
+		mgdUser.getGroups().add(group);
+		mgdUser = managedUserRepo.save(mgdUser);
+
+		mgdUser = managedUserRepo.findByAppUser(user);
+		return mgdUser;
+	}
+
+	
+	@Override
 	public Workflow createWorkflow(Workflow flow, String authenticatedUser) {
 		// TODO Auto-generated method stub
 		Workflow createdFlow = null;

@@ -1,6 +1,7 @@
 package edu.sjsu.team113.web;
 
 import java.security.Principal;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -105,16 +106,32 @@ public class AdminUserController {
 		return resp;
 	}
 
+	@RequestMapping(value = "/group/adduser", method = RequestMethod.POST)
+	@ResponseBody
+	public ControllerResponse addUserToGroup(
+			@RequestBody Map<String, String> body, HttpServletResponse res, Principal principal) {
+		ControllerResponse resp = new ControllerResponse();
+		String authUser =  principal.getName();
+		Long groupId = Long.parseLong(body.get("groupId"));
+		String userEmail = body.get("userEmail");
+
+		System.out.println("principal stored = " + authUser);
+		// TODO: temporary
+		//authUser = "admin@admin.com";
+		ManagedUser returnObject = adminService.addUserToGroup(groupId,  userEmail,  authUser);
+		resp.addToResponseMap("responseObject", returnObject);
+		resp.addToResponseMap("error", null);
+		return resp;
+	}
+
 	@RequestMapping(value = "/client/addadmin")
 	@ResponseBody
 	public ControllerResponse addUserToClientAdminGroup(
 			@RequestParam String user, @RequestParam Long clientId,
 			Model model, HttpServletResponse res, Principal principal) {
 		ControllerResponse resp = new ControllerResponse();
-		String authUser = ""; // principal.getName();
+		String authUser = principal.getName();
 		System.out.println("principal stored = " + authUser);
-		// TODO: temporary
-		authUser = "admin@admin.com";
 		ClientOrg client = dataService.findClientOrgById(clientId);
 		ManagedUser returnObject = adminService.addUserToClientAdminGroup(
 				client, user, authUser);

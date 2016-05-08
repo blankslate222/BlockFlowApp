@@ -54,9 +54,9 @@ public class WorkGroup implements Serializable {
 	@JsonView(Views.Public.class)
 	private ClientDepartment department;
 
-//	@ManyToMany(mappedBy = "groups")
-//	@JsonIgnore
-//	private Set<ManagedUser> groupUsers = new HashSet<>();
+	@ManyToMany(mappedBy = "groups", fetch = FetchType.EAGER)
+	@JsonView(Views.Public.class)
+	private Set<ManagedUser> groupUsers = new HashSet<>();
 
 	@Column(name = "created_time")
 	private Timestamp created = new Timestamp(new Date().getTime());
@@ -92,13 +92,13 @@ public class WorkGroup implements Serializable {
 		this.department = department;
 	}
 
-//	public Set<ManagedUser> getGroupUsers() {
-//		return groupUsers;
-//	}
-//
-//	public void setGroupUsers(Set<ManagedUser> groupUsers) {
-//		this.groupUsers = groupUsers;
-//	}
+	public Set<ManagedUser> getGroupUsers() {
+		return groupUsers;
+	}
+
+	public void setGroupUsers(Set<ManagedUser> groupUsers) {
+		this.groupUsers = groupUsers;
+	}
 
 	public Timestamp getCreated() {
 		return created;

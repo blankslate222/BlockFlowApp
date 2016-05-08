@@ -8,7 +8,7 @@ import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.WorkGroup;
 
-public interface WorkGroupRepository extends CrudRepository<WorkGroup, String> {
+public interface WorkGroupRepository extends CrudRepository<WorkGroup, Long> {
 	
 	Set<WorkGroup> findByDepartment(ClientDepartment department);
 	WorkGroup findByName(String name);

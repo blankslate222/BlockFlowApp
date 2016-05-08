@@ -20,7 +20,10 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import edu.sjsu.team113.config.Views;
 
 @Entity
 @Table(name = "managed_user")
@@ -50,7 +53,8 @@ public class ManagedUser implements Serializable {
 	@JoinColumn(name = "department_id")
 	private ClientDepartment department;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JsonView(Views.Public.class)
 	@JoinTable(name = "MANAGEDUSER_GROUP", joinColumns = @JoinColumn(name = "mgd_user_id", referencedColumnName = "manageduser_id"), inverseJoinColumns = @JoinColumn(name = "grp_id", referencedColumnName = "group_id"))
 	private Set<WorkGroup> groups = new HashSet<>();
 

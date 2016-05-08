@@ -231,7 +231,7 @@ public class DataService implements IDataService {
 	}
 
 	@Override
-	public WorkGroup findGroupById(String id) {
+	public WorkGroup findGroupById(Long id) {
 		WorkGroup workgroup = workgroupRepository.findOne(id);
 		return workgroup;
 	}
@@ -250,9 +250,12 @@ public class DataService implements IDataService {
 	}
 
 	@Override
-	public Set<ManagedUser> findManagedUsersByGroup(WorkGroup group) {
+	public Set<ManagedUser> findManagedUsersByGroup(Long groupId) {
 		// TODO Auto-generated method stub
-		return null;
+		Set<ManagedUser> userList = null;
+		WorkGroup workgroup = workgroupRepository.findOne(groupId);
+		userList = workgroup.getGroupUsers();
+		return userList;
 	}
 
 	@Override
