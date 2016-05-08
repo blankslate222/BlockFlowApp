@@ -23,6 +23,7 @@ cmpe
 							if (data.user.email) {
 								$cookieStore.put('user', data.user);
 								$cookieStore.put('client', data.client);
+								debugger;
 								//console.log($cookieStore.get('user'));
 								if(data.user.role='ENDUSER')
 									$state.go('root.request');

@@ -120,14 +120,14 @@ public class AppUserService implements IAppUserService {
 				reqNode.setStatus(NodeStatus.PENDING_ACTION);
 				//System.out.println("node department id"+node.getDepartment_id() );
 				deptId = node.getDepartment_id();
-				reqNode.setDepartment_id(node.getDepartment_id());
+				reqNode.setDepartmentId(node.getDepartment_id());
 				newrequest.setAssignedDept(node.getDepartment_id());
 			}
 			//System.out.println("others ");
 			reqNode.setLevel(node.getLevel());
 			reqNode.setRequest(newrequest);
 			reqNode.setName(node.getName());
-			reqNode.setDepartment_id(node.getDepartment_id());
+			reqNode.setDepartmentId(node.getDepartment_id());
 			requestNodes.add(reqNode);
 		}
 		

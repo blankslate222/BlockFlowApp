@@ -159,7 +159,7 @@ public class DataService implements IDataService {
 		ClientDepartment department = null;
 		System.out.println("now finding departments by id ");
 		department = clientDepartmentRepository.findOne(id);
-		System.out.println("Departments By id : " + department.toString());
+		//System.out.println("Departments By id : " + department.toString());
 		return department;
 
 	}
@@ -194,7 +194,7 @@ public class DataService implements IDataService {
 	public List<RequestNode> findNodesByDepartment(Long deptId) {
 		// TODO Auto-generated method stub
 		List<RequestNode> nodeList = null;
-		nodeList = requestNodeRepository.findByDepartment_id(deptId);
+		nodeList = requestNodeRepository.findByDepartmentId(deptId);
 		return nodeList;
 	}
 	

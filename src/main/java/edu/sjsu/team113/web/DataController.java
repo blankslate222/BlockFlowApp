@@ -217,6 +217,14 @@ public class DataController {
 		List<RequestNode> nodes = dataService.findNodesByDepartment(deptId);
 		List<String> feed = new ArrayList<String>();
 		
+		for (RequestNode node : nodes) {
+			feed.add(node.getMutationHash());
+		}
+		
+		ClientDepartment dept = dataService.findDepartmentById(deptId);
+		
+		resp.addToResponseMap("department", dept);
+		resp.addToResponseMap("deptfeed", feed);
 		return resp;
 	}
 	

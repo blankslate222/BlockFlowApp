@@ -53,7 +53,8 @@ public class RequestNode implements Serializable {
 //	private WorkGroup workgroup;
 
 	@Column(name = "dept_id", nullable = false)
-	private Long department_id;
+	@JsonView(Views.Public.class)
+	private Long departmentId;
 
 //    @ManyToOne(cascade={CascadeType.ALL})
 //    @JoinColumn(name="prev_node_id")
@@ -147,12 +148,12 @@ public class RequestNode implements Serializable {
 		this.status = status;
 	}
 
-	public Long getDepartment_id() {
-		return department_id;
+	public Long getDepartmentId() {
+		return departmentId;
 	}
 
-	public void setDepartment_id(Long department_id) {
-		this.department_id = department_id;
+	public void setDepartmentId(Long departmentId) {
+		this.departmentId = departmentId;
 	}
 
 	public String getMutationHash() {
