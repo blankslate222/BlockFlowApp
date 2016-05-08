@@ -66,7 +66,12 @@
               	  <p class="centered"><a href="profile.html"><img src="assets/img/bitcoin.png" class="img-circle" width="60"></a></p>
               	  <h5 class="centered">{{user.name}}</h5>
               	  	
-                 
+                  <li class="mt">
+                      <a data-ui-sref="root.myrequests" ng-class="getClass('/myrequests')">
+                          <i class="fa fa-inbox"></i>
+                          <span>My Requests</span>
+                      </a>
+                  </li> 
                   <li class="mt">
                       <a data-ui-sref="root.inbox" ng-class="getClass('/inbox')">
                           <i class="fa fa-inbox"></i>
