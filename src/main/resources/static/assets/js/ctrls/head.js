@@ -18,7 +18,18 @@ cmpe.controller('headCtrl', function($scope, $rootScope, $http, $location, $stat
 		return ($location.path().substr(0) === path) ? 'active' : '';
 	}
 	$scope.user = $cookieStore.get('user');
-	$scope.admin = ($scope.user.id == 1);
+	$scope.superadmin = ($scope.user.id == 1);
+	for(var rol in $scope.user.role) {
+		if (rol == "ADMIN") {
+			$scope.admin = true;
+		}
+		if (rol == "STAFF") {
+			$scope.staff = true;
+		} 
+		if (rol == "MANAGER") {
+			$scope.manager = true;
+		}
+	}
 	
 	$scope.role = $scope.user.role;
 	

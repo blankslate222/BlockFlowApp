@@ -270,7 +270,13 @@ cmpe.controller('workCtrl',[
 								// console.log(toposort(graph).reverse());
 								var workflow = {};
 								workflow.name = $scope.workflowname;
-								workflow.client = $cookieStore.get('client');
+								var flowclient = {};
+								flowclient.id = $cookieStore.get('client').id;
+								flowclient.name = $cookieStore.get('client').name;
+								flowclient.address = $cookieStore.get('client').address;
+								flowclient.isActive = true;
+								
+								workflow.client = flowclient;
 								workflow.nodes = [];
 								workflow.workflowJson = JSON.stringify(chartDataModel);
 								// debugger;

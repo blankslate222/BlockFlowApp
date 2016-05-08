@@ -91,30 +91,30 @@ public class AdminUserService implements IAdminUserService {
 		}
 		client.setBlockchainSeed(seedValue);
 		client.setMutationString(mutationHash);
-		
+
 		ClientOrg createdClient = clientRepo.save(client);
 		WorkGroup clientAdminGrp = new WorkGroup();
 		// clientAdminGrp.setClient(createdClient);
 		clientAdminGrp.setName(client.getName() + "_Admin_Group");
 		clientAdminGrp.setClient(createdClient);
 		WorkGroup created = groupRepo.save(clientAdminGrp);
-		
+
 		createdClient.setClientAdminGroup(created);
-		
+
 		// create admin dept and save group and client again
 		ClientDepartment adminDept = new ClientDepartment();
 		adminDept.setActive(true);
 		adminDept.setClient(createdClient);
 		adminDept.setManagerGroup(created);
-		adminDept.setName(createdClient.getName()+"_Admin_Dept");
+		adminDept.setName(createdClient.getName() + "_Admin_Dept");
 		adminDept = deptRepo.save(adminDept);
-		
+
 		created.setDepartment(adminDept);
 		groupRepo.save(created);
-		
+
 		createdClient.setAdminDeptId(adminDept.getId());
 		clientRepo.save(createdClient);
-		
+
 		// TODO: bug in the code
 		// TODO: add to admin table - done
 		ChainAudit audit = new ChainAudit();
@@ -182,7 +182,7 @@ public class AdminUserService implements IAdminUserService {
 		mgdUser.getGroups().add(adminGrp);
 		mgdUser = managedUserRepo.save(mgdUser);
 
-		//client.getClientAdminGroup().addUserToGroup(mgdUser);
+		// client.getClientAdminGroup().addUserToGroup(mgdUser);
 		clientRepo.save(client);
 
 		mgdUser = managedUserRepo.findByAppUser(user);
@@ -197,8 +197,8 @@ public class AdminUserService implements IAdminUserService {
 	}
 
 	@Override
-	public ManagedUser addUserToGroup(Long groupId,
-			String userEmail, String authenticatedUser) {
+	public ManagedUser addUserToGroup(Long groupId, String userEmail,
+			String authenticatedUser) {
 		AppUser authUser = userRepo.findByEmail(authenticatedUser);
 		ManagedUser mgdAuthUser = managedUserRepo.findByAppUser(authUser);
 		WorkGroup group = groupRepo.findOne(groupId);
@@ -228,28 +228,26 @@ public class AdminUserService implements IAdminUserService {
 		return mgdUser;
 	}
 
-	
 	@Override
 	public Workflow createWorkflow(Workflow flow, String authenticatedUser) {
 		// TODO Auto-generated method stub
 		Workflow createdFlow = null;
 		AppUser user = userRepo.findByEmail(authenticatedUser);
-		if (!user.getRole().contains(AppUserRole.ADMIN) || user.getId() != 1) {
+		if (user.getRole().contains(AppUserRole.ADMIN) || user.getId() == 1) {
+			System.out.println("user may create workflow");
+			flow.setLastModUserId(user);
+			for (WorkflowNode node : flow.getNodes()) {
+				if (node.getLevel() == 1)
+					node.setCurrentNode(true);
+				node.setWorkflow(flow);
+				// node.setDepartment(department);
+				// node.setWorkgroup(flow.getClient().getClientAdminGroup());
+			}
+			createdFlow = flowRepo.save(flow);
+		} else {
 			System.out.println("PERMISSION DENIED");
 			return null;
-		} else {
-			System.out.println("user may create workflow");
 		}
-
-		flow.setLastModUserId(user);
-		for (WorkflowNode node : flow.getNodes()) {
-			if (node.getLevel() == 1)
-				node.setCurrentNode(true);
-			node.setWorkflow(flow);
-			//node.setDepartment(department);
-			//node.setWorkgroup(flow.getClient().getClientAdminGroup());
-		}
-		createdFlow = flowRepo.save(flow);
 		return createdFlow;
 	}
 

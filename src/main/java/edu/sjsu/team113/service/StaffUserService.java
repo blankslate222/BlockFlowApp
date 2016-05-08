@@ -85,7 +85,7 @@ public class StaffUserService implements IStaffUserService {
 					nextnode.setStatus(NodeStatus.PENDING_ACTION);
 					nextnode.setModified(new Timestamp(new Date().getTime()));
 					nextnode = nodeRepo.save(nextnode);
-					request.setRequestWithDepartment(nextnode.getDepartment_id());
+					request.setAssignedDept(nextnode.getDepartment_id());
 					reqRepo.save(request);
 					break;
 				case "REJECTED":

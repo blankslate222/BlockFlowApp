@@ -12,6 +12,7 @@ import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ManagedUser;
 import edu.sjsu.team113.model.Request;
 import edu.sjsu.team113.model.RequestNode;
+import edu.sjsu.team113.model.RequestStatus;
 import edu.sjsu.team113.model.WorkGroup;
 import edu.sjsu.team113.model.Workflow;
 import edu.sjsu.team113.repository.ClientDepartmentRepository;
@@ -57,8 +58,8 @@ public class DataService implements IDataService {
 		foundClientOrg = clientOrgRepository.findOne(id);
 		// System.out.println("found departments = " +
 		// findDepartmentsByClient(foundClientOrg));
-//		System.out.println("found departments = "
-//				+ foundClientOrg.getClientDepartments());
+		// System.out.println("found departments = "
+		// + foundClientOrg.getClientDepartments());
 
 		return foundClientOrg;
 
@@ -184,7 +185,8 @@ public class DataService implements IDataService {
 	public List<RequestNode> findNodesByRequest(Long requestId) {
 		// TODO Auto-generated method stub
 		List<RequestNode> nodeList = null;
-		nodeList = requestNodeRepository.findByRequest(requestRepository.findOne(requestId));
+		nodeList = requestNodeRepository.findByRequest(requestRepository
+				.findOne(requestId));
 		return nodeList;
 	}
 
@@ -267,8 +269,10 @@ public class DataService implements IDataService {
 		AppUser user = userService.findByEmail(userId);
 		ManagedUser employee = managedUserRepository.findByAppUser(user);
 
-		WorkGroup grp = employee.getEmployer().getClientAdminGroup();
-		List<Request> requests = requestRepository.findByAssignedGroup(grp);
+		ClientDepartment dept = employee.getDepartment();
+		List<Request> requests = requestRepository.findByAssignedDeptAndStatus(
+				dept.getId(), RequestStatus.PENDING);
+		
 		return requests;
 	}
 

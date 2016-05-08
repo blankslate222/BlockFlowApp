@@ -72,7 +72,7 @@ cmpe.controller('clientDetailsCtrl', function($scope, $stateParams, $state,
 			headers : {'Content-Type' : 'application/json'}
 		}).success(function(data) {
 			if (data.controllerResponse.responseObject) {
-				$scope.client.clientDepartments.push(data.controllerResponse.responseObject);
+				$scope.depts.push(data.controllerResponse.responseObject);
 				console.log(data.controllerResponse.responseObject);
 			} else {
 			}

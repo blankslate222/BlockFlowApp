@@ -71,7 +71,7 @@ public class Request implements Serializable {
 	
 	@Column(name = "request_with_dept")
 	@JsonView(Views.Public.class)
-	private Long requestWithDepartment;
+	private Long assignedDept;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "initiator_dept_mgr_group_id")
@@ -162,12 +162,13 @@ public class Request implements Serializable {
 		this.assignedGroup = assignedGroup;
 	}
 
-	public Long getRequestWithDepartment() {
-		return requestWithDepartment;
+
+	public Long getAssignedDept() {
+		return assignedDept;
 	}
 
-	public void setRequestWithDepartment(Long requestWithDepartment) {
-		this.requestWithDepartment = requestWithDepartment;
+	public void setAssignedDept(Long assignedDept) {
+		this.assignedDept = assignedDept;
 	}
 
 	public RequestStatus getStatus() {

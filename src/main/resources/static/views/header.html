@@ -74,20 +74,20 @@
                   </li> 
                   <li class="mt">
                  
-                  <li class="mt" data-ng-if="role=='ADMIN' || role=='STAFF' || role=='MANAGER'">
+                  <li class="mt" data-ng-if="'admin' || 'staff' || 'manager'">
 
                       <a data-ui-sref="root.inbox" ng-class="getClass('/inbox')">
                           <i class="fa fa-inbox"></i>
                           <span>Inbox</span>
                       </a>
                   </li>
-                   <li class="mt"  data-ng-if="role=='ADMIN'">	
+                   <li class="mt"  data-ng-if="'admin'">	
                       <a data-ui-sref="root.workflow" ng-class="getClass('/workflow')">
                           <i class="fa fa-cogs"></i>
                           <span>WorkFlows</span>
                       </a>
                   </li>
-                  <li class="mt"  data-ng-if="admin">
+                  <li class="mt"  data-ng-if="superadmin">
                       <a data-ui-sref="root.client" ng-class="getClass('/client')">
                           <i class="fa fa-university"></i>
                           <span>Clients</span>
@@ -100,7 +100,7 @@
                           <span>Create Request</span>
                       </a>
                   </li>
-                  <li class="mt"  data-ng-if="role=='ADMIN'">
+                  <li class="mt"  data-ng-if="admin">
                       <a data-ui-sref="root.blockchain"  ng-class="getClass('/block')">
                           <i class="fa fa-chain"></i>
                           <span>BlockChain Feed</span>
