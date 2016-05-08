@@ -219,6 +219,8 @@ public class AdminUserService implements IAdminUserService {
 			mgdUser = createManagedUser(user);
 		}
 		mgdUser.setEmployer(group.getClient());
+		mgdUser.setDepartment(group.getDepartment());
+
 		mgdUser.getGroups().add(group);
 		mgdUser = managedUserRepo.save(mgdUser);
 
