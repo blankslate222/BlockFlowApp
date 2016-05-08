@@ -1,4 +1,4 @@
-cmpe.controller('headCtrl', function($scope, $rootScope, $http, $location,
+cmpe.controller('headCtrl', function($scope, $rootScope, $http, $location, $state,
 		$cookieStore) {
 	$scope.tasks = [ {
 		task : 'School Transcript',
@@ -20,4 +20,14 @@ cmpe.controller('headCtrl', function($scope, $rootScope, $http, $location,
 	$scope.user = $cookieStore.get('user');
 	$scope.admin = ($scope.user.id == 1);
 	
+	$scope.role = $scope.user.role;
+	
+	$scope.checkAuth = function() {
+		if($location.path().substr(0) == '/client' && $scope.user.role=="ENDUSER"){
+				$state.go('root.login');
+		}
+		if($location.path().substr(0) == '/client' && $scope.user.role=="ENDUSER")
+				$state.go('root.login');
+	}
+	$scope.checkAuth();
 });
