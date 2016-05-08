@@ -1,5 +1,6 @@
 package edu.sjsu.team113.service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Set;
 
@@ -49,7 +50,7 @@ public interface IDataService {
 	Request findRequestById(Long id);
 	List<RequestNode> findNodesByRequest(Long id);
 
-	List<Workflow> findActiveWorkflows();
+	List<Workflow> findActiveWorkflows(ClientOrg principal);
 	List<Request> userInbox(String userId);
 	List<RequestNode> findNodesByDepartment(Long deptId);
 

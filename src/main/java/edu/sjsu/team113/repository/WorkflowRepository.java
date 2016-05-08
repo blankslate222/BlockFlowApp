@@ -11,5 +11,5 @@ import edu.sjsu.team113.model.Workflow;
 @Repository
 public interface WorkflowRepository extends CrudRepository<Workflow, Long>{
 	List<Workflow> findByIsActive(boolean isActive);
-	
+	List<Workflow> findByIsActiveAndClient(boolean isActive, ClientOrg client);
 }

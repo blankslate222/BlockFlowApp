@@ -105,11 +105,12 @@ public class DataService implements IDataService {
 	}
 
 	@Override
-	public List<Workflow> findActiveWorkflows() {
+	public List<Workflow> findActiveWorkflows(ClientOrg client) {
 
 		List<Workflow> foundActiveWorkflows = null;
-		System.out.println("now finding all active workflow list ");
-		foundActiveWorkflows = workflowRepository.findByIsActive(true);
+		System.out.println("now finding all active workflow list for client = "
+				+ client.getName());
+		foundActiveWorkflows = workflowRepository.findByIsActiveAndClient(true, client);
 		System.out.println("workflow list : ");
 		for (Workflow workflow : foundActiveWorkflows) {
 			System.out.println(workflow.toString());
@@ -159,7 +160,7 @@ public class DataService implements IDataService {
 		ClientDepartment department = null;
 		System.out.println("now finding departments by id ");
 		department = clientDepartmentRepository.findOne(id);
-		//System.out.println("Departments By id : " + department.toString());
+		// System.out.println("Departments By id : " + department.toString());
 		return department;
 
 	}
@@ -197,7 +198,7 @@ public class DataService implements IDataService {
 		nodeList = requestNodeRepository.findByDepartmentId(deptId);
 		return nodeList;
 	}
-	
+
 	@Override
 	public ManagedUser findManagedUserById(Long id) {
 		// TODO Auto-generated method stub

@@ -17,18 +17,24 @@ cmpe.controller('headCtrl', function($scope, $rootScope, $http, $location, $stat
 	$scope.getClass = function(path) {
 		return ($location.path().substr(0) === path) ? 'active' : '';
 	}
+	debugger;
 	$scope.user = $cookieStore.get('user');
 	$scope.superadmin = ($scope.user.id == 1);
+	console.log($scope.superadmin);
+	console.log($scope.user.role);
+	$scope.admin = false;
+	$scope.staff = false;
+	$scope.manager = false;
 	for(var rol in $scope.user.role) {
-		if (rol == "ADMIN") {
+		if ($scope.user.role[rol] == "ADMIN") {
 			console.log("setting staff");
 			$scope.admin = true;
 		}
-		if (rol == "STAFF") {
+		if ($scope.user.role[rol] == "STAFF") {
 			console.log("setting staff");
 			$scope.staff = true;
 		} 
-		if (rol == "MANAGER") {
+		if ($scope.user.role[rol] == "MANAGER") {
 			console.log("setting manager");
 			$scope.manager = true;
 		}
@@ -43,7 +49,7 @@ cmpe.controller('headCtrl', function($scope, $rootScope, $http, $location, $stat
 		if($location.path().substr(0) == '/client' && $scope.user.role=="ENDUSER")
 				$state.go('root.login');
 	}
-	$scope.checkAuth();
+	//$scope.checkAuth();
 	
 	$scope.logout = function() {
 		//console.log("in logout");

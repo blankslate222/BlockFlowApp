@@ -85,10 +85,10 @@ cmpe.controller('clientDetailsCtrl', function($scope, $stateParams, $state,
 
 cmpe.controller('clientDeptDetailsCtrl', function($scope, $stateParams, $state,
 		$log, $timeout, $rootScope, $http, $cookieStore ) {
-	$scope.clientId = $stateParams.clientId;
-	console.log('$scope.clientId'+$scope.clientId);
-	console.log('$cookieStore.clientId'+$cookieStore.get('client').id);
-	$scope.clientId = $cookieStore.get('client').id;
+//	$scope.clientId = $stateParams.clientId;
+//	console.log('$scope.clientId'+$scope.clientId);
+//	console.log('$cookieStore.clientId'+$cookieStore.get('client').id);
+//	$scope.clientId = $cookieStore.get('client').id;
 	$scope.deptId = $stateParams.deptId;
 	$scope.groups=[];
 	$scope.dept = {};

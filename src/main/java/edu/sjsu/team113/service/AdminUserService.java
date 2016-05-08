@@ -200,10 +200,9 @@ public class AdminUserService implements IAdminUserService {
 	public ManagedUser addUserToGroup(Long groupId, String userEmail,
 			String authenticatedUser) {
 		AppUser authUser = userRepo.findByEmail(authenticatedUser);
-		ManagedUser mgdAuthUser = managedUserRepo.findByAppUser(authUser);
 		WorkGroup group = groupRepo.findOne(groupId);
 		// TODO: Override equals and hashcode
-		if (mgdAuthUser.getId() != 1) {
+		if (authUser.getId() != 1) {
 			// TODO: throw exception
 			return null;
 		}

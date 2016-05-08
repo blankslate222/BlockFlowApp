@@ -52,10 +52,10 @@ public class DataController {
 
 	@Autowired
 	private ManagedUserRepository managedUserRepo;
-	
+
 	@Autowired
 	private MappingJackson2HttpMessageConverter converter;
-	
+
 	@Autowired
 	private ChainAuditRepository auditRepo;
 
@@ -67,9 +67,10 @@ public class DataController {
 
 	@Autowired
 	private SessionFactory sessionFactory;
-	
+
 	@RequestMapping(value = "/clients")
-	public @ResponseBody ControllerResponse getClients(HttpServletResponse res, Principal principal) {
+	public @ResponseBody ControllerResponse getClients(HttpServletResponse res,
+			Principal principal) {
 		List<ClientOrg> clientList = null;
 		ControllerResponse resp = new ControllerResponse();
 		clientList = dataService.findClientOrgs();
@@ -79,7 +80,8 @@ public class DataController {
 	}
 
 	@RequestMapping(value = "/client/{clientId}")
-	public @ResponseBody ControllerResponse getClient(@PathVariable Long clientId, HttpServletResponse res) {
+	public @ResponseBody ControllerResponse getClient(
+			@PathVariable Long clientId, HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
 		ClientOrg client = dataService.findClientOrgById(clientId);
 		System.out.println("client details" + client.toString());
@@ -89,7 +91,8 @@ public class DataController {
 	}
 
 	@RequestMapping(value = "/request/{requestId}")
-	public @ResponseBody ControllerResponse getRequest(@PathVariable Long requestId, HttpServletResponse res) {
+	public @ResponseBody ControllerResponse getRequest(
+			@PathVariable Long requestId, HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
 		Request request = dataService.findRequestById(requestId);
 		System.out.println("Request details" + request.toString());
@@ -101,9 +104,11 @@ public class DataController {
 	}
 
 	@RequestMapping(value = "/department/{departmentId}")
-	public @ResponseBody ControllerResponse getDepartment(@PathVariable Long departmentId, HttpServletResponse res) {
+	public @ResponseBody ControllerResponse getDepartment(
+			@PathVariable Long departmentId, HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
-		ClientDepartment department = dataService.findDepartmentById(departmentId);
+		ClientDepartment department = dataService
+				.findDepartmentById(departmentId);
 		// System.out.println("department details" + department.getGroups());
 		resp.addResponseObject(department);
 		resp.addError(null);
@@ -111,7 +116,8 @@ public class DataController {
 	}
 
 	@RequestMapping(value = "/group/{groupId}")
-	public @ResponseBody ControllerResponse getGroup(@PathVariable Long groupId, HttpServletResponse res) {
+	public @ResponseBody ControllerResponse getGroup(
+			@PathVariable Long groupId, HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
 		WorkGroup groupdetails = dataService.findGroupById(groupId);
 		resp.addResponseObject(groupdetails);
@@ -120,9 +126,12 @@ public class DataController {
 	}
 
 	@RequestMapping(value = "/deptbyclient/{clientId}")
-	public @ResponseBody ControllerResponse getDepartmentByClient(@PathVariable Long clientId, HttpServletResponse res) {
+	public @ResponseBody ControllerResponse getDepartmentByClient(
+			@PathVariable Long clientId, HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
-		Set<ClientDepartment> departments = dataService.findDepartmentsByClient(dataService.findClientOrgById(clientId));
+		Set<ClientDepartment> departments = dataService
+				.findDepartmentsByClient(dataService
+						.findClientOrgById(clientId));
 		// System.out.println("department details" + department.getGroups());
 		resp.addResponseObject(departments);
 		resp.addError(null);
@@ -130,35 +139,44 @@ public class DataController {
 	}
 
 	@RequestMapping(value = "/groupsbydept/{deptId}")
-	public @ResponseBody ControllerResponse getGroupsByDepartment(@PathVariable Long deptId, HttpServletResponse res) {
+	public @ResponseBody ControllerResponse getGroupsByDepartment(
+			@PathVariable Long deptId, HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
 		ClientDepartment department = dataService.findDepartmentById(deptId);
-		Set<WorkGroup> grpsByDept = dataService.findGroupsByDepartment(department);
+		Set<WorkGroup> grpsByDept = dataService
+				.findGroupsByDepartment(department);
 		resp.addResponseObject(grpsByDept);
 		return resp;
 	}
 
-	
 	@RequestMapping(value = "/usersbygroup/{groupId}")
-	public @ResponseBody ControllerResponse getUsersByGroup(@PathVariable Long groupId, HttpServletResponse res) {
+	public @ResponseBody ControllerResponse getUsersByGroup(
+			@PathVariable Long groupId, HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
-		Set<ManagedUser> usersByGroup = dataService.findManagedUsersByGroup(groupId);
+		Set<ManagedUser> usersByGroup = dataService
+				.findManagedUsersByGroup(groupId);
 		resp.addResponseObject(usersByGroup);
 		return resp;
 	}
-	
+
 	@RequestMapping(value = "/workflows")
-	public @ResponseBody ControllerResponse getWorkflows(HttpServletResponse res, Principal principal) {
+	public @ResponseBody ControllerResponse getWorkflows(
+			HttpServletResponse res, Principal principal) {
 		List<Workflow> workflowList = null;
 		ControllerResponse resp = new ControllerResponse();
-		workflowList = dataService.findActiveWorkflows();
+		String user = principal.getName();
+		AppUser auser = userService.findByEmail(user);
+		ManagedUser muser = managedUserRepo.findByAppUser(auser);
+
+		workflowList = dataService.findActiveWorkflows(muser.getEmployer());
 		resp.addResponseObject(workflowList);
 		resp.addError(null);
 		return resp;
 	}
 
 	@RequestMapping(value = "/chainfeed/{clientId}")
-	public @ResponseBody ControllerResponse getChainFeedPerClient(@PathVariable Long clientId) {
+	public @ResponseBody ControllerResponse getChainFeedPerClient(
+			@PathVariable Long clientId) {
 		ControllerResponse resp = new ControllerResponse();
 		ClientOrg clientOrg = dataService.findClientOrgById(clientId);
 		String mutation = clientOrg.getMutationString();
@@ -166,19 +184,21 @@ public class DataController {
 		resp.addResponseObject(feedList);
 		return resp;
 	}
-	
+
 	@RequestMapping(value = "/transactionData/{mutationHash}")
-	public @ResponseBody ControllerResponse getTransactionData(@PathVariable String mutationHash) {
+	public @ResponseBody ControllerResponse getTransactionData(
+			@PathVariable String mutationHash) {
 		ControllerResponse resp = new ControllerResponse();
 		JSONObject reqBody = new JSONObject();
 		reqBody.put("host", openchainServer);
 
 		String jsonBody = reqBody.toJSONString();
-		String jsonResponse = chainService.getTransactionHashData(mutationHash, jsonBody);
+		String jsonResponse = chainService.getTransactionHashData(mutationHash,
+				jsonBody);
 		JSONParser parser = new JSONParser();
 		JSONObject response = null;
 		try {
-			response = (JSONObject)parser.parse(jsonResponse);
+			response = (JSONObject) parser.parse(jsonResponse);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -206,34 +226,36 @@ public class DataController {
 	}
 
 	@RequestMapping(value = "/deptfeed")
-	public @ResponseBody ControllerResponse getDepartmentFeed(Principal principal) {
+	public @ResponseBody ControllerResponse getDepartmentFeed(
+			Principal principal) {
 		ControllerResponse resp = new ControllerResponse();
 		Long deptId = null;
-		
+
 		String appUser = principal.getName();
 		AppUser user = userService.findByEmail(appUser);
 		ManagedUser employee = managedUserRepo.findByAppUser(user);
 		deptId = employee.getDepartment().getId();
 		List<RequestNode> nodes = dataService.findNodesByDepartment(deptId);
 		List<String> feed = new ArrayList<String>();
-		
+
 		for (RequestNode node : nodes) {
 			feed.add(node.getMutationHash());
 		}
-		
+
 		ClientDepartment dept = dataService.findDepartmentById(deptId);
-		
+
 		resp.addToResponseMap("department", dept);
 		resp.addToResponseMap("deptfeed", feed);
 		return resp;
 	}
-	
+
 	private List<JSONObject> getFeedList(String mutation) {
 		List<JSONObject> feedList = new ArrayList<>();
 		JSONObject reqBody = new JSONObject();
 		reqBody.put("host", openchainServer);
 		String jsonBody = reqBody.toJSONString();
-		String transactionRecord = chainService.getTransactionHashData(mutation, jsonBody);
+		String transactionRecord = chainService.getTransactionHashData(
+				mutation, jsonBody);
 		if (transactionRecord == null || transactionRecord.length() == 0)
 			return null;
 		JSONParser parser = new JSONParser();
@@ -269,7 +291,8 @@ public class DataController {
 	}
 
 	@RequestMapping(value = "/staffinbox")
-	public @ResponseBody ControllerResponse getRequestsAssignedToMe(Principal principal) {
+	public @ResponseBody ControllerResponse getRequestsAssignedToMe(
+			Principal principal) {
 		ControllerResponse resp = new ControllerResponse();
 
 		String userinSession = null;
@@ -280,16 +303,17 @@ public class DataController {
 			userinSession = principal.getName();
 		}
 
-		List<Request> staffreqlist = dataService.fetchMyRequestList(userinSession);
+		List<Request> staffreqlist = dataService
+				.fetchMyRequestList(userinSession);
 		JSONObject respObj = new JSONObject();
 		respObj.put("requestlist", staffreqlist);
 		resp.addResponseObject(respObj);
 		return resp;
 	}
 
-	
 	@RequestMapping(value = "/userinbox")
-	public @ResponseBody ControllerResponse getRequestsRaisedByMe(Principal principal) {
+	public @ResponseBody ControllerResponse getRequestsRaisedByMe(
+			Principal principal) {
 		ControllerResponse resp = new ControllerResponse();
 
 		String userinSession = null;
@@ -298,7 +322,8 @@ public class DataController {
 			userinSession = "admin@admin.com";
 			System.out.println("Inbox of Admin");
 		} else {
-			System.out.println(">>> user session found with: " + principal.getName());
+			System.out.println(">>> user session found with: "
+					+ principal.getName());
 			userinSession = principal.getName();
 		}
 
@@ -313,11 +338,12 @@ public class DataController {
 	public void hibernateTest() {
 
 		Session session = sessionFactory.openSession();
-		Query query = session.createQuery("insert into AppUser(email, passwordHash, name)"
-				+ "select concat(email,' ',name) , passwordHash, name from AppUser where id = 2");
+		Query query = session
+				.createQuery("insert into AppUser(email, passwordHash, name)"
+						+ "select concat(email,' ',name) , passwordHash, name from AppUser where id = 2");
 		int result = query.executeUpdate();
 	}
-	
+
 	@RequestMapping(value = "/getBlockChainServerHost")
 	public @ResponseBody ControllerResponse getBlockChainServerHost() {
 		ControllerResponse resp = new ControllerResponse();
@@ -325,5 +351,5 @@ public class DataController {
 		resp.addToResponseMap("host", openchainServer);
 		return resp;
 	}
-	
+
 }
