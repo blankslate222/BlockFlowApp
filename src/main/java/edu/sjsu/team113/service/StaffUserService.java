@@ -65,7 +65,7 @@ public class StaffUserService implements IStaffUserService {
 		RequestStatus nextstatus = null;
 		for (int i = 0; i < n; i++) {
 			RequestNode node = nodes.get(i);
-			if (node.getId() == requestNodeId) {
+			if (node.getStatus().toString().equals("PENDING_ACTION")) {
 				switch (status) {
 				case "APPROVED":
 					nextnodestatus = NodeStatus.APPROVED;

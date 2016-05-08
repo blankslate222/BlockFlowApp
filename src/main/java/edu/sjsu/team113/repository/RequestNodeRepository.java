@@ -12,4 +12,5 @@ import edu.sjsu.team113.model.RequestNode;
 public interface RequestNodeRepository extends CrudRepository<RequestNode, Long> {
 	List<RequestNode> findByRequest(Request request);
 	List<RequestNode> findByRequestOrderByLevelAsc(Request request);
+	List<RequestNode> findByDepartment_id(Long id);
 }

@@ -38,7 +38,7 @@ cmpe.controller('inboxCtrl', function($scope, $rootScope, $http, $window) {
 	}
 
 	$scope.doActionOnRequest = function(req_id, nodes, status) {
-
+debugger;
 		console.log('going to change request status');
 		console.log(req_id);
 		console.log(nodes);

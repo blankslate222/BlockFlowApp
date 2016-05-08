@@ -1,0 +1,74 @@
+
+<!--  <script>
+$(document).ready( function() {
+	$.post("http://10.250.143.29:3000/chainfeed/21", { "host" :
+	"http://54.153.102.235:8080" }, function(data, status) { var output =
+	""; for (var i = 0; i < data.length; i++) { output = output + "
+	<p>" + "
+	<div>
+		" + "<B>" + "transaction_id: " + "</B>" + data[i].mutation_hash + "</br>" +
+		"<B>" + "key: " + "</B>" + data[i].transaction_data.key + "</br>" + "<B>"
+			+ "value: " + "</B>" + data[i].transaction_data.value + "
+	</div>
+	" + "
+	</p>
+	"; } $("#transaction").html(output); }); });
+</script> -->
+<!--main content start-->
+<section id="main-content">
+	<section class="wrapper">
+		<h1>Blockchain</h1>
+		<p>Department Feed</p>
+		<div class="panel-group" data-ng-repeat="feed in feedList">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" href="#{{ $index }}"
+							onclick="return false;"> {{feed.client}}</a>
+					</h4>
+				</div>
+				<div id="{{ $index }}" class="panel-collapse collapse">
+					<ul class="list-group">
+						<li class="list-group-item"
+							data-ng-repeat="transaction in feed.transactions">
+							<button href="#myModal" class="btn btn-default" data-toggle="modal"
+								ng-click="load(transaction)">{{transaction}}</button>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+</section>
+
+<!-- Modal -->
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog"
+	tabindex="-1" id="myModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Transaction Details</h4>
+			</div>
+			<div class="modal-body">
+				<h4>Transaction Data</h4>
+				<div class="alert alert-success">
+					<b>{{t.transaction_data}}</b>
+				</div>
+				<h4>Mutation hash</h4>
+				<div class="alert alert-info">
+					<b>{{t.mutation_hash}}</b>
+				</div>
+				<h4>Timestamp</h4>
+				<div class="alert alert-warning">
+					<b>{{t.timestamp}}</b>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button data-dismiss="modal" class="btn btn-success" type="button">OK</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- modal -->

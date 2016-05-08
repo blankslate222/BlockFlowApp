@@ -62,6 +62,19 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				}
 			}
 		})
+		.state('root.deptfeed', {
+			url: '/deptfeed',
+			views: {
+				'header@': {
+					templateUrl: 'views/header.html',
+					controller: 'headCtrl'
+				},
+				'container@' : {
+					templateUrl : 'views/deptFeed.html',
+					controller : 'deptFeedCtrl'
+				}
+			}
+		})
 		.state('root.request', {
 			url: '/request',
 			views: {

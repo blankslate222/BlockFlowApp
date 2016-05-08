@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import edu.sjsu.team113.model.AppUser;
 import edu.sjsu.team113.model.ChainAudit;
 import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
@@ -33,9 +34,11 @@ import edu.sjsu.team113.model.RequestNode;
 import edu.sjsu.team113.model.WorkGroup;
 import edu.sjsu.team113.model.Workflow;
 import edu.sjsu.team113.repository.ChainAuditRepository;
+import edu.sjsu.team113.repository.ManagedUserRepository;
 import edu.sjsu.team113.service.IAppUserService;
 import edu.sjsu.team113.service.IBlockchainService;
 import edu.sjsu.team113.service.IDataService;
+import edu.sjsu.team113.service.IManagerUserService;
 
 @Controller
 @RequestMapping(value = "/data")
@@ -47,6 +50,9 @@ public class DataController {
 	@Autowired
 	private IDataService dataService;
 
+	@Autowired
+	private ManagedUserRepository managedUserRepo;
+	
 	@Autowired
 	private MappingJackson2HttpMessageConverter converter;
 	
@@ -199,6 +205,21 @@ public class DataController {
 		return resp;
 	}
 
+	@RequestMapping(value = "/deptfeed")
+	public @ResponseBody ControllerResponse getDepartmentFeed(Principal principal) {
+		ControllerResponse resp = new ControllerResponse();
+		Long deptId = null;
+		
+		String appUser = principal.getName();
+		AppUser user = userService.findByEmail(appUser);
+		ManagedUser employee = managedUserRepo.findByAppUser(user);
+		deptId = employee.getDepartment().getId();
+		List<RequestNode> nodes = dataService.findNodesByDepartment(deptId);
+		List<String> feed = new ArrayList<String>();
+		
+		return resp;
+	}
+	
 	private List<JSONObject> getFeedList(String mutation) {
 		List<JSONObject> feedList = new ArrayList<>();
 		JSONObject reqBody = new JSONObject();

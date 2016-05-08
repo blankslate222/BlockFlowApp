@@ -21,12 +21,15 @@ cmpe.controller('headCtrl', function($scope, $rootScope, $http, $location, $stat
 	$scope.superadmin = ($scope.user.id == 1);
 	for(var rol in $scope.user.role) {
 		if (rol == "ADMIN") {
+			console.log("setting staff");
 			$scope.admin = true;
 		}
 		if (rol == "STAFF") {
+			console.log("setting staff");
 			$scope.staff = true;
 		} 
 		if (rol == "MANAGER") {
+			console.log("setting manager");
 			$scope.manager = true;
 		}
 	}

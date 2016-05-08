@@ -191,6 +191,14 @@ public class DataService implements IDataService {
 	}
 
 	@Override
+	public List<RequestNode> findNodesByDepartment(Long deptId) {
+		// TODO Auto-generated method stub
+		List<RequestNode> nodeList = null;
+		nodeList = requestNodeRepository.findByDepartment_id(deptId);
+		return nodeList;
+	}
+	
+	@Override
 	public ManagedUser findManagedUserById(Long id) {
 		// TODO Auto-generated method stub
 		ManagedUser user = managedUserRepository.findOne(id);
@@ -272,7 +280,6 @@ public class DataService implements IDataService {
 		ClientDepartment dept = employee.getDepartment();
 		List<Request> requests = requestRepository.findByAssignedDeptAndStatus(
 				dept.getId(), RequestStatus.PENDING);
-		
 		return requests;
 	}
 
