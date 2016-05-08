@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.sjsu.team113.model.AppUser;
 import edu.sjsu.team113.model.AppUserRole;
+import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.NodeStatus;
 import edu.sjsu.team113.model.Request;
@@ -26,6 +27,7 @@ import edu.sjsu.team113.model.RequestStatus;
 import edu.sjsu.team113.model.WorkGroup;
 import edu.sjsu.team113.model.Workflow;
 import edu.sjsu.team113.model.WorkflowNode;
+import edu.sjsu.team113.repository.ClientDepartmentRepository;
 import edu.sjsu.team113.repository.ClientOrgRepository;
 import edu.sjsu.team113.repository.RequestNodeRepository;
 import edu.sjsu.team113.repository.RequestRepository;
@@ -52,6 +54,9 @@ public class AppUserService implements IAppUserService {
 	private ClientOrgRepository clientRepo;
 
 	@Autowired
+	private ClientDepartmentRepository deptRepo;
+	
+	@Autowired
 	private RequestRepository reqRepo;
 
 	@Autowired
@@ -59,9 +64,6 @@ public class AppUserService implements IAppUserService {
 	
 	@Autowired
 	private IBlockchainService chainService;
-
-	@Autowired
-	private ClientOrgRepository cliRepo;
 	
 	@Autowired
 	private MappingJackson2HttpMessageConverter converter;
@@ -105,20 +107,33 @@ public class AppUserService implements IAppUserService {
 		Request newrequest = new Request();
 		// mgr grp of node with level = 1
 		WorkGroup initiator_dept_mgr_group_id = null;
+		System.out.println("Printing nodes string"+nodes.toString());
+		Long deptId = 0l;
 		Set<RequestNode> requestNodes = new HashSet<RequestNode>();
 		for (WorkflowNode node : nodes) {
+			System.out.println("Workflow nodes");
 			RequestNode reqNode = new RequestNode();
 			if (node.getLevel() == 1) {
 				//initiator_dept_mgr_group_id = node.getWorkgroup();
+				System.out.println("inside node level 1 ");
 				reqNode.setCurrentNode(true);
 				reqNode.setStatus(NodeStatus.PENDING_ACTION);
+				System.out.println("node department id"+node.getDepartment_id() );
+				deptId = node.getDepartment_id();
+				reqNode.setDepartment_id(node.getDepartment_id());
 			}
+			System.out.println("others ");
 			reqNode.setLevel(node.getLevel());
 			reqNode.setRequest(newrequest);
 			reqNode.setName(node.getName());
-			//reqNode.setWorkgroup(node.getWorkgroup());
+			reqNode.setDepartment_id(node.getDepartment_id());
 			requestNodes.add(reqNode);
 		}
+		
+		ClientDepartment department = deptRepo.findOne(deptId);
+		System.out.println("deparment:"+department);
+		System.out.println("deptId:"+deptId);
+		
 		newrequest.setStatus(RequestStatus.PENDING);
 		newrequest.setTitle(requestedFlow.getName()+" "+System.currentTimeMillis());
 		newrequest.setInitiatorid(user);
@@ -128,7 +143,7 @@ public class AppUserService implements IAppUserService {
 		newrequest.setDescription(reqDescription);
 		newrequest.setRequestJson(requestedFlow.getWorkflowJson());
 
-		ClientOrg reqOwner = initiator_dept_mgr_group_id.getClient();
+		ClientOrg reqOwner = department.getClient();
 		String seed = reqOwner.getBlockchainSeed();
 
 		ObjectMapper mapper = converter.getObjectMapper();

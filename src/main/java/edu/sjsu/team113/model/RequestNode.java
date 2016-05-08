@@ -52,10 +52,8 @@ public class RequestNode implements Serializable {
 //	@JsonView(Views.Public.class)
 //	private WorkGroup workgroup;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "department_id")
-	@JsonView(Views.Public.class)
-	private ClientDepartment department;
+	@Column(name = "dept_id", nullable = false)
+	private Long department_id;
 
 //    @ManyToOne(cascade={CascadeType.ALL})
 //    @JoinColumn(name="prev_node_id")
@@ -149,12 +147,12 @@ public class RequestNode implements Serializable {
 		this.status = status;
 	}
 
-	public ClientDepartment getDepartment() {
-		return department;
+	public Long getDepartment_id() {
+		return department_id;
 	}
 
-	public void setDepartment(ClientDepartment department) {
-		this.department = department;
+	public void setDepartment_id(Long department_id) {
+		this.department_id = department_id;
 	}
 
 	public String getMutationHash() {
