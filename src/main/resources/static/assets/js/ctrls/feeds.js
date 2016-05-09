@@ -2,7 +2,9 @@ cmpe
 .controller('feedCtrl', function($scope, $state, $rootScope, $http, $cookieStore) {
 	
 	$scope.feedList = [];
-	var clientid = 21;
+	debugger;
+	var clientid = $cookieStore.get('client').id;
+	console.log(clientid);
 	$scope.getFeed = function() {
 		console.log("inside get feed");
 		$http.get("data/chainfeed/" + clientid).success(function(data) {
@@ -38,7 +40,10 @@ cmpe
 cmpe.controller('adminFeedCtrl', function($scope, $state, $rootScope, $http, $cookieStore) {
 	
 	$scope.feedList = [];
-	var clientid = 21;
+	debugger;
+	var clientid = $cookieStore.get('client').id;
+	console.log(clientid);
+	
 	$scope.getFeed = function() {
 		
 		console.log("inside get feed");

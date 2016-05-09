@@ -53,5 +53,6 @@ public interface IDataService {
 	List<Workflow> findActiveWorkflows(ClientOrg principal);
 	List<Request> userInbox(String userId);
 	List<RequestNode> findNodesByDepartment(Long deptId);
+	List<Workflow> findActiveWorkflowRequests();
 
 }

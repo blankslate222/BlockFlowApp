@@ -118,6 +118,21 @@ public class DataService implements IDataService {
 		return foundActiveWorkflows;
 
 	}
+	
+	@Override
+	public List<Workflow> findActiveWorkflowRequests() {
+
+		List<Workflow> foundActiveWorkflows = null;
+		System.out.println("now finding all active workflows");
+		foundActiveWorkflows = workflowRepository.findByIsActive(true);
+		System.out.println("workflow list : ");
+		for (Workflow workflow : foundActiveWorkflows) {
+			System.out.println(workflow.toString());
+		}
+		return foundActiveWorkflows;
+
+	}
+
 
 	@Override
 	public Request findRequestById(Long id) {

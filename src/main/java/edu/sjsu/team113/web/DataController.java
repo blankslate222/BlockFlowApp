@@ -173,6 +173,17 @@ public class DataController {
 		resp.addError(null);
 		return resp;
 	}
+	
+	@RequestMapping(value = "/workflowrequests")
+	public @ResponseBody ControllerResponse getWorkflowList(
+			HttpServletResponse res, Principal principal) {
+		List<Workflow> workflowList = null;
+		ControllerResponse resp = new ControllerResponse();
+		workflowList = dataService.findActiveWorkflowRequests();
+		resp.addResponseObject(workflowList);
+		resp.addError(null);
+		return resp;
+	}
 
 	@RequestMapping(value = "/chainfeed/{clientId}")
 	public @ResponseBody ControllerResponse getChainFeedPerClient(

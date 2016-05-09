@@ -30,7 +30,7 @@ cmpe.controller(
 							
 							$scope.getWorkflows = function() {
 								$scope.loading=true;
-								$http.get("/data/workflows").success(function(data) {
+								$http.get("/data/workflowrequests").success(function(data) {
 									console.log(data);
 									var objs = data.controllerResponse.responseObject;
 									for (var i = 0; i < objs.length; i++) {

@@ -73,9 +73,11 @@ public class ClientOrg implements Serializable {
 	private Long adminDeptId;
 	
 	@Column(name = "chain_seed")
+	@JsonView(Views.Public.class)
 	private String blockchainSeed;
 	
 	@Column(name = "mutation_string")
+	@JsonView(Views.Public.class)
 	private String mutationString;
 	
 	public Long getId() {
