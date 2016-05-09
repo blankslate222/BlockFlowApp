@@ -131,10 +131,12 @@ cmpe.controller(
 							if (data.controllerResponse.responseObject) {
 								var objs = data.controllerResponse.responseObject;
 								$scope.request = objs;
-								console.log('here object');
-								console.log($scope.request);
+								var obj=JSON.parse($scope.request[0].request.requestJson);
+								for(var i=0;i<obj.nodes.length;i++){
+									obj.nodes[i].name=obj.nodes[i].name + " ("+$scope.request[i].status+")";
+								}
 								$scope.chartViewModel = new flowchart.ChartViewModel(
-										JSON.parse($scope.request[0].request.requestJson));
+										obj);
 							}
 						});
 					};
