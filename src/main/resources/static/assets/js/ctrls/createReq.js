@@ -131,6 +131,7 @@ cmpe.controller(
 							if (data.controllerResponse.responseObject) {
 								var objs = data.controllerResponse.responseObject;
 								$scope.request = objs;
+								console.log($scope.request);
 								var obj=JSON.parse($scope.request[0].request.requestJson);
 								for(var i=0;i<$scope.request.length;i++){
 									obj.nodes[$scope.request[i].level-1].name=obj.nodes[$scope.request[i].level-1].name + " ("+$scope.request[i].status+")";

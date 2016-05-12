@@ -2,26 +2,52 @@
 <section id="main-content">
 	<section class="wrapper">
 		<h1>Blockchain</h1>
-		<p>Admin Feed</p>
-		<div class="panel-group" data-ng-repeat="feed in feedList">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h4 class="panel-title">
-						<a data-toggle="collapse" href="#{{ $index }}"
-							onclick="return false;"> {{feed.client}}</a>
+		<div class="row mt">
+			<div class="col-lg-12">
+				<div class="showback">
+					<h4 class="mb">
+						Request Check
 					</h4>
+					<form class="form-inline" role="form">
+						<div class="col-lg-10">
+							<input type="text" class="form-control"
+								id="req" ng-model="requestID" placeholder="Enter Request">
+						</div>
+						<button type="submit" class="btn btn-theme" ng-click="check()">Check</button>
+					</form>
 				</div>
-				<div id="{{ $index }}" class="panel-collapse collapse">
-					<ul class="list-group">
-						<li class="list-group-item"
-							data-ng-repeat="transaction in feed.transactions">
-							<button href="#myModal" class="btn btn-default" data-toggle="modal"
-								ng-click="load(transaction)">{{transaction}}</button>
-						</li>
-					</ul>
+				<!-- /form-panel -->
+			</div>
+			<!-- /col-lg-12 -->
+		</div>
+
+		<div class="row mt">
+			<div class="col-lg-12">
+				<div class="showback">
+					<h4>Admin Feed</h4>
+					<div class="panel-group" data-ng-repeat="feed in feedList">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a data-toggle="collapse" href="#{{ $index }}"
+										onclick="return false;"> {{feed.client}}</a>
+								</h4>
+							</div>
+							<div id="{{ $index }}" class="panel-collapse collapse">
+								<ul class="list-group">
+									<li class="list-group-item"
+										data-ng-repeat="transaction in feed.transactions">
+										<button href="#myModal" class="btn btn-default"
+											data-toggle="modal" ng-click="load(transaction)">{{transaction}}</button>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
+
 	</section>
 </section>
 
@@ -37,15 +63,15 @@
 			</div>
 			<div class="modal-body">
 				<h4>Transaction Data</h4>
-				<div class="alert alert-success" style="overflow:auto;">
+				<div class="alert alert-success" style="overflow: auto;">
 					<b>{{t.transaction_data}}</b>
 				</div>
 				<h4>Mutation hash</h4>
-				<div class="alert alert-info" style="overflow:auto;">
+				<div class="alert alert-info" style="overflow: auto;">
 					<b>{{t.mutation_hash}}</b>
 				</div>
 				<h4>Timestamp</h4>
-				<div class="alert alert-warning" style="overflow:auto;">
+				<div class="alert alert-warning" style="overflow: auto;">
 					<b>{{t.timestamp}}</b>
 				</div>
 			</div>

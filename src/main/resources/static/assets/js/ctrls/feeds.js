@@ -78,6 +78,12 @@ cmpe.controller('adminFeedCtrl', function($scope, $state, $rootScope, $http, $co
 	};
 	$scope.getFeed();
 	
+	$scope.check = function() {
+		$http.get("/admin/request/validate/"+$scope.requestID).success(function(data) {
+				console.log(data.controllerResponse.responseObject);
+				$scope.t=data.controllerResponse.responseObject;
+		});
+	};
 	
 	$scope.getTransactionDetail = function() {
 		console.log("going to get blockchain host!");
