@@ -282,7 +282,6 @@ public class AdminUserService implements IAdminUserService {
 		Request reqToBeValidated = dataService.findRequestById(requestId);
 		LinkedHashMap<String, String> reqChainMap = new LinkedHashMap<String, String>();
 		reqChainMap.put("requestId", "" + reqToBeValidated.getId());
-		reqChainMap.put("created", "" + reqToBeValidated.getCreated());
 		reqChainMap.put("title", reqToBeValidated.getTitle());
 		reqChainMap.put("initiator", reqToBeValidated.getInitiatorid()
 				.getEmail());
@@ -293,6 +292,7 @@ public class AdminUserService implements IAdminUserService {
 
 		// validate request
 		String reqAuditData = reqChainMap.toString();
+		System.out.println("Audit data request record : " + reqAuditData);
 		JSONObject reqObj = new JSONObject();
 		reqObj.put("audit_data", reqAuditData);
 		reqObj.put("host", openchainServer);
@@ -324,8 +324,7 @@ public class AdminUserService implements IAdminUserService {
 			nodeChainMap.put("request", "" + savedNode.getRequest().getId());
 			nodeChainMap.put("nodeName", savedNode.getName());
 			nodeChainMap.put("department", savedNode.getDepartmentId() + "");
-			nodeChainMap.put("created", "" + savedNode.getCreated());
-			nodeChainMap.put("modified", "" + savedNode.getModified());
+
 			String auditData = nodeChainMap.toString();
 			JSONObject req = new JSONObject();
 			req.put("audit_data", auditData);

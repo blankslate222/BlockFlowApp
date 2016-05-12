@@ -79,7 +79,8 @@ public class StaffUserService implements IStaffUserService {
 						changeNodeStatus(node, nextnodestatus, flowClient);
 						break;
 					}
-					transactionHex = changeNodeStatus(node, nextnodestatus, flowClient);
+					transactionHex = changeNodeStatus(node, nextnodestatus,
+							flowClient);
 					// TODO: change node active value of next node
 					RequestNode nextnode = nodes.get(i + 1);
 					nextnode.setCurrentNode(true);
@@ -99,7 +100,8 @@ public class StaffUserService implements IStaffUserService {
 						unreachedNode.setStatus(NodeStatus.REJECTED);
 						nodeRepo.save(unreachedNode);
 					}
-					transactionHex = changeRequestStatus(request, nextstatus, flowClient);
+					transactionHex = changeRequestStatus(request, nextstatus,
+							flowClient);
 					break;
 				default:
 					System.out.println("not a legal state");
@@ -116,19 +118,60 @@ public class StaffUserService implements IStaffUserService {
 		// TODO Auto-generated method stub
 		String seed = null;
 		String mutationHash = null;
-		
+
 		node.setStatus(newstatus);
 		Timestamp modified = new Timestamp(new Date().getTime());
 		node.setModified(modified);
+		// save once
 		RequestNode savedNode = nodeRepo.save(node);
 		LinkedHashMap<String, String> chainMap = new LinkedHashMap<String, String>();
-		chainMap.put("nodeId", ""+savedNode.getId());
-		chainMap.put("request", ""+savedNode.getRequest().getId());
+		chainMap.put("nodeId", "" + savedNode.getId());
+		chainMap.put("request", "" + savedNode.getRequest().getId());
 		chainMap.put("nodeName", savedNode.getName());
-		chainMap.put("department", savedNode.getDepartmentId()+"");
-		chainMap.put("created", ""+savedNode.getCreated());
-		chainMap.put("modified", ""+savedNode.getModified());
-		
+		chainMap.put("department", savedNode.getDepartmentId() + "");
+
+		try {
+			seed = dataService.getSeedForClient(client);
+			JSONObject obj = new JSONObject();
+			obj.put("data", chainMap.toString());
+			obj.put("host", openchainServer);
+			obj.put("seed", seed);
+			mutationHash = chainService.createTransaction(obj.toJSONString());
+			JSONParser parser = new JSONParser();
+			try {
+				JSONObject chainResp = (JSONObject) parser.parse(mutationHash);
+				mutationHash = (String) chainResp.get("mutation_hash");
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			// update record database
+			savedNode.setMutationHash(mutationHash);
+			nodeRepo.save(savedNode);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return mutationHash;
+	}
+
+	private String changeRequestStatus(Request request,
+			RequestStatus newstatus, ClientOrg client) {
+		// TODO Auto-generated method stub
+		String seed = null;
+		String mutationHash = null;
+		request.setStatus(newstatus);
+		Timestamp modified = new Timestamp(new Date().getTime());
+		request.setModified(modified);
+		// insert record
+		Request saved = reqRepo.save(request);
+		LinkedHashMap<String, String> chainMap = new LinkedHashMap<String, String>();
+		chainMap.put("requestId", "" + saved.getId());
+		chainMap.put("title", saved.getTitle());
+		chainMap.put("initiator", saved.getInitiatorid().getEmail());
+		chainMap.put("lastModifiedUser", saved.getLastModUserId().getEmail());
+		chainMap.put("workflow", saved.getWorkflow().getId() + "");
+
 		try {
 			seed = dataService.getSeedForClient(client);
 			JSONObject obj = new JSONObject();
@@ -145,50 +188,9 @@ public class StaffUserService implements IStaffUserService {
 				e.printStackTrace();
 			}
 			// insert into database
-			node.setMutationHash(mutationHash);
-			nodeRepo.save(node);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return mutationHash;
-	}
-
-	private String changeRequestStatus(Request request,
-			RequestStatus newstatus, ClientOrg client) {
-		// TODO Auto-generated method stub
-		String seed = null;
-		String mutationHash = null;
-		request.setStatus(newstatus);
-		Timestamp modified = new Timestamp(new Date().getTime());
-		request.setModified(modified);
-		Request saved = reqRepo.save(request);
-		LinkedHashMap<String, String> chainMap = new LinkedHashMap<String, String>();
-		chainMap.put("requestId", "" + saved.getId());
-		chainMap.put("created", "" + saved.getCreated());
-		chainMap.put("title", saved.getTitle());
-		chainMap.put("initiator", saved.getInitiatorid().getEmail());
-		chainMap.put("lastModifiedUser", saved.getLastModUserId().getEmail());
-		chainMap.put("workflow", saved.getWorkflow().getId() + "");
-		
-		try {			
-			seed = dataService.getSeedForClient(client);
-			JSONObject obj = new JSONObject();
-			obj.put("data", chainMap.toString());
-			obj.put("host", openchainServer);
-			obj.put("seed", seed);
-			mutationHash = chainService.createTransaction(obj.toJSONString());
-			JSONParser parser = new JSONParser();
-			try {
-				JSONObject chainResp = (JSONObject) parser.parse(mutationHash);
-				mutationHash = (String) chainResp.get("mutation_hash");
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			// insert into database
-			request.setMutationHash(mutationHash);
-			reqRepo.save(request);
+			saved.setMutationHash(mutationHash);
+			// update record
+			reqRepo.save(saved);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

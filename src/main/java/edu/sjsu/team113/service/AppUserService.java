@@ -1,6 +1,7 @@
 package edu.sjsu.team113.service;
 
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -144,17 +145,22 @@ public class AppUserService implements IAppUserService {
 		newrequest.setDescription(reqDescription);
 		newrequest.setRequestJson(requestedFlow.getWorkflowJson());
 
+		// insert request record
+		Request createdRequest = reqRepo.save(newrequest);
+		
 		ClientOrg reqOwner = department.getClient();
 		String seed = reqOwner.getBlockchainSeed();
 
 		ObjectMapper mapper = converter.getObjectMapper();
 		String jsonString = null;
-		try {
-			jsonString = mapper.writeValueAsString(newrequest);
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		LinkedHashMap<String, String> chainMap = new LinkedHashMap<String, String>();
+		chainMap.put("requestId", "" + createdRequest.getId());
+		chainMap.put("title", createdRequest.getTitle());
+		chainMap.put("initiator", createdRequest.getInitiatorid().getEmail());
+		chainMap.put("lastModifiedUser", createdRequest.getLastModUserId().getEmail());
+		chainMap.put("workflow", createdRequest.getWorkflow().getId() + "");
+		
+		jsonString = chainMap.toString();
 		JSONObject obj = new JSONObject();
 		obj.put("data", jsonString);
 		obj.put("host", openchainServer);
@@ -170,8 +176,11 @@ public class AppUserService implements IAppUserService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		newrequest.setMutationHash(mutationhash);
-		Request createdRequest = reqRepo.save(newrequest);
+		createdRequest.setMutationHash(mutationhash);
+		
+		//update request record
+		createdRequest = reqRepo.save(createdRequest);
+		
 		for (RequestNode reqNode : requestNodes) {
 			reqNode.setRequest(createdRequest);
 			reqNodeRepo.save(reqNode);
