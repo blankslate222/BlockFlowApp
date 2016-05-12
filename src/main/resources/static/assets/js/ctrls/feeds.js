@@ -80,8 +80,14 @@ cmpe.controller('adminFeedCtrl', function($scope, $state, $rootScope, $http, $co
 	
 	$scope.check = function() {
 		$http.get("/admin/request/validate/"+$scope.requestID).success(function(data) {
-				console.log(data.controllerResponse.responseObject);
-				$scope.t=data.controllerResponse.responseObject;
+			console.log(data);
+				console.log(data.controllerResponse.isValid);
+				var valid = data.controllerResponse.isValid;
+				if (valid == "true") {
+					$scope.validityMsg = "All transactions logged on the Blockchain for request with ID = "+ $scope.requestID + " are valid";
+				} else {
+					$scope.validityMsg = "Request ID = "+ $scope.requestID + " does not have valid transactions logged on the Blockchain";
+				}
 		});
 	};
 	
