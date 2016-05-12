@@ -132,8 +132,8 @@ cmpe.controller(
 								var objs = data.controllerResponse.responseObject;
 								$scope.request = objs;
 								var obj=JSON.parse($scope.request[0].request.requestJson);
-								for(var i=0;i<obj.nodes.length;i++){
-									obj.nodes[i].name=obj.nodes[i].name + " ("+$scope.request[i].status+")";
+								for(var i=0;i<$scope.request.length;i++){
+									obj.nodes[$scope.request[i].level-1].name=obj.nodes[$scope.request[i].level-1].name + " ("+$scope.request[i].status+")";
 								}
 								$scope.chartViewModel = new flowchart.ChartViewModel(
 										obj);

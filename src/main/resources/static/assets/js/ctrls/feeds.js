@@ -40,10 +40,7 @@ cmpe
 cmpe.controller('adminFeedCtrl', function($scope, $state, $rootScope, $http, $cookieStore) {
 	
 	$scope.feedList = [];
-	debugger;
-	var clientid = $cookieStore.get('client').id;
-	console.log(clientid);
-	
+
 	$scope.getFeed = function() {
 		
 		console.log("inside get feed");

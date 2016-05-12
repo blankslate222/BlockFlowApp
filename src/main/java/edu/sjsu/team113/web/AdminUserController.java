@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,7 +39,7 @@ public class AdminUserController {
 
 	@Autowired
 	private IManagerUserService mgrService;
-	
+
 	@Autowired
 	private AppUserService userService;
 
@@ -109,16 +110,18 @@ public class AdminUserController {
 	@RequestMapping(value = "/group/adduser", method = RequestMethod.POST)
 	@ResponseBody
 	public ControllerResponse addUserToGroup(
-			@RequestBody Map<String, String> body, HttpServletResponse res, Principal principal) {
+			@RequestBody Map<String, String> body, HttpServletResponse res,
+			Principal principal) {
 		ControllerResponse resp = new ControllerResponse();
-		String authUser =  principal.getName();
+		String authUser = principal.getName();
 		Long groupId = Long.parseLong(body.get("groupId"));
 		String userEmail = body.get("userEmail");
 
 		System.out.println("principal stored = " + authUser);
 		// TODO: temporary
-		//authUser = "admin@admin.com";
-		ManagedUser returnObject = adminService.addUserToGroup(groupId,  userEmail,  authUser);
+		// authUser = "admin@admin.com";
+		ManagedUser returnObject = adminService.addUserToGroup(groupId,
+				userEmail, authUser);
 		resp.addToResponseMap("responseObject", returnObject);
 		resp.addToResponseMap("error", null);
 		return resp;
@@ -144,24 +147,25 @@ public class AdminUserController {
 	public @ResponseBody ControllerResponse createWorkflow(
 			@RequestBody Workflow workflow, HttpServletResponse res,
 			Principal principal) {
-		
+
 		ControllerResponse resp = new ControllerResponse();
 		String authenticatedUser = "admin@admin.com";
-		if (principal != null){
+		if (principal != null) {
 			authenticatedUser = principal.getName();
 			System.out.println("principal = " + principal.toString());
-		}
-		else 
+		} else
 			System.out.println("Principal null");
 		if (workflow.getNodes() != null) {
 			System.out.println(workflow.getNodes().size());
 		} else {
 			System.out.println("no nodes received");
 		}
-		
-		System.out.println("WorkFLOW Client"+workflow.getClient());
-		workflow.setClient(dataService.findClientOrgById(workflow.getClient().getId()));
-		Workflow createdFlow = adminService.createWorkflow(workflow, authenticatedUser);
+
+		System.out.println("WorkFLOW Client" + workflow.getClient());
+		workflow.setClient(dataService.findClientOrgById(workflow.getClient()
+				.getId()));
+		Workflow createdFlow = adminService.createWorkflow(workflow,
+				authenticatedUser);
 		if (createdFlow == null) {
 			resp.addError(new ResourceException("Workflow could not be created"));
 			res.setStatus(400);
@@ -169,6 +173,21 @@ public class AdminUserController {
 		}
 		res.setStatus(201);
 		resp.addResponseObject(createdFlow);
+		return resp;
+	}
+
+	@RequestMapping(value = "/request/validate/{requestId}")
+	public @ResponseBody ControllerResponse validateRequest(
+			@PathVariable Long requestId) {
+		ControllerResponse resp = new ControllerResponse();
+		String isValid = "false";
+		if (dataService.findRequestById(requestId) == null) {
+			resp.addToResponseMap("isValid", isValid);
+			return resp;
+		}
+
+		isValid = "" + adminService.validateRequestWithBlockchain(requestId);
+		resp.addToResponseMap("isValid", isValid);
 		return resp;
 	}
 }

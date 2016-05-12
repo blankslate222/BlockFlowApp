@@ -1,8 +1,5 @@
 package edu.sjsu.team113.service;
 
-import java.util.List;
-
-import edu.sjsu.team113.model.ChainAudit;
 import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ManagedUser;
@@ -28,6 +25,5 @@ public interface IAdminUserService {
 	
 	boolean deactivateWorkflow(Workflow flow, String authenticatedUser);
 	
-	List<ChainAudit> auditChain();
-	
+	boolean validateRequestWithBlockchain(Long requestId);
 }

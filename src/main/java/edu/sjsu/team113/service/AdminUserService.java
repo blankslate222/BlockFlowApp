@@ -1,5 +1,6 @@
 package edu.sjsu.team113.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.json.simple.JSONObject;
@@ -7,7 +8,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 
 import edu.sjsu.team113.model.AppUser;
@@ -16,6 +16,8 @@ import edu.sjsu.team113.model.ChainAudit;
 import edu.sjsu.team113.model.ClientDepartment;
 import edu.sjsu.team113.model.ClientOrg;
 import edu.sjsu.team113.model.ManagedUser;
+import edu.sjsu.team113.model.Request;
+import edu.sjsu.team113.model.RequestNode;
 import edu.sjsu.team113.model.WorkGroup;
 import edu.sjsu.team113.model.Workflow;
 import edu.sjsu.team113.model.WorkflowNode;
@@ -206,7 +208,7 @@ public class AdminUserService implements IAdminUserService {
 			// TODO: throw exception
 			return null;
 		}
-		
+
 		AppUser user = userRepo.findByEmail(userEmail);
 		if (user == null) {
 			// TODO: throw exception
@@ -273,9 +275,78 @@ public class AdminUserService implements IAdminUserService {
 	}
 
 	@Override
-	public List<ChainAudit> auditChain() {
+	public boolean validateRequestWithBlockchain(Long requestId) {
 		// TODO Auto-generated method stub
+		boolean isValid = true;
+		JSONParser parser = new JSONParser();
+		Request reqToBeValidated = dataService.findRequestById(requestId);
+		LinkedHashMap<String, String> reqChainMap = new LinkedHashMap<String, String>();
+		reqChainMap.put("requestId", "" + reqToBeValidated.getId());
+		reqChainMap.put("created", "" + reqToBeValidated.getCreated());
+		reqChainMap.put("title", reqToBeValidated.getTitle());
+		reqChainMap.put("initiator", reqToBeValidated.getInitiatorid()
+				.getEmail());
+		reqChainMap.put("lastModifiedUser", reqToBeValidated.getLastModUserId()
+				.getEmail());
+		reqChainMap
+				.put("workflow", reqToBeValidated.getWorkflow().getId() + "");
 
-		return null;
+		// validate request
+		String reqAuditData = reqChainMap.toString();
+		JSONObject reqObj = new JSONObject();
+		reqObj.put("audit_data", reqAuditData);
+		reqObj.put("host", openchainServer);
+		String chainResp = chainService.validateTransactionData(
+				reqToBeValidated.getMutationHash(), reqObj.toJSONString());
+
+		List<RequestNode> nodes = dataService.findNodesByRequest(requestId);
+		try {
+			JSONObject statusObj = (JSONObject) parser.parse(chainResp);
+			String status = (String) statusObj.get("status");
+			if (status.equals("false")) {
+				return false;
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// then validate all the nodes
+		LinkedHashMap<String, String> nodeChainMap = null;
+
+		for (RequestNode savedNode : nodes) {
+			String mutation = savedNode.getMutationHash();
+			if (mutation == null || mutation.length() < 1) {
+				continue;
+			}
+			nodeChainMap = new LinkedHashMap<String, String>();
+			nodeChainMap.put("nodeId", "" + savedNode.getId());
+			nodeChainMap.put("request", "" + savedNode.getRequest().getId());
+			nodeChainMap.put("nodeName", savedNode.getName());
+			nodeChainMap.put("department", savedNode.getDepartmentId() + "");
+			nodeChainMap.put("created", "" + savedNode.getCreated());
+			nodeChainMap.put("modified", "" + savedNode.getModified());
+			String auditData = nodeChainMap.toString();
+			JSONObject req = new JSONObject();
+			req.put("audit_data", auditData);
+			req.put("host", openchainServer);
+			String reqBody = req.toJSONString();
+
+			String response = chainService.validateTransactionData(mutation,
+					reqBody);
+			try {
+				JSONObject statusObj = (JSONObject) parser.parse(response);
+				String status = (String) statusObj.get("status");
+				if (status.equals("false")) {
+					isValid = false;
+					break;
+				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return isValid;
 	}
 }
