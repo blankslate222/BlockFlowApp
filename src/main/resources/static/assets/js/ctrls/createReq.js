@@ -71,9 +71,23 @@ cmpe.controller(
 									return ;
 								}
 								console.log('creating a request here');
+								var clientid = $scope.workflows[$scope.selectedworkflow].client.id;
+								var clientid2 = $scope.workflows[$scope.selectedworkflow].client;
+								var clientval = undefined;
+								
+								console.log(clientid);
+								console.log(clientid2);
+								
+								if (clientid != undefined) {
+									clientval = clientid;
+								} else if (clientid2 != undefined) {
+									clientval = clientid2;
+								}
+								console.log(clientval);
+								debugger;
 								var paramMap = {
 										   "workflowid" : $scope.workflows[$scope.selectedworkflow].id, 
-										   "clientid" : $scope.workflows[$scope.selectedworkflow].client.id ,
+										   "clientid" :  clientval,
 										   "description" : $scope.desc
 										}
 								
