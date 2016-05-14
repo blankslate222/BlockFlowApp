@@ -5,6 +5,7 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 	$urlRouterProvider.otherwise("/");
 
 	$stateProvider
+	
 		.state('root',{
 			url: '',
 			views: {
@@ -127,6 +128,19 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				}
 			}
 		})
+		.state('root.charts',{
+			url: '/charts',
+			views: {
+				'header@': {
+					templateUrl: 'views/header.html',
+					controller: 'headCtrl'
+				},
+				'container@': {
+					templateUrl: 'views/testCharts.html',
+					controller: ''
+				}
+			}
+		})	
 		.state('root.register', {
 			url: '/register',
 			views: {
@@ -251,6 +265,32 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				'container@' : {
 					templateUrl : 'views/clientDash.html',
 					controller : 'clientDashCtrl'
+				}
+			}
+		})
+		.state('root.adminDash', {
+			url : '/adminDash',
+			views : {
+				'header@': {
+					templateUrl: 'views/header.html',
+					controller: 'headCtrl'
+				},
+				'container@' : {
+					templateUrl : 'views/dashboard.html',
+					controller : 'adminDashCtrl'
+				}
+			}
+		})
+		.state('root.superadminDash', {
+			url : '/superadminDash',
+			views : {
+				'header@': {
+					templateUrl: 'views/header.html',
+					controller: 'headCtrl'
+				},
+				'container@' : {
+					templateUrl : 'views/superadminDash.html',
+					controller : 'superadminDashCtrl'
 				}
 			}
 		})
