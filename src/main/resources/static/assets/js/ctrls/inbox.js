@@ -21,6 +21,7 @@ cmpe.controller('inboxCtrl', function($scope, $rootScope, $http, $window) {
 	}
 
 	$scope.getWorkflowByReqId = function(id) {
+		$scope.req.workflow=JSON.parse($scope.req.requestJson);
 		console.log($scope.req);
 		if($scope.req.requestJson && $scope.req.requestJson!=""){
 			$scope.chartViewModel = new flowchart.ChartViewModel(JSON.parse($scope.req.requestJson));

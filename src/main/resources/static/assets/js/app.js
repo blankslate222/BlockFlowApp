@@ -5,6 +5,7 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 	$urlRouterProvider.otherwise("/");
 
 	$stateProvider
+	
 		.state('root',{
 			url: '',
 			views: {
@@ -127,6 +128,19 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				}
 			}
 		})
+		.state('root.charts',{
+			url: '/charts',
+			views: {
+				'header@': {
+					templateUrl: 'views/header.html',
+					controller: 'headCtrl'
+				},
+				'container@': {
+					templateUrl: 'views/testCharts.html',
+					controller: ''
+				}
+			}
+		})	
 		.state('root.register', {
 			url: '/register',
 			views: {
