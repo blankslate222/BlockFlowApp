@@ -97,8 +97,10 @@ public class DataController {
 		Request request = dataService.findRequestById(requestId);
 		System.out.println("Request details" + request.toString());
 		List<RequestNode> nodeList = dataService.findNodesByRequest(requestId);
-		resp.addResponseObject(request);
-		resp.addResponseObject(nodeList);
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("request", request);
+		jsonObj.put("nodeList", nodeList);
+		resp.addResponseObject(jsonObj);
 		resp.addError(null);
 		return resp;
 	}
@@ -109,7 +111,6 @@ public class DataController {
 		ControllerResponse resp = new ControllerResponse();
 		ClientDepartment department = dataService
 				.findDepartmentById(departmentId);
-		// System.out.println("department details" + department.getGroups());
 		resp.addResponseObject(department);
 		resp.addError(null);
 		return resp;
@@ -173,7 +174,7 @@ public class DataController {
 		resp.addError(null);
 		return resp;
 	}
-	
+
 	@RequestMapping(value = "/workflowrequests")
 	public @ResponseBody ControllerResponse getWorkflowList(
 			HttpServletResponse res, Principal principal) {

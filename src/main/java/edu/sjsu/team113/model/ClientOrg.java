@@ -26,7 +26,7 @@ import edu.sjsu.team113.config.Views;
 @Entity
 @Table(name = "client_org")
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id",scope=ClientOrg.class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = ClientOrg.class)
 public class ClientOrg implements Serializable {
 
 	/**
@@ -56,30 +56,30 @@ public class ClientOrg implements Serializable {
 
 	@Column(name = "modified_time")
 	private Timestamp modified = new Timestamp(new Date().getTime());
-//
-//	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
-//	private Set<ClientDepartment> clientDepartments = new HashSet<>();
-//	
-//	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
-//	private Set<WorkGroup> groups = new HashSet<>();
-	
+	//
+	// @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+	// private Set<ClientDepartment> clientDepartments = new HashSet<>();
+	//
+	// @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+	// private Set<WorkGroup> groups = new HashSet<>();
+
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "admin_grp_id")
 	@JsonView(Views.Public.class)
 	private WorkGroup clientAdminGroup;
-	
+
 	@Column(name = "admin_dept_id")
 	@JsonView(Views.Public.class)
 	private Long adminDeptId;
-	
+
 	@Column(name = "chain_seed")
 	@JsonView(Views.Public.class)
 	private String blockchainSeed;
-	
+
 	@Column(name = "mutation_string")
 	@JsonView(Views.Public.class)
 	private String mutationString;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -108,13 +108,14 @@ public class ClientOrg implements Serializable {
 		this.address = address;
 	}
 
-//	public Set<ClientDepartment> getClientDepartments() {
-//		return clientDepartments;
-//	}
-//
-//	public void setClientDepartments(Set<ClientDepartment> clientDepartments) {
-//		this.clientDepartments = clientDepartments;
-//	}
+	// public Set<ClientDepartment> getClientDepartments() {
+	// return clientDepartments;
+	// }
+	//
+	// public void setClientDepartments(Set<ClientDepartment> clientDepartments)
+	// {
+	// this.clientDepartments = clientDepartments;
+	// }
 
 	public Timestamp getModified() {
 		return modified;
@@ -131,14 +132,14 @@ public class ClientOrg implements Serializable {
 	public Timestamp getCreated() {
 		return created;
 	}
-	
-//	public Set<WorkGroup> getGroups() {
-//		return groups;
-//	}
-//
-//	public void setGroups(Set<WorkGroup> groups) {
-//		this.groups = groups;
-//	}
+
+	// public Set<WorkGroup> getGroups() {
+	// return groups;
+	// }
+	//
+	// public void setGroups(Set<WorkGroup> groups) {
+	// this.groups = groups;
+	// }
 
 	public WorkGroup getClientAdminGroup() {
 		return clientAdminGroup;
@@ -171,4 +172,53 @@ public class ClientOrg implements Serializable {
 	public void setMutationString(String mutationString) {
 		this.mutationString = mutationString;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof ClientOrg)) {
+			return false;
+		}
+		ClientOrg other = (ClientOrg) obj;
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		if (name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		return true;
+	}
+
 }

@@ -65,6 +65,13 @@ public class WorkflowNode implements Serializable {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "node_status")
 	private NodeStatus status = NodeStatus.PENDING;
+	
+	@Column(name = "node_createdtime")
+	private Timestamp created = new Timestamp(new Date().getTime());
+
+	@Column(name = "node_modifiedtime")
+	private Timestamp modified = new Timestamp(new Date().getTime());
+	
 
 	public Long getId() {
 		return id;
@@ -158,12 +165,63 @@ public class WorkflowNode implements Serializable {
 		this.modified = modified;
 	}
 
-	@Column(name = "node_createdtime")
-	private Timestamp created = new Timestamp(new Date().getTime());
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((department_id == null) ? 0 : department_id.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + level;
+		result = prime * result
+				+ ((workflow == null) ? 0 : workflow.hashCode());
+		return result;
+	}
 
-	@Column(name = "node_modifiedtime")
-	private Timestamp modified = new Timestamp(new Date().getTime());
-
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof WorkflowNode)) {
+			return false;
+		}
+		WorkflowNode other = (WorkflowNode) obj;
+		if (department_id == null) {
+			if (other.department_id != null) {
+				return false;
+			}
+		} else if (!department_id.equals(other.department_id)) {
+			return false;
+		}
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		if (level != other.level) {
+			return false;
+		}
+		if (workflow == null) {
+			if (other.workflow != null) {
+				return false;
+			}
+		} else if (!workflow.equals(other.workflow)) {
+			return false;
+		}
+		return true;
+	}
 
 	
 }

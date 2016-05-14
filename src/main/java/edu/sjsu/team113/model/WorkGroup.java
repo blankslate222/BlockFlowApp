@@ -27,7 +27,7 @@ import edu.sjsu.team113.config.Views;
 @Entity
 @Table(name = "work_group")
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id",scope=WorkGroup.class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = WorkGroup.class)
 public class WorkGroup implements Serializable {
 
 	/**
@@ -115,12 +115,62 @@ public class WorkGroup implements Serializable {
 	public void setModified(Timestamp modified) {
 		this.modified = modified;
 	}
-//
-//	public boolean addUserToGroup(ManagedUser user) {
-//		return groupUsers.add(user);
-//	}
-//
-//	public boolean removeUserFromGroup(ManagedUser user) {
-//		return groupUsers.remove(user);
-//	}
+
+	//
+	// public boolean addUserToGroup(ManagedUser user) {
+	// return groupUsers.add(user);
+	// }
+	//
+	// public boolean removeUserFromGroup(ManagedUser user) {
+	// return groupUsers.remove(user);
+	// }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((client == null) ? 0 : client.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof WorkGroup)) {
+			return false;
+		}
+		WorkGroup other = (WorkGroup) obj;
+		if (client == null) {
+			if (other.client != null) {
+				return false;
+			}
+		} else if (!client.equals(other.client)) {
+			return false;
+		}
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		return true;
+	}
+
 }
