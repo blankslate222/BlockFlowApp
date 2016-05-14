@@ -268,4 +268,30 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				}
 			}
 		})
+		.state('root.adminDash', {
+			url : '/adminDash',
+			views : {
+				'header@': {
+					templateUrl: 'views/header.html',
+					controller: 'headCtrl'
+				},
+				'container@' : {
+					templateUrl : 'views/dashboard.html',
+					controller : 'adminDashCtrl'
+				}
+			}
+		})
+		.state('root.superadminDash', {
+			url : '/superadminDash',
+			views : {
+				'header@': {
+					templateUrl: 'views/header.html',
+					controller: 'headCtrl'
+				},
+				'container@' : {
+					templateUrl : 'views/superadminDash.html',
+					controller : 'superadminDashCtrl'
+				}
+			}
+		})
 });
