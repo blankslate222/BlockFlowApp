@@ -7,7 +7,7 @@
 
 		<div class="col-lg-3 ds" style="height: 800px; overflow-y: scroll;">
 			<!--COMPLETED ACTIONS DONUTS CHART-->
-			<h3>My Requests</h3>
+			<h3>MY REQUESTS</h3>
 
 			<!-- First Action -->
 			<div class="desc" data-ng-repeat="req in requests">
@@ -26,43 +26,58 @@
 				</a>
 			</div>
 		</div>
-		<div class="col-lg-9 main-chart" ng-show="req==null">Select a
-			Request....</div>
+		<div class="col-lg-9 main-chart" ng-show="req==null">
+			Select a Request....
+		</div>
 		<div class="col-lg-9 main-chart" ng-show="req!=null">
 			<div class="form-panel">
 				<h4 class="mb">
-					<i class="fa fa-angle-right"></i> Progress Status
+					<i class="fa fa-angle-right"></i> Request: {{req.title}}
 				</h4>
-				<div style="pointer-events: none; opacity: 0.5;">
-					<flow-chart class="col-md-12" ng-disabled="true"
-						style="margin-top: 5px; margin-bottom: 10px;  height: 380px;"
-						chart="chartViewModel"> </flow-chart>
-				</div>
+				<table class="table table-striped table-advance table-hover">
+				<tr>
+					<td>Request ID: </td><td>{{req.id}}</td>
+					<td>Created On: </td><td>{{req.created}}</td>
+				</tr>
+				<tr>
+					<td>Originator: </td><td>{{req.initiatorid.email}}</td>
+					<td>More details: </td><td><a href="/#/request/{{req.id}}">Click here</a></td>
+				</tr>
+				<tr>
+					<td>Status: </td><td>{{req.status}}</td>
+					<td>Assigned To:</td><td>{{req.assignedDept}}</td>
+				</tr>
+				<tr>
+					<td>Transaction Hash:</td><td colspan="3">{{req.mutationHash}}</td>
+				</tr>
+				</table>
+
+				<table class="table table-striped table-advance table-hover">
+					<tr align="right">
+					<div id="piechart" style="width: 500px; height: 200px; margin: auto;"></div>
+					</tr>
+					<tr>
+					<div class="col-md-12">
+					<div style="pointer-events: none; opacity: 0.5;">
+						<flow-chart class="col-md-12" ng-disabled="true"
+							style="margin-top: 10px; margin-bottom: 10px;  height: 200px; border: none; margin: auto; padding: 10px;"
+							chart="chartViewModel"> </flow-chart>
+					</div>
+					</div>
+				</tr>
+				</table>				
+				
 
 				<h4 class="mb">
-					<i class="fa fa-angle-right"></i> Request Details
+					<i class="fa fa-angle-right"></i> Request Description
 				</h4>
 				<form class="form-horizontal style-form" method="get">
 
-					<div class="form-group">
-						<label class="col-sm-2 col-sm-2 control-label">Request
-							Title</label>
-						<div class="col-sm-2"><a href="/#/request/{{req.id}}">{{req.title}}</a></div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 col-sm-2 control-label">Request
-							Description</label>
-						<div class="col-sm-2">{{req.description}}</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 col-sm-2 control-label">Blockchain Transaction Hash</label>
-						<div class="col-sm-2">{{req.mutationHash}}</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 col-sm-2 control-label">Request
-							Status</label>
-						<div class="col-sm-2">{{req.status}}</div>
-					</div>
+					<div class="form-group" align="center">
+						<div style="padding:20px;"  align = "center">
+							<textarea class="form-control" rows="5" cols="100" disabled>{{req.description}}</textarea>
+						</div>
+					</div>					
 				</form>
 			</div>
 		</div>
@@ -70,3 +85,6 @@
 </section>
 
 <!--main content end-->
+</div>
+</section>
+</section>

@@ -24,6 +24,7 @@ cmpe
 					$scope.getReqDetails = function(id) {
 						$scope.req = $scope.requests[id];
 						$scope.getWorkflowByReqId(id);
+						$scope.plotChartById(id);
 					}
 
 					$scope.getWorkflowByReqId = function(id) {
@@ -46,6 +47,35 @@ cmpe
 						}
 					}
 
+					$scope.plotChartById = function(id){
+						$http.get("/data/requestcompletepercentchart/"+ $scope.req.id).success(function(data) {
+						  	var arrOutput = [['Progress', 'No. of Nodes']];
+						  	var arrOutputTemp = [['Progress', 'No. of Nodes'],['PENDING',2],['PENDING_ACTION',1]];
+								var objs;
+								console.log(data);
+								objs = data.controllerResponse;
+								console.log(objs);
+								for (var key in objs){
+									var arr = [key, Number(objs[key])];								
+									arrOutput.push(arr);
+								}
+								var dataNew = google.visualization.arrayToDataTable(arrOutput);
+						      var options = {
+								          title: 'Request Progress',
+								          pieHole: 0.4,
+								          pieSliceTextStyle: {
+								              color: 'black',
+								            },
+								          slices: {
+								              0: { color: 'red' },
+								              1: { color: 'green' }
+								            }
+								        };
+						      var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+						      chart.draw(dataNew, options);
+							});
+
+					}
 					var requestId = $stateParams.requestID;
 
 					$scope.request = [];
