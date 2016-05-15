@@ -176,11 +176,11 @@ cmpe.controller(
 					};
 					$scope.getRequest();
 					
-				      google.charts.load('current', {'packages':['corechart']});
+				     // google.charts.load('current', {'packages':['corechart']});
 				      google.charts.setOnLoadCallback(drawChart);
 				      function drawChart() {
 
-					$http.get("/data/report").success(function(data) {
+					$http.get("/data/requestcompletepercentchart/"+ requestId).success(function(data) {
 				    	var arrOutput = [['Progress', 'No. of Nodes']];
 				    	var arrOutputTemp = [['Progress', 'No. of Nodes'],['PENDING',2],['PENDING_ACTION',1]];
 						var objs;

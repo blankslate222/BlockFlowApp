@@ -1,16 +1,16 @@
 cmpe.controller('clientDashCtrl', function($scope, $rootScope, $http) {
 
-	google.charts.load("current", {
-		packages : [ "corechart",'gantt' ]
-	});
 	google.charts.setOnLoadCallback(drawChart);
 	
     function drawChart() {
-      var data = google.visualization.arrayToDataTable([
-        ['Status', 'Percentage'],
-        ['Completed',     2],
-        ['Pending',      3]
-      ]);
+    	var arrOutputTemp=
+    	[
+         ['Status', 'Percentage'],
+         ['Completed',     2],
+         ['Pending',      3]
+       ]
+    	
+      var data = google.visualization.arrayToDataTable(arrOutputTemp);
 
       var options = {
         title: 'Request Status',
@@ -41,19 +41,18 @@ cmpe.controller('clientDashCtrl', function($scope, $rootScope, $http) {
       otherData.addRows([
 
                          
-                         ['CCDept', 'Credit Card Dept', '', null, null, toMilliseconds(10), 100, null],
-                         ['SDept', 'Savings Dept', '', null, null, toMilliseconds(10), 100, 'CCDept'],
-                         ['LDept', 'Loan Dept', '', null, null, toMilliseconds(10), 0, 'SDept'],
-                         ['CDept', 'Checking Dept', '', null, null, toMilliseconds(10), 0, 'LDept'],
-                         ['FDept', ' Dept', '', null, null, toMilliseconds(10), 0, 'CDept'],
+                         ['CCDept', 'Credit Card Dept', '1', null, null, toMilliseconds(10), 0, null],
+                         ['SDept', 'Savings Dept', '1', null, null, toMilliseconds(10), 0, 'CCDept'],
+                         ['LDept', 'Loan Dept', '2', null, null, toMilliseconds(10), 0, 'SDept'],
+                         ['CDept', 'Checking Dept', '2', null, null, toMilliseconds(10), 0, 'LDept'],
+                         ['FDept', ' Dept', '2', null, null, toMilliseconds(10), 0, 'CDept'],
 
 
       ]);
 
       var options = {
-        height: 400,
+        height: 300,
         gantt: {
-          defaultStartDateMillis: new Date(2015, 3, 28)
         }
       };
 
@@ -101,15 +100,15 @@ cmpe.controller('clientDashCtrl', function($scope, $rootScope, $http) {
       otherData.addRows([
       
         
-        ['CCDept', 'Credit Card Dept', '', null, null, toMilliseconds(10), 100, null],
-        ['SDept', 'Savings Dept', '', null, null, toMilliseconds(10), 0, 'CCDept'],
-        ['LDept', 'Loan Dept', '', null, null, toMilliseconds(10), 0, 'SDept'],
+        ['CCDept', 'Credit Card Dept', '1', null, null, toMilliseconds(10), 0, null],
+        ['SDept', 'Savings Dept', '2', null, null, toMilliseconds(10), 0, 'CCDept'],
+        ['LDept', 'Loan Dept', '2', null, null, toMilliseconds(10), 0, 'SDept'],
 
 
       ]);
 
       var options = {
-        height: 400,
+        height: 300,
         gantt: {
           defaultStartDateMillis: new Date(2015, 3, 28)
         }
@@ -126,34 +125,72 @@ cmpe.controller('clientDashCtrl', function($scope, $rootScope, $http) {
 
 cmpe.controller('adminDashCtrl', function($scope, $rootScope, $http) {
 
-	google.charts.load('current', {
-		packages : [ 'corechart', 'bar', 'sankey' ]
-	});
 	google.charts.setOnLoadCallback(drawDualX);
 
 	function drawDualX() {
-		var data = google.visualization.arrayToDataTable([
-				[ 'Status', 'Accepted', 'Rejected', 'Pending', {
-					role : 'annotation'
-				} ], [ 'CC Dept', 10, 24, 20, '' ],
-				[ 'Loan Dept', 16, 22, 23, '' ],
-				[ 'Savings Dept', 28, 19, 29, '' ] ]);
-
-		var options = {
-			width : 600,
-			height : 400,
-			legend : {
-				position : 'top',
-				maxLines : 3
-			},
-			bar : {
-				groupWidth : '75%'
-			},
-			isStacked : true
-		};
-		var material = new google.charts.Bar(document
-				.getElementById('chart_div1'));
-		material.draw(data, options);
+		/*
+		 * var arrOutputTemp=[ [ 'Status', 'Accepted', 'Rejected', 'Pending', {
+		 * role : 'annotation' } ], [ 'CC Dept', 10, 24, 20, '' ], [ 'Loan Dept', 16, 22, 23, '' ], [ 'Savings Dept', 28, 19, 29, '' ] ];
+		 */
+		
+		$http.get("/data/requeststatusbydeptchart/"+$cookieStore.get('client').id).success(function(data) {
+	    	var arrOutput = [ 'Status', 'Accepted', 'Rejected', 'Pending', {
+				role : 'annotation'
+			}];
+	    	debugger;
+			var objs;
+			console.log(data);
+			objs = data.controllerResponse;
+			console.log(objs); 
+			var i=0;
+			for(var i=0;i<objs.length;){
+				var DeptAndStat=objs[i].split('|||');
+				var name=arr.push(DeptAndStat[0]);
+				var arr = [];
+				if(DeptAndStat[1]==='approved'){
+					arr.push(Number(objs[i++]));
+					if(i<objs.length)
+						DeptAndStat=objs[i].split('|||');
+				}
+				else
+					arr.push(0);
+				if(name===DeptAndStat[0] && DeptAndStat[1]==='rejected'){
+					arr.push(Number(objs[i++]));
+					if(i<objs.length)
+						DeptAndStat=objs[i].split('|||');
+				}
+				else
+					arr.push(0);
+				if(name===DeptAndStat[0] && DeptAndStat[1]==='Pending'){
+					arr.push(Number(objs[i++]));
+					if(i<objs.length)
+						DeptAndStat=objs[i].split('|||');
+				}
+				else
+					arr.push(0);
+				arr.push('');	
+				arrOutput.push(arr);
+			}
+			
+			var data = google.visualization.arrayToDataTable(arrOutput);
+	
+			var options = {
+				width : 600,
+				height : 400,
+				legend : {
+					position : 'top',
+					maxLines : 3
+				},
+				bar : {
+					groupWidth : '75%'
+				},
+				isStacked : true
+			};
+			var material = new google.charts.Bar(document
+					.getElementById('chart_div1'));
+			material.draw(data, options);
+		}
+		
 		drawChart2();
 	}
 

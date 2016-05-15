@@ -370,21 +370,52 @@ public class DataController {
 		session.close();
 	}
 
-	@RequestMapping(value = "/report")
-	public @ResponseBody ControllerResponse fetchReport() {
+	@RequestMapping(value = "/requestcompletepercentchart/{requestId}")
+	public @ResponseBody ControllerResponse fetchRequestCompletionPercentReport(@PathVariable Long requestId, HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		try{
 			Query query = session.createQuery(
 					"select count(1), status from RequestNode where request_id = :requestId group by status")
-					.setParameter("requestId", 16);
+
+					.setParameter("requestId", requestId);
+
 			  for(Iterator it=query.iterate();it.hasNext();)
 			  {
 			   Object[] row = (Object[]) it.next();
 			   System.out.print("Count: " + row[0]);
 			   System.out.println(" | Node Status: " + row[1]);
 				resp.addToResponseMap(""+row[1], ""+row[0]);			
+			  }
+			session.getTransaction().commit();
+		}catch(HibernateException e){
+	         e.printStackTrace(); 
+		}
+		finally {
+	         session.close(); 
+	    }
+		return resp;
+
+	}
+
+	@RequestMapping(value = "/requeststatusbydeptchart/{clientId}")
+	public @ResponseBody ControllerResponse fetchReport(@PathVariable Long clientId, HttpServletResponse res) {
+		ControllerResponse resp = new ControllerResponse();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		try{
+			Query query = session.createQuery(
+					"select count(1), d.name, r.status from Request r, ClientDepartment d where  r.assignedDept = d.id and d.client = :clientId group by r.assignedDept , r.status order by r.assignedDept , r.status")
+					.setParameter("clientId", dataService.findClientOrgById(clientId));
+			  for(Iterator it=query.iterate();it.hasNext();)
+			  {
+			   Object[] row = (Object[]) it.next();
+				resp.addToResponseMap(row[1]+"|||"+row[2],row[0]);			
+				resp.addToResponseMap(row[1]+"|||"+row[2]+"test", row[0]);			
+				resp.addToResponseMap(row[1]+"|||"+row[2]+"test1", row[0]);			
+				resp.addToResponseMap(row[1]+"|||"+row[2]+"test2", row[0]);			
+				resp.addToResponseMap(row[1]+"|||"+row[2]+"test13", row[0]);			
 			  }
 			session.getTransaction().commit();
 		}catch(HibernateException e){
