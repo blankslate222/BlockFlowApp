@@ -79,19 +79,6 @@ cmpe.controller('adminFeedCtrl', function($scope, $state, $rootScope, $http, $co
 		      console.log(arrOutput);
 		      
 		      var data = google.visualization.arrayToDataTable(arrOutput);
-		    	
-//		      var data = google.visualization.arrayToDataTable([
-//		        ['Client', 'Number of Transactions'],
-//		        ['Bank of America', 10],
-//		        ['Chase', 20],
-//		        ['SJSU', 5],
-//		        ['Bank of America', 10],
-//		        ['Chase', 20],
-//		        ['SJSU', 5],
-//		        ['Bank of America', 10],
-//		        ['Chase', 20],
-//		        ['SJSU', 5],
-//		      ]);
 
 		      var options = {
 		        chart: {
@@ -122,10 +109,72 @@ cmpe.controller('adminFeedCtrl', function($scope, $state, $rootScope, $http, $co
 
 	    };
 	    
-	$scope.testing = function(){
+	$scope.testing = function(client_name){
+		
+	    var div = document.getElementById('client_detail_chart1');
+	    if (div.style.display == 'none') {
+	        console.log("going to show");
+	        div.style.display = 'block';
+	    }
+	   
+	    var arrOutput = [['Client', 'Approved', 'Rejected', 'Pending']];
+	    var approved = 0;
+		var rejected = 0;
+		var pending = 0;
+	    
+		$http.get("/data/requeststatusbyclientchart/").success(function(data) {
+	    	
+			var objs = data.controllerResponse;
+			console.log("$$$$$$");
+			console.log(objs);
+			var keys=Object.keys(objs);
+			keys.sort();
+			for(var i=0;i<keys.length;i++){
+				
+				var clientAndStat=keys[i].split("|||");
+				var Name = clientAndStat[0];
+				var Status = clientAndStat[1];
+				
+				if(Status==="APPROVED"){
+					console.log(objs[keys[i]]);
+					approved = Number(objs[keys[i]]);
+					}
+				if(Status==="REJECTED"){
+					console.log(objs[keys[i]]);
+					rejected = Number(objs[keys[i]]);
+					}
+				if(Status==="PENDING"){
+					console.log(objs[keys[i]]);
+					pending = Number(objs[keys[i]]);
+					}
+			}	
+					var arr=[];
+					arr.push(client_name);arr.push(approved);arr.push(rejected);arr.push(pending);
+					arrOutput.push(arr);
+					
+					console.log(arrOutput);
+					
+					google.charts.setOnLoadCallback(drawChart2);
+		});
+	    
+       
+        function drawChart2() {
+          var data2 = google.visualization.arrayToDataTable(arrOutput);
+
+          var options2 = {
+            chart: {
+              title: '',
+              subtitle: '',
+            },
+            bars: 'horizontal' // Required for Material Bar Charts.
+          };
+
+          var chart2 = new google.charts.Bar(document.getElementById('client_detail_chart1'));
+
+          chart2.draw(data2, options2);
+        }
         
 	    };
-
 	
 	$scope.t={};
 	$scope.load = function(t) {

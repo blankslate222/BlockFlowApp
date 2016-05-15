@@ -425,7 +425,7 @@ public class DataController {
 	}
 
 	@RequestMapping(value = "/requeststatusbyclientchart")
-	public @ResponseBody ControllerResponse fetchRequestStatusbyClientChart(@PathVariable Long clientId, HttpServletResponse res) {
+	public @ResponseBody ControllerResponse fetchRequestStatusbyClientChart(HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
