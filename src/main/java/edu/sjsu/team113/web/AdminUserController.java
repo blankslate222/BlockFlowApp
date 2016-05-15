@@ -149,7 +149,7 @@ public class AdminUserController {
 			Principal principal) {
 
 		ControllerResponse resp = new ControllerResponse();
-		String authenticatedUser = "admin@admin.com";
+		String authenticatedUser = null;
 		if (principal != null) {
 			authenticatedUser = principal.getName();
 			System.out.println("principal = " + principal.toString());
