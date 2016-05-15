@@ -424,6 +424,32 @@ public class DataController {
 
 	}
 
+	@RequestMapping(value = "/requeststatusbyclientchart")
+	public @ResponseBody ControllerResponse fetchRequestStatusbyClientChart(@PathVariable Long clientId, HttpServletResponse res) {
+		ControllerResponse resp = new ControllerResponse();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		try{
+			Query query = session.createQuery(
+					"select count(1), c.name, r.status from Request r, ClientDepartment d, ClientOrg c where  d.client = c.id and r.assignedDept = d.id group by c.name , r.status order by c.name , r.status");
+			for(Iterator it=query.iterate();it.hasNext();)
+			{
+				Object[] row = (Object[]) it.next();
+				resp.addToResponseMap(row[1]+"|||"+row[2],row[0]);			
+			}
+			session.getTransaction().commit();
+		}catch(HibernateException e){
+			e.printStackTrace(); 
+		}
+		finally {
+			session.close(); 
+		}
+		return resp;
+
+	}
+
+	
+	
 	@RequestMapping(value = "/deptperformancechart/{clientId}")
 	public @ResponseBody ControllerResponse fetchDeptPerformanceChart(@PathVariable Long clientId, HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
