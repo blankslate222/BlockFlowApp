@@ -23,19 +23,38 @@
 		</div>
 
 		<div class="row mt">
+		
+			<div class="col-lg-12">
+				<div class="showback">
+					<h4>Client Blockchain Transactions</h4>
+					<div id="chart">
+					
+					<div id="columnchart_material" style=" height: 500px; width: 80%; margin: 0 auto;"></div>
+					
+					</div>
+				</div>
+			</div>
+		
 			<div class="col-lg-12">
 				<div class="showback">
 					<h4>Admin Feed</h4>
 					<div class="panel-group" data-ng-repeat="feed in feedList">
 						<div class="panel panel-default">
-							<div class="panel-heading">
+							<div class="panel-heading"  >
 								<h4 class="panel-title">
-									<a data-toggle="collapse" href="#{{ $index }}"
-										onclick="return false;"> {{feed.client}}</a>
+								<button href="#chartModal" class="btn btn-default" data-toggle="modal" ng-click="testing();">
+													<a data-toggle="collapse" href="#{{ $index }}" onclick="return false;"> 
+													{{feed.client}}
+													</a>
+								</button>
 								</h4>
 							</div>
+							
 							<div id="{{ $index }}" class="panel-collapse collapse">
 								<ul class="list-group">
+								<li>
+									
+								</li>
 									<li class="list-group-item"
 										data-ng-repeat="transaction in feed.transactions">
 										<button href="#myModal" class="btn btn-default"
@@ -46,7 +65,10 @@
 						</div>
 					</div>
 				</div>
+				
+				
 			</div>
+			
 		</div>
 
 	</section>
@@ -97,6 +119,48 @@
 				<div class="alert alert-success" style="overflow: auto;">
 					<b>{{validityMsg}}</b>
 				</div>
+			</div>
+			<div class="modal-footer">
+				<button data-dismiss="modal" class="btn btn-success" type="button">OK</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- modal chart -->
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog"
+	tabindex="-1" id="chartModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Client Transaction Details</h4>
+			</div>
+			<div class="modal-body">
+				<div id="client_detail_chart" style=" height: 100%; width: 80%; margin: 0 auto;"></div>
+									
+									<script type="text/javascript">
+									google.charts.setOnLoadCallback(drawChart1);
+								    function drawChart1() {
+								      var data1 = google.visualization.arrayToDataTable([
+								        ['Client', '# Transactions', 'Rejected', 'Approved'],
+								        ['Bank of America', 10, 4, 6],
+								      
+								      ]);
+
+								      var options1 = {
+								        chart: {
+								          title: '',
+								          subtitle: '',
+								        }
+								      };
+
+								      var chart1 = new google.charts.Bar(document.getElementById('client_detail_chart'));
+
+								      chart1.draw(data1, options1);
+								    }
+									</script>
+				
 			</div>
 			<div class="modal-footer">
 				<button data-dismiss="modal" class="btn btn-success" type="button">OK</button>
