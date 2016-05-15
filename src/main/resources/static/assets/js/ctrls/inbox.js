@@ -4,7 +4,6 @@ cmpe.controller('inboxCtrl', function($scope, $rootScope, $http, $window) {
 	$scope.getRequests = function() {
 		$http.get("/data/staffinbox").success(function(data) {
 			console.log(data);
-			debugger;
 			var objs = data.controllerResponse.responseObject;
 			for (var i = 0; i < objs.length; i++) {
 				console.log(objs[i])
@@ -20,10 +19,10 @@ cmpe.controller('inboxCtrl', function($scope, $rootScope, $http, $window) {
 
 	$scope.req = null;
 	$scope.getReqDetails = function(id) {
-		debugger;
 		$scope.req = $scope.requests[id].request;
 		$scope.req.nodes = $scope.requests[id].nodes;
 		$scope.getWorkflowByReqId(id);
+		$scope.plotChartById();
 	}
 
 	$scope.getWorkflowByReqId = function(id) {
@@ -44,8 +43,37 @@ cmpe.controller('inboxCtrl', function($scope, $rootScope, $http, $window) {
 		}
 	}
 
+	$scope.plotChartById = function(id){
+		$http.get("/data/requestcompletepercentchart/"+ $scope.req.id).success(function(data) {
+		  	var arrOutput = [['Progress', 'No. of Nodes']];
+		  	var arrOutputTemp = [['Progress', 'No. of Nodes'],['PENDING',2],['PENDING_ACTION',1]];
+				var objs;
+				console.log(data);
+				objs = data.controllerResponse;
+				console.log(objs);
+				for (var key in objs){
+					var arr = [key, Number(objs[key])];								
+					arrOutput.push(arr);
+				}
+				var dataNew = google.visualization.arrayToDataTable(arrOutput);
+		      var options = {
+				          title: 'Request Progress',
+				          pieHole: 0.4,
+				          pieSliceTextStyle: {
+				              color: 'black',
+				            },
+				          slices: {
+				              0: { color: 'red' },
+				              1: { color: 'green' }
+				            }
+				        };
+		      var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+		      chart.draw(dataNew, options);
+			});
+
+	}
+	
 	$scope.doActionOnRequest = function(req_id, nodes, status) {
-debugger;
 		console.log('going to change request status');
 		console.log(req_id);
 		console.log(nodes);
