@@ -346,7 +346,7 @@ public class DataController {
 		}
 
 		JSONArray respArr = new JSONArray();
-		
+
 		List<Request> userinitiated = dataService.userInbox(userinSession);
 		for (Request req : userinitiated) {
 			JSONObject respObj = new JSONObject();
@@ -381,20 +381,20 @@ public class DataController {
 
 					.setParameter("requestId", requestId);
 
-			  for(Iterator it=query.iterate();it.hasNext();)
-			  {
-			   Object[] row = (Object[]) it.next();
-			   System.out.print("Count: " + row[0]);
-			   System.out.println(" | Node Status: " + row[1]);
+			for(Iterator it=query.iterate();it.hasNext();)
+			{
+				Object[] row = (Object[]) it.next();
+				System.out.print("Count: " + row[0]);
+				System.out.println(" | Node Status: " + row[1]);
 				resp.addToResponseMap(""+row[1], ""+row[0]);			
-			  }
+			}
 			session.getTransaction().commit();
 		}catch(HibernateException e){
-	         e.printStackTrace(); 
+			e.printStackTrace(); 
 		}
 		finally {
-	         session.close(); 
-	    }
+			session.close(); 
+		}
 		return resp;
 
 	}
@@ -408,23 +408,18 @@ public class DataController {
 			Query query = session.createQuery(
 					"select count(1), d.name, r.status from Request r, ClientDepartment d where  r.assignedDept = d.id and d.client = :clientId group by r.assignedDept , r.status order by r.assignedDept , r.status")
 					.setParameter("clientId", dataService.findClientOrgById(clientId));
-			  for(Iterator it=query.iterate();it.hasNext();)
-			  {
-			   Object[] row = (Object[]) it.next();
-				resp.addToResponseMap("D1|||APPROVED",10);			
-				resp.addToResponseMap("D1|||REJECTED",2);	
-				resp.addToResponseMap("D1|||PENDING",15);	
-				resp.addToResponseMap("D2|||APPROVED",7);	
-				resp.addToResponseMap("D2|||REJECTED",2);	
-				resp.addToResponseMap("D3|||APPROVED",18);	
-			  }
+			for(Iterator it=query.iterate();it.hasNext();)
+			{
+				Object[] row = (Object[]) it.next();
+				resp.addToResponseMap(row[1]+"|||"+row[2],row[0]);			
+			}
 			session.getTransaction().commit();
 		}catch(HibernateException e){
-	         e.printStackTrace(); 
+			e.printStackTrace(); 
 		}
 		finally {
-	         session.close(); 
-	    }
+			session.close(); 
+		}
 		return resp;
 
 	}
@@ -438,18 +433,18 @@ public class DataController {
 			Query query = session.createQuery(
 					"select count(1), d.name, if(r.status='PENDING','PENDING','COMPLETED') from Request r, ClientDepartment d where  r.assignedDept = d.id and d.client = :clientId group by r.assignedDept , if(r.status='PENDING','PENDING','COMPLETED') order by r.assignedDept , r.status")
 					.setParameter("clientId", dataService.findClientOrgById(clientId));
-			  for(Iterator it=query.iterate();it.hasNext();)
-			  {
-			   Object[] row = (Object[]) it.next();
+			for(Iterator it=query.iterate();it.hasNext();)
+			{
+				Object[] row = (Object[]) it.next();
 				resp.addToResponseMap(row[1]+"|||"+row[2],row[0]);			
-			  }
+			}
 			session.getTransaction().commit();
 		}catch(HibernateException e){
-	         e.printStackTrace(); 
+			e.printStackTrace(); 
 		}
 		finally {
-	         session.close(); 
-	    }
+			session.close(); 
+		}
 		return resp;
 
 	}
@@ -463,18 +458,18 @@ public class DataController {
 			Query query = session.createQuery(
 					"select count(1), MONTH(r.created)||'/'||DAYOFMONTH(r.created) from Request r, ClientDepartment d where  r.assignedDept = d.id and d.client = :clientId group by MONTH(r.created)||'/'||DAYOFMONTH(r.created)")
 					.setParameter("clientId", dataService.findClientOrgById(clientId));
-			  for(Iterator it=query.iterate();it.hasNext();)
-			  {
-			   Object[] row = (Object[]) it.next();
+			for(Iterator it=query.iterate();it.hasNext();)
+			{
+				Object[] row = (Object[]) it.next();
 				resp.addToResponseMap(""+row[1],row[0]);			
-			  }
+			}
 			session.getTransaction().commit();
 		}catch(HibernateException e){
-	         e.printStackTrace(); 
+			e.printStackTrace(); 
 		}
 		finally {
-	         session.close(); 
-	    }
+			session.close(); 
+		}
 		return resp;
 
 	}
@@ -490,24 +485,90 @@ public class DataController {
 			Query query = session.createQuery(
 					"select d.name, n.request.id from RequestNode n, ClientDepartment d where  n.departmentId = d.id and d.client = :clientId order by n.departmentId")
 					.setParameter("clientId", dataService.findClientOrgById(clientId));
-			  for(Iterator it=query.iterate();it.hasNext();)
-			  {
-			   Object[] row = (Object[]) it.next();
-			   JSONObject obj = new JSONObject();
-			   obj.put(row[0],row[1]);
-			   arr.add(obj);
-			  }
+			for(Iterator it=query.iterate();it.hasNext();)
+			{
+				Object[] row = (Object[]) it.next();
+				JSONObject obj = new JSONObject();
+				obj.put(row[0],row[1]);
+				arr.add(obj);
+			}
 			session.getTransaction().commit();
 		}catch(HibernateException e){
-	         e.printStackTrace(); 
+			e.printStackTrace(); 
 		}
 		finally {
-	         session.close(); 
-	    }
+			session.close(); 
+		}
 		return resp;
 
 	}
 
+	@RequestMapping(value = "/userdashboardchart/{userId}")
+	public @ResponseBody ControllerResponse fetchUserDashboardChart(@PathVariable Long userId, HttpServletResponse res) {
+		ControllerResponse resp = new ControllerResponse();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		JSONArray requestObjArray = new JSONArray();
+		try{
+			List<Request> userinitiated = dataService.userInbox("o1@owner.com");
+			for (Request req : userinitiated) {
+				JSONObject requestObj = new JSONObject();
+				JSONArray countObjArray = new JSONArray();
+				JSONArray nodeObjArray = new JSONArray();
+				JSONArray statusCountArray = new JSONArray();
+				JSONArray requestSingleArray = new JSONArray();
+				Query query = session.createQuery(
+						"select count(1), status from RequestNode where request_id = :requestId group by status")
+						.setParameter("requestId", req.getId());
+				JSONObject countObj = new JSONObject();
+
+				for(Iterator it=query.iterate();it.hasNext();)
+				{
+					Object[] row = (Object[]) it.next();
+					System.out.print("Count: " + row[0]);
+					System.out.println(" | Node Status: " + row[1]);
+					JSONObject obj = new JSONObject();
+					obj.put(row[1],row[0]);
+					statusCountArray.add(obj);
+				}
+				countObj.put("statuscounts", statusCountArray);
+				requestSingleArray.add(countObj);
+				
+				JSONObject nodeObj = new JSONObject();
+				JSONArray nodeDetailsArray = new JSONArray();
+				Query query1 = session.createQuery(
+						"select n.departmentId, d.name, n.status, n.level from RequestNode n, ClientDepartment d where n.departmentId = d.id and request_id = :requestId order by n.departmentId")
+						.setParameter("requestId", req.getId());
+				for(Iterator it=query1.iterate();it.hasNext();)
+				{
+					Object[] row = (Object[]) it.next();
+					System.out.print("Count: " + row[0]);
+					System.out.println(" | Node Status: " + row[1]);
+					JSONObject obj = new JSONObject();
+					obj.put("deptId",row[0]);
+					obj.put("deptName",row[1]);
+					obj.put("status",row[2]);
+					obj.put("level",row[3]);
+					nodeDetailsArray.add(obj);
+				}
+				nodeObj.put("nodedetails", nodeDetailsArray);
+				requestSingleArray.add(nodeObj);
+				requestObj.put(req.getId(),requestSingleArray);
+				requestObjArray.add(requestObj);
+			}
+
+			resp.addResponseObject(requestObjArray);
+			session.getTransaction().commit();
+			
+		}catch(HibernateException e){
+			e.printStackTrace(); 
+		}
+		finally {
+			session.close(); 
+		}
+		return resp;
+
+	}
 
 	@RequestMapping(value = "/getBlockChainServerHost")
 	public @ResponseBody ControllerResponse getBlockChainServerHost() {
