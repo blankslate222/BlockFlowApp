@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -354,6 +355,33 @@ public class DataController {
 				.createQuery("insert into AppUser(email, passwordHash, name)"
 						+ "select concat(email,' ',name) , passwordHash, name from AppUser where id = 2");
 		int result = query.executeUpdate();
+	}
+
+	@RequestMapping(value = "/report")
+	public @ResponseBody ControllerResponse fetchReport() {
+		ControllerResponse resp = new ControllerResponse();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		try{
+			Query query = session.createQuery(
+					"select count(1), status from RequestNode where request_id = :requestId group by status")
+					.setParameter("requestId", 2);
+			  for(Iterator it=query.iterate();it.hasNext();)
+			  {
+			   Object[] row = (Object[]) it.next();
+			   System.out.print("Count: " + row[0]);
+			   System.out.println(" | Node Status: " + row[1]);
+				resp.addToResponseMap(""+row[1], ""+row[0]);			
+			  }
+			session.getTransaction().commit();
+		}catch(HibernateException e){
+	         e.printStackTrace(); 
+		}
+		finally {
+	         session.close(); 
+	    }
+		return resp;
+
 	}
 
 	@RequestMapping(value = "/getBlockChainServerHost")

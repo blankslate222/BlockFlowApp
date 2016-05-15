@@ -17,7 +17,7 @@ cmpe.controller('headCtrl', function($scope, $rootScope, $http, $location, $stat
 	$scope.getClass = function(path) {
 		return ($location.path().substr(0) === path) ? 'active' : '';
 	}
-	debugger;
+	//debugger;
 	$scope.user = $cookieStore.get('user');
 	$scope.superadmin = ($scope.user.id == 1);
 	console.log($scope.superadmin);
