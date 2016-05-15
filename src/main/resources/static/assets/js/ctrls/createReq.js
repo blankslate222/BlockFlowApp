@@ -174,7 +174,7 @@ cmpe.controller(
 					};
 					$scope.getRequest();
 					
-				      google.charts.load('current', {'packages':['corechart']});
+				     // google.charts.load('current', {'packages':['corechart']});
 				      google.charts.setOnLoadCallback(drawChart);
 				      function drawChart() {
 
