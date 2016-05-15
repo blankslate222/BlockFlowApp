@@ -411,11 +411,12 @@ public class DataController {
 			  for(Iterator it=query.iterate();it.hasNext();)
 			  {
 			   Object[] row = (Object[]) it.next();
-				resp.addToResponseMap(row[1]+"|||"+row[2],row[0]);			
-				resp.addToResponseMap(row[1]+"|||"+row[2]+"test", row[0]);			
-				resp.addToResponseMap(row[1]+"|||"+row[2]+"test1", row[0]);			
-				resp.addToResponseMap(row[1]+"|||"+row[2]+"test2", row[0]);			
-				resp.addToResponseMap(row[1]+"|||"+row[2]+"test13", row[0]);			
+				resp.addToResponseMap("D1|||APPROVED",10);			
+				resp.addToResponseMap("D1|||REJECTED",2);	
+				resp.addToResponseMap("D1|||PENDING",15);	
+				resp.addToResponseMap("D2|||APPROVED",7);	
+				resp.addToResponseMap("D2|||REJECTED",2);	
+				resp.addToResponseMap("D3|||APPROVED",18);	
 			  }
 			session.getTransaction().commit();
 		}catch(HibernateException e){

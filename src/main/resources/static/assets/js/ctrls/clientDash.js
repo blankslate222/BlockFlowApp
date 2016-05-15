@@ -119,59 +119,54 @@ cmpe.controller('clientDashCtrl', function($scope, $rootScope, $http) {
       chart.draw(otherData, options);
     }
     
-    
-    
 });
 
-cmpe.controller('adminDashCtrl', function($scope, $rootScope, $http) {
+cmpe.controller('adminDashCtrl', function($scope, $rootScope, $http, $cookieStore) {
 
 	google.charts.setOnLoadCallback(drawDualX);
 
 	function drawDualX() {
-		/*
-		 * var arrOutputTemp=[ [ 'Status', 'Accepted', 'Rejected', 'Pending', {
-		 * role : 'annotation' } ], [ 'CC Dept', 10, 24, 20, '' ], [ 'Loan Dept', 16, 22, 23, '' ], [ 'Savings Dept', 28, 19, 29, '' ] ];
-		 */
+		/*  var arrOutputTemp=[ [ 'Status', 'Accepted', 'Rejected', 'Pending', {
+		  role : 'annotation' } ], [ 'CC Dept', 10, 24, 20, '' ], [ 'Loan Dept', 16, 22, 23, '' ], [ 'Savings Dept', 28, 19, 29, '' ] ];
+		 console.log(arrOutputTemp);*/
 		
 		$http.get("/data/requeststatusbydeptchart/"+$cookieStore.get('client').id).success(function(data) {
-	    	var arrOutput = [ 'Status', 'Accepted', 'Rejected', 'Pending', {
+	    	var arrOutput = [[ 'Status', 'Approved', 'Rejected', 'Pending', {
 				role : 'annotation'
-			}];
-	    	debugger;
+			}]];
 			var objs;
-			console.log(data);
 			objs = data.controllerResponse;
-			console.log(objs); 
-			var i=0;
-			for(var i=0;i<objs.length;){
-				var DeptAndStat=objs[i].split('|||');
-				var name=arr.push(DeptAndStat[0]);
-				var arr = [];
-				if(DeptAndStat[1]==='approved'){
-					arr.push(Number(objs[i++]));
-					if(i<objs.length)
-						DeptAndStat=objs[i].split('|||');
+			console.log(objs);
+			var app=0,rej=0,pend=0;
+			var prevName="";
+			var keys=Object.keys(objs);
+			keys.sort();
+			for(var i=0;i<keys.length;i++){
+				
+				var DeptAndStat=keys[i].split("|||");
+				var currName=DeptAndStat[0];
+				var currStatus=DeptAndStat[1];
+				if(prevName!=currName){
+					if(prevName!=""){
+						var arr=[];
+						arr.push(prevName);arr.push(app);arr.push(rej);arr.push(pend);arr.push('');
+						arrOutput.push(arr);
+					}
+					prevName=currName;
+					app=0;rej=0;pend=0;
 				}
-				else
-					arr.push(0);
-				if(name===DeptAndStat[0] && DeptAndStat[1]==='rejected'){
-					arr.push(Number(objs[i++]));
-					if(i<objs.length)
-						DeptAndStat=objs[i].split('|||');
-				}
-				else
-					arr.push(0);
-				if(name===DeptAndStat[0] && DeptAndStat[1]==='Pending'){
-					arr.push(Number(objs[i++]));
-					if(i<objs.length)
-						DeptAndStat=objs[i].split('|||');
-				}
-				else
-					arr.push(0);
-				arr.push('');	
-				arrOutput.push(arr);
+				
+				if(currStatus==="APPROVED")
+					app=Number(objs[keys[i]]);
+				if(currStatus==="REJECTED")
+					rej=Number(objs[keys[i]]);
+				if(currStatus==="PENDING")
+					pend=Number(objs[keys[i]]);
 			}
 			
+			var arr=[];
+			arr.push(prevName);arr.push(app);arr.push(rej);arr.push(pend);arr.push('');
+			arrOutput.push(arr);
 			var data = google.visualization.arrayToDataTable(arrOutput);
 	
 			var options = {
@@ -189,7 +184,7 @@ cmpe.controller('adminDashCtrl', function($scope, $rootScope, $http) {
 			var material = new google.charts.Bar(document
 					.getElementById('chart_div1'));
 			material.draw(data, options);
-		}
+		});
 		
 		drawChart2();
 	}
