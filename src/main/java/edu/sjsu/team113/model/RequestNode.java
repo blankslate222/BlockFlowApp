@@ -37,7 +37,7 @@ public class RequestNode implements Serializable {
 	@JsonView(Views.Public.class)
 	private Long id;
 
-	@Column(name = "node_name", nullable = false, unique = true)
+	@Column(name = "node_name", nullable = false)
 	@JsonView(Views.Public.class)
 	private String name;
 

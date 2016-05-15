@@ -355,6 +355,7 @@ public class DataController {
 				.createQuery("insert into AppUser(email, passwordHash, name)"
 						+ "select concat(email,' ',name) , passwordHash, name from AppUser where id = 2");
 		int result = query.executeUpdate();
+		session.close();
 	}
 
 	@RequestMapping(value = "/requestcompletepercentchart/{requestId}")
