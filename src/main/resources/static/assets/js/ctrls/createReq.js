@@ -176,8 +176,8 @@ cmpe.controller(
 					};
 					$scope.getRequest();
 					
-				     // google.charts.load('current', {'packages':['corechart']});
 				      google.charts.setOnLoadCallback(drawChart);
+
 				      function drawChart() {
 
 					$http.get("/data/requestcompletepercentchart/"+ requestId).success(function(data) {
@@ -229,6 +229,8 @@ cmpe.controller(
 						console.log($scope.request.requestJson);
 						$scope.chartViewModel = new flowchart.ChartViewModel(
 								JSON.parse($scope.request.requestJson));
+						  google.charts.load('current', {'packages':['corechart']});
+						  google.charts.setOnLoadCallback(drawChart);
 					}
 					
 					

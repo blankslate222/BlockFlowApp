@@ -400,7 +400,7 @@ public class DataController {
 	}
 
 	@RequestMapping(value = "/requeststatusbydeptchart/{clientId}")
-	public @ResponseBody ControllerResponse fetchReport(@PathVariable Long clientId, HttpServletResponse res) {
+	public @ResponseBody ControllerResponse fetchRequestStatusbyDeptChart(@PathVariable Long clientId, HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
@@ -428,6 +428,86 @@ public class DataController {
 		return resp;
 
 	}
+
+	@RequestMapping(value = "/deptperformancechart/{clientId}")
+	public @ResponseBody ControllerResponse fetchDeptPerformanceChart(@PathVariable Long clientId, HttpServletResponse res) {
+		ControllerResponse resp = new ControllerResponse();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		try{
+			Query query = session.createQuery(
+					"select count(1), d.name, if(r.status='PENDING','PENDING','COMPLETED') from Request r, ClientDepartment d where  r.assignedDept = d.id and d.client = :clientId group by r.assignedDept , if(r.status='PENDING','PENDING','COMPLETED') order by r.assignedDept , r.status")
+					.setParameter("clientId", dataService.findClientOrgById(clientId));
+			  for(Iterator it=query.iterate();it.hasNext();)
+			  {
+			   Object[] row = (Object[]) it.next();
+				resp.addToResponseMap(row[1]+"|||"+row[2],row[0]);			
+			  }
+			session.getTransaction().commit();
+		}catch(HibernateException e){
+	         e.printStackTrace(); 
+		}
+		finally {
+	         session.close(); 
+	    }
+		return resp;
+
+	}
+
+	@RequestMapping(value = "/deptrequestbydaychart/{clientId}")
+	public @ResponseBody ControllerResponse fetchDeptRequestByDayChart(@PathVariable Long clientId, HttpServletResponse res) {
+		ControllerResponse resp = new ControllerResponse();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		try{
+			Query query = session.createQuery(
+					"select count(1), MONTH(r.created)||'/'||DAYOFMONTH(r.created) from Request r, ClientDepartment d where  r.assignedDept = d.id and d.client = :clientId group by MONTH(r.created)||'/'||DAYOFMONTH(r.created)")
+					.setParameter("clientId", dataService.findClientOrgById(clientId));
+			  for(Iterator it=query.iterate();it.hasNext();)
+			  {
+			   Object[] row = (Object[]) it.next();
+				resp.addToResponseMap(""+row[1],row[0]);			
+			  }
+			session.getTransaction().commit();
+		}catch(HibernateException e){
+	         e.printStackTrace(); 
+		}
+		finally {
+	         session.close(); 
+	    }
+		return resp;
+
+	}
+
+	@RequestMapping(value = "/requestdeptchart/{clientId}")
+	public @ResponseBody ControllerResponse fetchDeptRequestChart(@PathVariable Long clientId, HttpServletResponse res) {
+		ControllerResponse resp = new ControllerResponse();
+		JSONArray arr = new JSONArray();
+		resp.addResponseObject(arr);
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		try{
+			Query query = session.createQuery(
+					"select d.name, n.request.id from RequestNode n, ClientDepartment d where  n.departmentId = d.id and d.client = :clientId order by n.departmentId")
+					.setParameter("clientId", dataService.findClientOrgById(clientId));
+			  for(Iterator it=query.iterate();it.hasNext();)
+			  {
+			   Object[] row = (Object[]) it.next();
+			   JSONObject obj = new JSONObject();
+			   obj.put(row[0],row[1]);
+			   arr.add(obj);
+			  }
+			session.getTransaction().commit();
+		}catch(HibernateException e){
+	         e.printStackTrace(); 
+		}
+		finally {
+	         session.close(); 
+	    }
+		return resp;
+
+	}
+
 
 	@RequestMapping(value = "/getBlockChainServerHost")
 	public @ResponseBody ControllerResponse getBlockChainServerHost() {
