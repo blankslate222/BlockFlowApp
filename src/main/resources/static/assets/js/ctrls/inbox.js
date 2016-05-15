@@ -4,10 +4,14 @@ cmpe.controller('inboxCtrl', function($scope, $rootScope, $http, $window) {
 	$scope.getRequests = function() {
 		$http.get("/data/staffinbox").success(function(data) {
 			console.log(data);
-			var objs = data.controllerResponse.responseObject.requestlist;
+			debugger;
+			var objs = data.controllerResponse.responseObject;
 			for (var i = 0; i < objs.length; i++) {
 				console.log(objs[i])
-				$scope.requests.push(objs[i]);
+				var req = {};
+				req.request = objs[i].request;
+				req.nodes = objs[i].nodes;
+				$scope.requests.push(req);
 			}
 			console.log($scope.requests);
 		});
@@ -16,7 +20,9 @@ cmpe.controller('inboxCtrl', function($scope, $rootScope, $http, $window) {
 
 	$scope.req = null;
 	$scope.getReqDetails = function(id) {
-		$scope.req = $scope.requests[id];
+		debugger;
+		$scope.req = $scope.requests[id].request;
+		$scope.req.nodes = $scope.requests[id].nodes;
 		$scope.getWorkflowByReqId(id);
 	}
 

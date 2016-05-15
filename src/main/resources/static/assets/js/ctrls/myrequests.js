@@ -10,10 +10,10 @@ cmpe
 								.success(
 										function(data) {
 											console.log(data);
-											var objs = data.controllerResponse.responseObject.requestlist;
+											var objs = data.controllerResponse.responseObject;
 											for (var i = 0; i < objs.length; i++) {
 												console.log(objs[i])
-												$scope.requests.push(objs[i]);
+												$scope.requests.push(objs[i].request);
 											}
 											console.log($scope.requests);
 										});

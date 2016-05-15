@@ -18,8 +18,8 @@
 						</div>
 						<div class="details">
 							<p>
-								<muted>{{req.title}}</muted>
-								<br /> {{req.description}}<br />
+								<muted>{{req.request.title}}</muted>
+								<br /> {{req.request.description}}<br />
 							</p>
 						</div>
 					</div>
@@ -56,8 +56,8 @@
 							<textarea class="form-control" rows="5">{{req.description}}</textarea>
 						</div>
 					</div>
-					<button class="btn btn-theme02" data-ng-click="doActionOnRequest(req.id,req.workflow.nodes,'APPROVED')">Accept</button>
-					<button class="btn btn-theme03" data-ng-click="doActionOnRequest(req.id,req.workflow.nodes,'REJECTED')">Reject</button>
+					<button class="btn btn-theme02" data-ng-click="doActionOnRequest(req.id,req.nodes,'APPROVED')">Accept</button>
+					<button class="btn btn-theme03" data-ng-click="doActionOnRequest(req.id,req.nodes,'REJECTED')">Reject</button>
 				</form>
 			</div>
 		</div>

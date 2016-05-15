@@ -117,7 +117,7 @@ cmpe.controller(
 										$scope.userReqs=[];
 										var objs = data.controllerResponse.responseObject.requestlist;
 										for (var i = 0; i < objs.length; i++) {
-											$scope.userReqs.push(objs[i]);
+											$scope.userReqs.push(objs[i].request);
 										}
 										console.log($scope.userReqs);
 									});
@@ -143,8 +143,10 @@ cmpe.controller(
 					$scope.nodes=[];
 					$scope.getRequest = function() {
 						$http.get("/data/request/"+ requestId).success(function(data) {
+							console.log(data);
 							if (data.controllerResponse.responseObject) {
 								var objs = data.controllerResponse.responseObject;
+								debugger;
 								$scope.request = objs.request;
 								console.log("Request Details");
 								console.log($scope.nodes);

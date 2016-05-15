@@ -310,17 +310,23 @@ public class DataController {
 
 		String userinSession = null;
 		if (principal == null) {
-			userinSession = "admin@admin.com";
-			System.out.println("Inbox of Admin");
+			resp.addError("No logged in user");
+			return resp;
 		} else {
 			userinSession = principal.getName();
 		}
 
+		JSONArray respArr = new JSONArray();
 		List<Request> staffreqlist = dataService
 				.fetchMyRequestList(userinSession);
-		JSONObject respObj = new JSONObject();
-		respObj.put("requestlist", staffreqlist);
-		resp.addResponseObject(respObj);
+		for (Request req : staffreqlist) {
+			JSONObject respObj = new JSONObject();
+			respObj.put("request", req);
+			List<RequestNode> nodeList = dataService.findNodesByRequest(req.getId());
+			respObj.put("nodes", nodeList);
+			respArr.add(respObj);
+		}
+		resp.addResponseObject(respArr);
 		return resp;
 	}
 
@@ -331,19 +337,25 @@ public class DataController {
 
 		String userinSession = null;
 		if (principal == null) {
-			System.out.println(">>> No user session found!");
-			userinSession = "admin@admin.com";
-			System.out.println("Inbox of Admin");
+			resp.addError("No logged in user");
+			return resp;
 		} else {
 			System.out.println(">>> user session found with: "
 					+ principal.getName());
 			userinSession = principal.getName();
 		}
 
+		JSONArray respArr = new JSONArray();
+		
 		List<Request> userinitiated = dataService.userInbox(userinSession);
-		JSONObject respObj = new JSONObject();
-		respObj.put("requestlist", userinitiated);
-		resp.addResponseObject(respObj);
+		for (Request req : userinitiated) {
+			JSONObject respObj = new JSONObject();
+			respObj.put("request", req);
+			List<RequestNode> nodeList = dataService.findNodesByRequest(req.getId());
+			respObj.put("nodes", nodeList);
+			respArr.add(respObj);
+		}
+		resp.addResponseObject(respArr);
 		return resp;
 	}
 
@@ -366,7 +378,7 @@ public class DataController {
 		try{
 			Query query = session.createQuery(
 					"select count(1), status from RequestNode where request_id = :requestId group by status")
-					.setParameter("requestId", 2);
+					.setParameter("requestId", 16);
 			  for(Iterator it=query.iterate();it.hasNext();)
 			  {
 			   Object[] row = (Object[]) it.next();

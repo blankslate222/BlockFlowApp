@@ -1,5 +1,6 @@
 package edu.sjsu.team113.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,7 +15,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.sjsu.team113.model.AppUser;
@@ -110,7 +110,7 @@ public class AppUserService implements IAppUserService {
 		WorkGroup initiator_dept_mgr_group_id = null;
 		// System.out.println("Printing nodes string"+nodes.toString());
 		Long deptId = 0l;
-		Set<RequestNode> requestNodes = new HashSet<RequestNode>();
+		List<RequestNode> requestNodes = new ArrayList<RequestNode>();
 		for (WorkflowNode node : nodes) {
 			System.out.println("Workflow nodes");
 			RequestNode reqNode = new RequestNode();
