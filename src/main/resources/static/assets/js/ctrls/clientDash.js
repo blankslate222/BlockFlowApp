@@ -4,7 +4,7 @@ cmpe.controller('userDashCtrl', function($scope, $rootScope, $http, $cookieStore
 	
 	function load() {
 		$http.get("/data/userdashboardchart/"+$cookieStore.get('user').id).success(function(data) {
-			debugger;
+			//debugger;
 			console.log($cookieStore.get('user').id);
 			var objs= data.controllerResponse.responseObject;
 			for(var i=0;i<objs.length;i++){
@@ -105,7 +105,7 @@ cmpe.controller('userDashCtrl', function($scope, $rootScope, $http, $cookieStore
       ]);*/
       var arrOutput=[];
       var status;
-      debugger;
+      //debugger;
       for(var i=0;i<obj[1].nodedetails.length;i++){
     	  if(obj[1].nodedetails[i]["status"]==="PENDING_ACTION" || obj[1].nodedetails[i]["status"]==="PENDING")
     		  status='1';

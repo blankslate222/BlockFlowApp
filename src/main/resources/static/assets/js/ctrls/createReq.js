@@ -84,7 +84,7 @@ cmpe.controller(
 									clientval = clientid2;
 								}
 								console.log(clientval);
-								debugger;
+								//debugger;
 								var paramMap = {
 										   "workflowid" : $scope.workflows[$scope.selectedworkflow].id, 
 										   "clientid" :  clientval,
@@ -146,7 +146,7 @@ cmpe.controller(
 							console.log(data);
 							if (data.controllerResponse.responseObject) {
 								var objs = data.controllerResponse.responseObject;
-								debugger;
+								//debugger;
 								$scope.request = objs.request;
 								console.log("Request Details");
 								console.log($scope.nodes);

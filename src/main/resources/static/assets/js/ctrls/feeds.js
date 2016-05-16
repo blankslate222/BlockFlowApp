@@ -2,7 +2,7 @@ cmpe
 .controller('feedCtrl', function($scope, $state, $rootScope, $http, $cookieStore) {
 	
 	$scope.feedList = [];
-	debugger;
+	//debugger;
 	var clientid = $cookieStore.get('client').id;
 	console.log(clientid);
 	$scope.getFeed = function() {

@@ -23,7 +23,7 @@ cmpe
 							if (data.user.email) {
 								$cookieStore.put('user', data.user);
 								$cookieStore.put('client', data.client);
-								debugger;
+								//debugger;
 								//console.log($cookieStore.get('user'));
 								console.log(data.user);
 								var userrole = data.user.role;
