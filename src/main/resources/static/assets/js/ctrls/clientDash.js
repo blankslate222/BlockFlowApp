@@ -4,7 +4,8 @@ cmpe.controller('userDashCtrl', function($scope, $rootScope, $http, $cookieStore
 	
 	function load() {
 		$http.get("/data/userdashboardchart/"+$cookieStore.get('user').id).success(function(data) {
-			
+			debugger;
+			console.log($cookieStore.get('user').id);
 			var objs= data.controllerResponse.responseObject;
 			for(var i=0;i<objs.length;i++){
 				for(var key in objs[i]){
@@ -45,13 +46,15 @@ cmpe.controller('userDashCtrl', function($scope, $rootScope, $http, $cookieStore
 	}
 	
     function drawChart(obj,id) {
-    	var comp=0,pend=0;
+    	var comp=0,pend=0,rej=0;
     	for(var i=0;i<obj[0].statuscounts.length;i++){
     		for(var key in obj[0].statuscounts[i]){
     			if(key==="PENDING" || key==="PENDING_ACTION")
     				pend+=obj[0].statuscounts[i][key];
-    			else
+    			else if(key==="APPROVED")
     				comp+=obj[0].statuscounts[i][key];
+    			else 
+    				rej+=obj[0].statuscounts[i][key];
     		}
     	}
     	
@@ -59,6 +62,7 @@ cmpe.controller('userDashCtrl', function($scope, $rootScope, $http, $cookieStore
     	[
          ['Status', 'Percentage'],
          ['Completed',     comp],
+         ['Rejected',     rej],
          ['Pending',      pend]
        ]
     	
