@@ -72,15 +72,7 @@ cmpe.controller('adminFeedCtrl', function($scope, $state, $rootScope, $http, $co
 		      console.log("******"+$scope.feedList.length);
 		     
 		      for (var i = 0; i < $scope.feedList.length; i++) {
-		    	  
-//		    	  var sum = 0;
-//		    	  if(i%2 == 0){
-//		    		  sum = 5;
-//		    	  }
-//		    	  else{
-//		    		  sum = 18;
-//		    	  }
-		    	  var arr = [$scope.feedList[i].client, $scope.feedList[i].transactions.length];								
+		    	  var arr = [$scope.feedList[i].client, $scope.feedList[i].transactions.length];
 		    	  arrOutput.push(arr);
 				}
 		      
@@ -129,11 +121,12 @@ cmpe.controller('adminFeedCtrl', function($scope, $state, $rootScope, $http, $co
 	    var approved = 0;
 		var rejected = 0;
 		var pending = 0;
+		var prevName="";
 	    
 		$http.get("/data/requeststatusbyclientchart/").success(function(data) {
 	    	
 			var objs = data.controllerResponse;
-			console.log("$$$$$$");
+			
 			console.log(objs);
 			var keys=Object.keys(objs);
 			keys.sort();
@@ -143,26 +136,29 @@ cmpe.controller('adminFeedCtrl', function($scope, $state, $rootScope, $http, $co
 				var Name = clientAndStat[0];
 				var Status = clientAndStat[1];
 				
-				if(Status==="APPROVED"){
-					console.log(objs[keys[i]]);
-					approved = Number(objs[keys[i]]);
-					}
-				if(Status==="REJECTED"){
-					console.log(objs[keys[i]]);
-					rejected = Number(objs[keys[i]]);
-					}
-				if(Status==="PENDING"){
-					console.log(objs[keys[i]]);
-					pending = Number(objs[keys[i]]);
-					}
+				if(Name == client_name){
+					if(Status==="APPROVED"){
+						console.log(objs[keys[i]]);
+						approved = Number(objs[keys[i]]);
+						}
+					else if(Status==="REJECTED"){
+						console.log(objs[keys[i]]);
+						rejected = Number(objs[keys[i]]);
+						}
+					else if(Status==="PENDING"){
+						console.log(objs[keys[i]]);
+						pending = Number(objs[keys[i]]);
+						}
+				}
+
 			}	
 					var arr=[];
 					arr.push(client_name);arr.push(approved);arr.push(rejected);arr.push(pending);
 					arrOutput.push(arr);
 					
 					console.log(arrOutput);
-					
 					google.charts.setOnLoadCallback(drawChart2);
+					
 		});
 	    
        
