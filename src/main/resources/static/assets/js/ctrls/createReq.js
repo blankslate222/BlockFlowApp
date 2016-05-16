@@ -164,11 +164,18 @@ cmpe.controller(
 									}
 									console.log("obj.nodes[level].status:"+obj.nodes[level].status);
 									console.log("obj.nodes[level].name:"+obj.nodes[level].name);
-									obj.nodes[level].name=obj.nodes[level].name + " ("+objs.nodeList[level].status+")";
+									//obj.nodes[level].name=obj.nodes[level].name + " ("+objs.nodeList[level].status+")";
 									objs.nodeList[level].created = getFormattedDate(objs.nodeList[level].created)
 									objs.nodeList[level].modified = getFormattedDate(objs.nodeList[level].modified)
 								}
 								$scope.nodes = objs.nodeList;
+								$scope.nodes.sort(
+								          function(x, y)
+								          {
+								             return x.level > y.level;
+								          }
+								);
+
 								$scope.chartViewModel = new flowchart.ChartViewModel(
 										obj);
 							}
