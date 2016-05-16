@@ -264,7 +264,7 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				},
 				'container@' : {
 					templateUrl : 'views/clientDash.html',
-					controller : 'clientDashCtrl'
+					controller : 'userDashCtrl'
 				}
 			}
 		})
