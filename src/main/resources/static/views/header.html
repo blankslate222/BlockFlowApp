@@ -84,7 +84,20 @@
                           <span>Admin Feed</span>
                       </a>
                   </li>
+                 
+                  <li class="mt" data-ng-if="admin">
+                      <a data-ui-sref="root.adminDash"  ng-class="getClass('/adminDash')">
+                          <i class="fa fa-chain"></i>
+                          <span>Org Dashboard</span>
+                      </a>
+                  </li>
                   
+                  <li class="mt">
+                      <a data-ui-sref="root.userDash"  ng-class="getClass('/userDash')">
+                          <i class="fa fa-chain"></i>
+                          <span>User Dashboard</span>
+                      </a>
+                  </li>
               </ul>
               <!-- sidebar menu end-->
           </div>
