@@ -255,8 +255,8 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				}
 			}
 		})
-		.state('root.clientDash', {
-			url : '/clientDash',
+		.state('root.userDash', {
+			url : '/userDash',
 			views : {
 				'header@': {
 					templateUrl: 'views/header.html',
@@ -278,19 +278,6 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				'container@' : {
 					templateUrl : 'views/dashboard.html',
 					controller : 'adminDashCtrl'
-				}
-			}
-		})
-		.state('root.superadminDash', {
-			url : '/superadminDash',
-			views : {
-				'header@': {
-					templateUrl: 'views/header.html',
-					controller: 'headCtrl'
-				},
-				'container@' : {
-					templateUrl : 'views/superadminDash.html',
-					controller : 'superadminDashCtrl'
 				}
 			}
 		})
