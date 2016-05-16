@@ -72,9 +72,7 @@ cmpe.controller('adminFeedCtrl', function($scope, $state, $rootScope, $http, $co
 		      console.log("******"+$scope.feedList.length);
 		     
 		      for (var i = 0; i < $scope.feedList.length; i++) {
-
 		    	  var arr = [$scope.feedList[i].client, $scope.feedList[i].transactions.length];
-
 		    	  arrOutput.push(arr);
 				}
 		      
