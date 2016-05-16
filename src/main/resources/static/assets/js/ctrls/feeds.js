@@ -73,14 +73,14 @@ cmpe.controller('adminFeedCtrl', function($scope, $state, $rootScope, $http, $co
 		     
 		      for (var i = 0; i < $scope.feedList.length; i++) {
 		    	  
-		    	  var sum = 0;
-		    	  if(i%2 == 0){
-		    		  sum = 5;
-		    	  }
-		    	  else{
-		    		  sum = 18;
-		    	  }
-		    	  var arr = [$scope.feedList[i].client, $scope.feedList[i].transactions.length+sum];								
+//		    	  var sum = 0;
+//		    	  if(i%2 == 0){
+//		    		  sum = 5;
+//		    	  }
+//		    	  else{
+//		    		  sum = 18;
+//		    	  }
+		    	  var arr = [$scope.feedList[i].client, $scope.feedList[i].transactions.length];								
 		    	  arrOutput.push(arr);
 				}
 		      

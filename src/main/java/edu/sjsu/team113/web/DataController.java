@@ -36,6 +36,7 @@ import edu.sjsu.team113.model.WorkGroup;
 import edu.sjsu.team113.model.Workflow;
 import edu.sjsu.team113.repository.ChainAuditRepository;
 import edu.sjsu.team113.repository.ManagedUserRepository;
+import edu.sjsu.team113.repository.UserRepository;
 import edu.sjsu.team113.service.IAppUserService;
 import edu.sjsu.team113.service.IBlockchainService;
 import edu.sjsu.team113.service.IDataService;
@@ -322,7 +323,8 @@ public class DataController {
 		for (Request req : staffreqlist) {
 			JSONObject respObj = new JSONObject();
 			respObj.put("request", req);
-			List<RequestNode> nodeList = dataService.findNodesByRequest(req.getId());
+			List<RequestNode> nodeList = dataService.findNodesByRequest(req
+					.getId());
 			respObj.put("nodes", nodeList);
 			respArr.add(respObj);
 		}
@@ -351,7 +353,8 @@ public class DataController {
 		for (Request req : userinitiated) {
 			JSONObject respObj = new JSONObject();
 			respObj.put("request", req);
-			List<RequestNode> nodeList = dataService.findNodesByRequest(req.getId());
+			List<RequestNode> nodeList = dataService.findNodesByRequest(req
+					.getId());
 			respObj.put("nodes", nodeList);
 			respArr.add(respObj);
 		}
@@ -371,226 +374,228 @@ public class DataController {
 	}
 
 	@RequestMapping(value = "/requestcompletepercentchart/{requestId}")
-	public @ResponseBody ControllerResponse fetchRequestCompletionPercentReport(@PathVariable Long requestId, HttpServletResponse res) {
+	public @ResponseBody ControllerResponse fetchRequestCompletionPercentReport(
+			@PathVariable Long requestId, HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		try{
-			Query query = session.createQuery(
-					"select count(1), status from RequestNode where request_id = :requestId group by status")
+		try {
+			Query query = session
+					.createQuery(
+							"select count(1), status from RequestNode where request_id = :requestId group by status")
 
 					.setParameter("requestId", requestId);
 
-			for(Iterator it=query.iterate();it.hasNext();)
-			{
+			for (Iterator it = query.iterate(); it.hasNext();) {
 				Object[] row = (Object[]) it.next();
 				System.out.print("Count: " + row[0]);
 				System.out.println(" | Node Status: " + row[1]);
-				resp.addToResponseMap(""+row[1], ""+row[0]);			
+				resp.addToResponseMap("" + row[1], "" + row[0]);
 			}
 			session.getTransaction().commit();
-		}catch(HibernateException e){
-			e.printStackTrace(); 
-		}
-		finally {
-			session.close(); 
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
 		}
 		return resp;
 
 	}
 
 	@RequestMapping(value = "/requeststatusbydeptchart/{clientId}")
-	public @ResponseBody ControllerResponse fetchRequestStatusbyDeptChart(@PathVariable Long clientId, HttpServletResponse res) {
+	public @ResponseBody ControllerResponse fetchRequestStatusbyDeptChart(
+			@PathVariable Long clientId, HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		try{
-			Query query = session.createQuery(
-					"select count(1), d.name, r.status from Request r, ClientDepartment d where  r.assignedDept = d.id and d.client = :clientId group by r.assignedDept , r.status order by r.assignedDept , r.status")
-					.setParameter("clientId", dataService.findClientOrgById(clientId));
-			for(Iterator it=query.iterate();it.hasNext();)
-			{
+		try {
+			Query query = session
+					.createQuery(
+							"select count(1), d.name, r.status from Request r, ClientDepartment d where  r.assignedDept = d.id and d.client = :clientId group by r.assignedDept , r.status order by r.assignedDept , r.status")
+					.setParameter("clientId",
+							dataService.findClientOrgById(clientId));
+			for (Iterator it = query.iterate(); it.hasNext();) {
 				Object[] row = (Object[]) it.next();
-				resp.addToResponseMap(row[1]+"|||"+row[2],row[0]);			
+				resp.addToResponseMap(row[1] + "|||" + row[2], row[0]);
 			}
 			session.getTransaction().commit();
-		}catch(HibernateException e){
-			e.printStackTrace(); 
-		}
-		finally {
-			session.close(); 
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
 		}
 		return resp;
 
 	}
 
 	@RequestMapping(value = "/requeststatusbyclientchart")
-	public @ResponseBody ControllerResponse fetchRequestStatusbyClientChart(HttpServletResponse res) {
+	public @ResponseBody ControllerResponse fetchRequestStatusbyClientChart(
+			HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		try{
-			Query query = session.createQuery(
-					"select count(1), c.name, r.status from Request r, ClientDepartment d, ClientOrg c where  d.client = c.id and r.assignedDept = d.id group by c.name , r.status order by c.name , r.status");
-			for(Iterator it=query.iterate();it.hasNext();)
-			{
+		try {
+			Query query = session
+					.createQuery("select count(1), c.name, r.status from Request r, ClientDepartment d, ClientOrg c where  d.client = c.id and r.assignedDept = d.id group by c.name , r.status order by c.name , r.status");
+			for (Iterator it = query.iterate(); it.hasNext();) {
 				Object[] row = (Object[]) it.next();
-				resp.addToResponseMap(row[1]+"|||"+row[2],row[0]);			
+				resp.addToResponseMap(row[1] + "|||" + row[2], row[0]);
 			}
 			session.getTransaction().commit();
-		}catch(HibernateException e){
-			e.printStackTrace(); 
-		}
-		finally {
-			session.close(); 
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
 		}
 		return resp;
 
 	}
 
-	
-	
 	@RequestMapping(value = "/deptperformancechart/{clientId}")
-	public @ResponseBody ControllerResponse fetchDeptPerformanceChart(@PathVariable Long clientId, HttpServletResponse res) {
+	public @ResponseBody ControllerResponse fetchDeptPerformanceChart(
+			@PathVariable Long clientId, HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		try{
-			Query query = session.createQuery(
-					"select count(1), d.name, if(r.status='PENDING','PENDING','COMPLETED') from Request r, ClientDepartment d where  r.assignedDept = d.id and d.client = :clientId group by r.assignedDept , if(r.status='PENDING','PENDING','COMPLETED') order by r.assignedDept , r.status")
-					.setParameter("clientId", dataService.findClientOrgById(clientId));
-			for(Iterator it=query.iterate();it.hasNext();)
-			{
+		try {
+			Query query = session
+					.createQuery(
+							"select count(1), d.name, if(r.status='PENDING','PENDING','COMPLETED') from Request r, ClientDepartment d where  r.assignedDept = d.id and d.client = :clientId group by r.assignedDept , if(r.status='PENDING','PENDING','COMPLETED') order by r.assignedDept , r.status")
+					.setParameter("clientId",
+							dataService.findClientOrgById(clientId));
+			for (Iterator it = query.iterate(); it.hasNext();) {
 				Object[] row = (Object[]) it.next();
-				resp.addToResponseMap(row[1]+"|||"+row[2],row[0]);			
+				resp.addToResponseMap(row[1] + "|||" + row[2], row[0]);
 			}
 			session.getTransaction().commit();
-		}catch(HibernateException e){
-			e.printStackTrace(); 
-		}
-		finally {
-			session.close(); 
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
 		}
 		return resp;
 
 	}
 
 	@RequestMapping(value = "/deptrequestbydaychart/{clientId}")
-	public @ResponseBody ControllerResponse fetchDeptRequestByDayChart(@PathVariable Long clientId, HttpServletResponse res) {
+	public @ResponseBody ControllerResponse fetchDeptRequestByDayChart(
+			@PathVariable Long clientId, HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		try{
-			Query query = session.createQuery(
-					"select count(1), MONTH(r.created)||'/'||DAYOFMONTH(r.created) from Request r, ClientDepartment d where  r.assignedDept = d.id and d.client = :clientId group by MONTH(r.created)||'/'||DAYOFMONTH(r.created)")
-					.setParameter("clientId", dataService.findClientOrgById(clientId));
-			for(Iterator it=query.iterate();it.hasNext();)
-			{
+		try {
+			Query query = session
+					.createQuery(
+							"select count(1), MONTH(r.created)||'/'||DAYOFMONTH(r.created) from Request r, ClientDepartment d where  r.assignedDept = d.id and d.client = :clientId group by MONTH(r.created)||'/'||DAYOFMONTH(r.created)")
+					.setParameter("clientId",
+							dataService.findClientOrgById(clientId));
+			for (Iterator it = query.iterate(); it.hasNext();) {
 				Object[] row = (Object[]) it.next();
-				resp.addToResponseMap(""+row[1],row[0]);			
+				resp.addToResponseMap("" + row[1], row[0]);
 			}
 			session.getTransaction().commit();
-		}catch(HibernateException e){
-			e.printStackTrace(); 
-		}
-		finally {
-			session.close(); 
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
 		}
 		return resp;
 
 	}
 
 	@RequestMapping(value = "/requestdeptchart/{clientId}")
-	public @ResponseBody ControllerResponse fetchDeptRequestChart(@PathVariable Long clientId, HttpServletResponse res) {
+	public @ResponseBody ControllerResponse fetchDeptRequestChart(
+			@PathVariable Long clientId, HttpServletResponse res) {
 		ControllerResponse resp = new ControllerResponse();
 		JSONArray arr = new JSONArray();
 		resp.addResponseObject(arr);
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		try{
-			Query query = session.createQuery(
-					"select d.name, n.request.id from RequestNode n, ClientDepartment d where  n.departmentId = d.id and d.client = :clientId order by n.departmentId")
-					.setParameter("clientId", dataService.findClientOrgById(clientId));
-			for(Iterator it=query.iterate();it.hasNext();)
-			{
+		try {
+			Query query = session
+					.createQuery(
+							"select d.name, n.request.id from RequestNode n, ClientDepartment d where  n.departmentId = d.id and d.client = :clientId order by n.departmentId")
+					.setParameter("clientId",
+							dataService.findClientOrgById(clientId));
+			for (Iterator it = query.iterate(); it.hasNext();) {
 				Object[] row = (Object[]) it.next();
 				JSONObject obj = new JSONObject();
-				obj.put(row[0],row[1]);
+				obj.put(row[0], row[1]);
 				arr.add(obj);
 			}
 			session.getTransaction().commit();
-		}catch(HibernateException e){
-			e.printStackTrace(); 
-		}
-		finally {
-			session.close(); 
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
 		}
 		return resp;
 
 	}
 
 	@RequestMapping(value = "/userdashboardchart/{userId}")
-	public @ResponseBody ControllerResponse fetchUserDashboardChart(@PathVariable Long userId, HttpServletResponse res) {
+	public @ResponseBody ControllerResponse fetchUserDashboardChart(
+			@PathVariable Long userId, HttpServletResponse res, Principal principal) {
 		ControllerResponse resp = new ControllerResponse();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		JSONArray requestObjArray = new JSONArray();
-		try{
-			List<Request> userinitiated = dataService.userInbox("o1@owner.com");
+		try {
+			String useremail = principal.getName();
+			List<Request> userinitiated = dataService.userInbox(useremail);
 			for (Request req : userinitiated) {
 				JSONObject requestObj = new JSONObject();
 				JSONArray countObjArray = new JSONArray();
 				JSONArray nodeObjArray = new JSONArray();
 				JSONArray statusCountArray = new JSONArray();
 				JSONArray requestSingleArray = new JSONArray();
-				Query query = session.createQuery(
-						"select count(1), status from RequestNode where request_id = :requestId group by status")
+				Query query = session
+						.createQuery(
+								"select count(1), status from RequestNode where request_id = :requestId group by status")
 						.setParameter("requestId", req.getId());
 				JSONObject countObj = new JSONObject();
 
-				for(Iterator it=query.iterate();it.hasNext();)
-				{
+				for (Iterator it = query.iterate(); it.hasNext();) {
 					Object[] row = (Object[]) it.next();
 					System.out.print("Count: " + row[0]);
 					System.out.println(" | Node Status: " + row[1]);
 					JSONObject obj = new JSONObject();
-					obj.put(row[1],row[0]);
+					obj.put(row[1], row[0]);
 					statusCountArray.add(obj);
 				}
 				countObj.put("statuscounts", statusCountArray);
 				requestSingleArray.add(countObj);
-				
+
 				JSONObject nodeObj = new JSONObject();
 				JSONArray nodeDetailsArray = new JSONArray();
-				Query query1 = session.createQuery(
-						"select n.departmentId, d.name, n.status, n.level from RequestNode n, ClientDepartment d where n.departmentId = d.id and request_id = :requestId order by n.departmentId")
+				Query query1 = session
+						.createQuery(
+								"select n.departmentId, d.name, n.status, n.level from RequestNode n, ClientDepartment d where n.departmentId = d.id and request_id = :requestId order by n.departmentId")
 						.setParameter("requestId", req.getId());
-				for(Iterator it=query1.iterate();it.hasNext();)
-				{
+				for (Iterator it = query1.iterate(); it.hasNext();) {
 					Object[] row = (Object[]) it.next();
 					System.out.print("Count: " + row[0]);
 					System.out.println(" | Node Status: " + row[1]);
 					JSONObject obj = new JSONObject();
-					obj.put("deptId",row[0]);
-					obj.put("deptName",row[1]);
-					obj.put("status",row[2]);
-					obj.put("level",row[3]);
+					obj.put("deptId", row[0]);
+					obj.put("deptName", row[1]);
+					obj.put("status", row[2]);
+					obj.put("level", row[3]);
 					nodeDetailsArray.add(obj);
 				}
 				nodeObj.put("nodedetails", nodeDetailsArray);
 				requestSingleArray.add(nodeObj);
-				requestObj.put(req.getId(),requestSingleArray);
+				requestObj.put(req.getId(), requestSingleArray);
 				requestObjArray.add(requestObj);
 			}
 
 			resp.addResponseObject(requestObjArray);
 			session.getTransaction().commit();
-			
-		}catch(HibernateException e){
-			e.printStackTrace(); 
-		}
-		finally {
-			session.close(); 
+
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
 		}
 		return resp;
 

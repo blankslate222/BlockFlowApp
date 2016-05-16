@@ -216,19 +216,6 @@ cmpe.config(function($stateProvider, $urlRouterProvider){
 				}
 			}
 		})
-		.state('root.dash', {
-			url : '/dashboard',
-			views : {
-				'header@': {
-					templateUrl: 'views/header.html',
-					controller: 'headCtrl'
-				},
-				'container@' : {
-					templateUrl : 'views/dashboard.html',
-					controller : 'dashCtrl'
-				}
-			}
-		})
 		.state('root.deptss', {
 			url : '/dept',
 			views : {
